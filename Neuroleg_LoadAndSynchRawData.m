@@ -96,12 +96,46 @@ for ii = 1:length(subs)
         splitname = strsplit(eegfile,'.vhdr');
         trialname = splitname{1};
         
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %                                                 %
+        %               Load and Trim EEG                 %
+        %                                                 %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Load EEG
         EEG = pop_loadbv(eegdir,eegfile);
+        % Find EEG S1 trigger
+        eegSynch   = find(strcmpi({EEG.event.type},'S  1'));
+        % Cut data at triggers
+        eegStart  = EEG.event(eegSynch(1)).latency;
+        eegStop   = EEG.event(eegSynch(2)).latency;
+        eegtrim   = double(EEG.data(:,eegStart:eegStop));
+        event_old = EEG.event;
+        % Adjust markers
+        for kk = 1:length(EEG.event)
+            EEG.event(kk).latency = EEG.event(kk).latency - eegStart + 1;
+        end
+        % Remove any before S1
+        EEG.event(1:eegSynch(1)-1) = [];
+        EEG.event(eegSynch(2)+1:end) = [];
         
+        % Get trial start (S2) and trial stop (S4) markers
+        trialStart = find(strcmpi({EEG.event.type},'S  2'));
+        trialStop  = find(strcmpi({EEG.event.type},'S  4'));
+        
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %                                                 %
+        %            Load and Trim Biometrics             %
+        %                                                 %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Define EMG path and load
         biometricsfile = fullfile(biometricsdir,[trialname '.txt']);
         biometrics = loadBiometrics(biometricsfile,8);
+        
+        % Get EMG triggers: TTL pulse on digital channel
+        biometricsSynch = find(diff([0 biometrics.trigger'])==1);
+        biometricsStart = biometricsSynch(1);
+        biometricsStop  = biometricsSynch(2);
+        biometricstrim = double(biometrics.rawdata(biometricsStart:biometricsStop,:));
         
         % Get channel names and units
         hdr = biometrics.header;
@@ -118,6 +152,11 @@ for ii = 1:length(subs)
         end
         clear splitname1 splitname2 splitname3 hdr
         
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %                                                 %
+        %               Load and Trim OPAL                %
+        %                                                 %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Load OPAL
         opalfile = fullfile(opaldir,[trialname '.h5']);
         if exist(opalfile,'file')==2
@@ -125,55 +164,45 @@ for ii = 1:length(subs)
             opal = loadOpal(opalfile);
             % Get number of opal sensors
             numIMUs = length(opal.acc);
+            % Get OPAL triggers
+            opalSynch = find(strcmpi({opal.triggers.label},'Received external trigger 0V->+V edge'));
+            opalStart = opal.time >= opal.triggers(opalSynch(1)); % values greater than first time
+            opalStop  = opal.time <= opal.triggers(opalSynch(2)); % values less than last time
+            opaltimes = bsxfun(@eq,opalStart,opalStop); % get overlapping values
+            opal_old  = old;
             % Initialize empty cell for gravity compensated acc
             opal.acc_gc = cell(numIMUs,1);
             % Gravity compensation
             for kk = 1%:numIMUs
                 % Get IMU data
-                IMU = [opal.acc{1}, opal.gyr{1}, opal.mag{1}];
+                IMU = [opal.acc{kk}, opal.gyr{kk}, opal.mag{kk}];
                 % Orientation using Extended Kalman Filter
                 acc_gc = Orientation_Estimation(IMU);
-                % Store in opal structure
-                opal.acc_gc{kk} = acc_gc;
+                % Store trimmed data in opal structure
+                opal.acc{kk}    = opal.acc(opaltimes,:);
+                opal.gyr{kk}    = opal.gyr(opaltimes,:);
+                opal.mag{kk}    = opal.mag(opaltimes,:);
+                opal.time{kk}   = opal.time(opaltimes,:);
+                opal.acc_gc{kk} = acc_gc(opaltimes,:);
             end
         end
         
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %                                                 %
+        %             Load stimulus pattern               %
+        %                                                 %
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         % Load stimulus
         if ~strcmpi(trialname,'PreRest')
             stimfile = [subs{ii} '-' trialname '_AmpMapping.mat'];
             load(fullfile(stimulusdir,stimfile));
         end
         
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %                                                                 %
-        %                  Synchronize data at triggers                   %
-        %                                                                 %
-        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
-        % Find EEG S1 trigger
-        eegSynch   = find(strcmpi({EEG.event.type},'S  1'));
-        % Cut data at triggers
-        eegStart  = EEG.event(eegSynch(1)).latency;
-        eegStop   = EEG.event(eegSynch(2)).latency;
-        eegtrim   = double(EEG.data(:,eegStart:eegStop));
-        event_old = EEG.event;
-        % Adjust markers
-        for kk = 1:length(EEG.event)
-            EEG.event(kk).latency = EEG.event(kk).latency - eegStart + 1;
-        end
-        % Remove any before S1
-        EEG.event(1:eegSynch(1)-1) = [];
-        EEG.event(eegSynch(2)+1:end) = [];
-        % Get EMG triggers: TTL pulse on digital channel
-        emgSynch   = find(diff([0 biometrics.trigger'])==1);
-        % Get OPAL triggers
-        opalSynch  = find(strcmpi({opal.triggers.label},'Received external trigger 0V->+V edge'));
+        % Syncronize
         
         
-        % Get trial start (S2) and trial stop (S4) markers
-        trialStart = find(strcmpi({EEG.event.type},'S  2'));
-        trialStop  = find(strcmpi({EEG.event.type},'S  4'));
-        
+      
         
         
     end
