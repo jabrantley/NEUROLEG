@@ -1,4 +1,6 @@
-function out = loadBiometrics(in,n)
+% Load biometrics datalog data
+% Written by: Justin Brantley
+function out = loadBiometrics(in)
 % Specify number of data channels to assist in finding triggers
 disp(['Loading: ' in]);
 try
@@ -10,20 +12,12 @@ catch e
 end
 [rows, cols] = size(temp.data);
 
-try
-    if cols == n+1
-        out.rawdata = temp.data(:,1:n);
-        temptrigger = temp.data(:,n+1:end);
-        temptrigger = temptrigger - min(temptrigger);
-        temptrigger = temptrigger/max(temptrigger);
-        out.trigger = temptrigger;
-    else
-        out.rawdata = temp.data;
-        out.trigger = [];
-    end
-catch
-    out.rawdata = [];
-end
+% Get data
+out.rawdata = temp.data(:,1:end-1);
+% Get trigger channel
+temptrigger = temp.data(:,end);
+% Rescale between [0,1]
+out.trigger = rescale(temptrigger);
 
 try
     out.header  = temp.textdata;

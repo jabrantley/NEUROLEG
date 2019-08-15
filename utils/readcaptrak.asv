@@ -57,18 +57,13 @@ for ii = 1:length(locs)
     %chanlocs(idx).Y = locs(ii).Z;
 end
 
-% Get fiducial channels
-findNz  = find(strcmpi({chanlocs.labels},'Nz'));
-findRPA = find(strcmpi({chanlocs.labels},'RPA'));
-findLPA = find(strcmpi({chanlocs.labels},'LPA'));
-
+findNz = 
+findRPA = 
+fin
 % Convert  - can be changed to use whichever coordinate transform is
 % preferred
 chanlocs = convertlocs(chanlocs,'sphbesa2all');
 chanlocs = rmfield(chanlocs,{'sph_phi_besa','sph_theta_besa'});
-
-% Remove fiducials
-chanlocs([findNz,findRPA,findLPA]) = [];
 end
 
 function idx = neuroleg_cap(label)
