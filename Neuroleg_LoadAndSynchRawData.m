@@ -237,15 +237,6 @@ for ii = 1:length(subs)
                 IMU = [opal.acc{kk}, opal.gyr{kk}, opal.mag{kk}];
                 % Orientation using Extended Kalman Filter
                 acc_gc = Orientation_Estimation(IMU); clear IMU
-                %                 % Resample data to EEG sampling rate
-                %                 acc_temp   = resample(opal.acc{kk},opaltimeold,EEG.srate);
-                %                 gyr_temp   = resample(opal.gyr{kk},opaltimeold,EEG.srate);
-                %                 mag_temp   = resample(opal.mag{kk},opaltimeold,EEG.srate);
-                %                 accgc_temp = resample(acc_gc,opaltimeold,EEG.srate);
-                % Store trimmed data in opal structure
-                %                 opal.acc{kk}    = acc_temp;%(timesIDX,:);
-                %                 opal.gyr{kk}    = gyr_temp;%(timesIDX,:);
-                %                 opal.mag{kk}    = mag_temp;%(timesIDX,:);
                 opal.acc_gc{kk} = acc_gc;%_temp;%(timesIDX,:);
                 clear acc_temp gyr_temp mag_temp accgc_temp
             end
