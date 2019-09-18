@@ -19,6 +19,9 @@ classdef KalmanFilter < handle
         Pzz     % Covariance of predicted observation (neural data)
         Pxz     % State-observation cross-covariance
         
+        % R2 value after performing grid search
+        R2_Train
+        
     end
     properties (SetAccess = public, GetAccess = public)
         state       = [];        % e.g., kin - channels x time
@@ -238,7 +241,7 @@ classdef KalmanFilter < handle
         function Xaug = augment_state(self,Xlag)
             % If UKF and augmented==true
             if self.augmented && strcmpi(self.method,'unscented') % {'true',1}
-                Xaug = KalmanFilter.augment_data(Xlag);
+                Xaug = KalmanFilter.augment_data(Xlag,self.numaug);
             else% {'false',0}
                 % do nothing
                 Xaug = Xlag;
@@ -354,9 +357,13 @@ classdef KalmanFilter < handle
             waitbar(1,wb,'Finished!');
             pause(1); delete(wb); pause(1);
             % Plot distribution of R2
+            try
             figure; histfig = histogram(allR2(:));
             histfig.FaceColor = 'k';
             histfig.NumBins = 10;
+            catch err
+                % do nothing
+            end
             % Get index of max
             [idx1, idx2, idx3, idx4] = ind2sub(size(allR2), find(allR2==max(allR2(:))));
             % Add values to struct - idx*(1) is chosen in case multiple
@@ -367,6 +374,7 @@ classdef KalmanFilter < handle
             self.lambdaB     = params.lambdaB(idx4(1));
             self.state       = state_orig;
             self.observation = observe_orig;
+            self.R2_Train    = max(allR2(:));
             % Train model using updated params
             self.train();
         end
@@ -403,14 +411,14 @@ classdef KalmanFilter < handle
         
         % Augment data - this static implementation can be used to augment
         % state variable for use in state and observation matrices
-        function Xaug = augment_data(Xin)
+        function Xaug = augment_data(Xin,numaug)
             % Get dimension after order
             d = size(Xin,1);
             % Initialize augmented matrix
-            XaugTemp = cell(d/self.numaug,1);
+            XaugTemp = cell(d/numaug,1);
             cnt = 1;
-            for ii = 1:self.numaug:d
-                xtemp = Xin(ii:ii+self.numaug-1,:);
+            for ii = 1:numaug:d
+                xtemp = Xin(ii:ii+numaug-1,:);
                 augvec = sqrt(sum(xtemp.^2,1));
                 XaugTemp{cnt} = [xtemp; augvec];
                 cnt = cnt+1;

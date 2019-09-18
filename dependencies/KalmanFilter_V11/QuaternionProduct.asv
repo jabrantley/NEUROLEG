@@ -1,6 +1,0 @@
-function [q_result] = QuaternionProduct(qa,qb)
-    
-    
-
-end
-

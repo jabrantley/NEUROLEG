@@ -1,7 +1,7 @@
 classdef neuroleg < handle
     properties (SetAccess = private, GetAccess = public)
         
-       
+        
     end
     
     properties (SetAccess = public, GetAccess = public)
@@ -11,6 +11,7 @@ classdef neuroleg < handle
         emg            % EMG data including muscle names and data
         opal           % OPAL data based on where sensor was placed
         gonio          % Gonio data including joint name and data
+        jointangles    % Joint angles computed from Deeplabcut
         stimulus       % Psychtoolbox-based stimulus protocol
         chanlocs       % Channel locations structure
         impedance      % Channel impedance before and after
@@ -19,10 +20,7 @@ classdef neuroleg < handle
     end
     
     methods (Access = public)
-        % Genpath to local directories
-        %addpath(genpath(cd))
-        % Constructor
-        function self = neuroleg(varargin)
+        function self = neuroleg(varargin) % Constructor
             if length(varargin)>=2
                 for ii = 1:2:length(varargin)
                     % Get param
@@ -39,14 +37,11 @@ classdef neuroleg < handle
                             self.datadir = val;
                         otherwise
                     end % end switch
-                    
                 end % end for ii = 1:2:length(varargin)
-                
             end % end if length(varargin)
+            self.eeg = neuroleg_data
+            
         end
-        % External methods
-     	loaddata(self,varargin)
-        
         
     end
 end
