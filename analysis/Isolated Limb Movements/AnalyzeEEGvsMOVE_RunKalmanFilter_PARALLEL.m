@@ -11,30 +11,32 @@ clear;
 clc;
 
 % Define drive
-if strcmpi(getenv('username'),'justi')% WHICHPC == 1
-    drive = 'D:';
-elseif strcmpi(getenv('username'),'jabrantl') %WHICHPC == 2
-    drive = 'E:';
-elseif strcmpi(computer,'MACI64') % macbook
-    drive = '/Volumes/STORAGE/';
-end
+drive = 'project/contreras-vidal/justin/';
+% if strcmpi(getenv('username'),'justi')% WHICHPC == 1
+%     drive = 'D:';
+% elseif strcmpi(getenv('username'),'jabrantl') %WHICHPC == 2
+%     drive = 'E:';
+% elseif strcmpi(computer,'MACI64') % macbook
+%     drive = '/Volumes/STORAGE/';
+% end
 
 % Define directories
-datadir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
-basepath = fullfile(drive,'Dropbox','Research','Analysis','MATLAB FUNCTIONS');
+% datadir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
+datadir  = fullfile(drive,'TEMPDATA');
+% basepath = fullfile(drive,'Dropbox','Research','Analysis','MATLAB FUNCTIONS');
 
 % Add paths
-addpath(genpath(fullfile(basepath,'Brainstorm','brainstorm3','toolbox')));
-addpath(genpath(fullfile(drive,'Dropbox','Research','Analysis','NEUROLEG')));
+%addpath(genpath(fullfile(basepath,'Brainstorm','brainstorm3','toolbox')));
+addpath(genpath(fullfile(drive,'NEUROLEG')));
 %addpath(genpath(fullfile(basepath,'Custom MATLAB Functions')));
 %addpath(genpath(fullfile(basepath,'shoeeg')));
-addpath(fullfile(basepath,'eeglab'));
-eeglab;
-close all;
-clc;
+% addpath(fullfile(basepath,'eeglab'));
+% eeglab;
+% close all;
+% clc;
 
 % Clean up
-clearvars -except drive datadir savedir basedir EEG
+% clearvars -except drive datadir savedir basedir EEG
 
 % Get files for each subject
 subjects = {'TF01','TF02','TF03'};
@@ -70,6 +72,7 @@ KF_LAMBDA = logspace(-2,2,5);
 
 % Setup parallel pool
 parpool(length(chans2keep)+2);
+% parpool(8);
 
 % Fix data using some kind of shifting: See here for how off it is
 % plot(GONIO(1).data)
@@ -189,9 +192,11 @@ for aa = 1:length(subjects)
         test_trials = 4;
         train_trials  = size(movedata,1) - test_trials;
         
+        % window for hilbert 
+        envwindow = EEG.srate;
         
         %ax = tight_subplot(3,5);
-        for cc = 1:length(chans2keep)+2 % for each channel
+        parfor cc = 1:length(chans2keep)+2 % for each channel
             
             % Initialize 
             testeeg  = [];
@@ -218,7 +223,7 @@ for aa = 1:length(subjects)
                 if bb == 1
                     datavec = tempeeg;
                 else
-                    [datavec, ~]= envelope(tempeeg,EEG.srate,'analytic'); % applies hilbert with specified window size: 1 second
+                    [datavec, ~]= envelope(tempeeg,envwindow,'analytic'); % applies hilbert with specified window size: 1 second
                 end % if bb == 1
                 
                 % Split training and testing
@@ -246,7 +251,7 @@ for aa = 1:length(subjects)
             R2_sub{bb,cc} = KF.R2_Train;
             
             % clean up
-            clear testeeg testkin testidx traineeg trainkin trainidx
+            % clear testeeg testkin testidx traineeg trainkin trainidx
             
         end % cc = 1:length(chans2keep)
         
