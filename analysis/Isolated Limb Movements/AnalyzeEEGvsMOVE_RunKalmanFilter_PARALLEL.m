@@ -22,7 +22,7 @@ drive = 'project/contreras-vidal/justin/';
 
 % Define directories
 % datadir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
-datadir  = fullfile(drive,'TEMPDATA');
+datadir  = addpath(fullfile(drive,'TEMPDATA'));
 % basepath = fullfile(drive,'Dropbox','Research','Analysis','MATLAB FUNCTIONS');
 
 % Add paths
