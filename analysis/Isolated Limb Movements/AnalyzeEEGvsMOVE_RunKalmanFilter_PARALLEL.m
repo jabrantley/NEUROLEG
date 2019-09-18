@@ -68,6 +68,9 @@ KF_ORDER  = [3,10];
 KF_LAGS   = [3,10];
 KF_LAMBDA = logspace(-2,2,5);
 
+% Setup parallel pool
+parpool(length(chans2keep)+2);
+
 % Fix data using some kind of shifting: See here for how off it is
 % plot(GONIO(1).data)
 % highlight = nan(size(GONIO(1).data(1,:)));
@@ -186,6 +189,7 @@ for aa = 1:length(subjects)
         test_trials = 4;
         train_trials  = size(movedata,1) - test_trials;
         
+        
         %ax = tight_subplot(3,5);
         for cc = 1:length(chans2keep)+2 % for each channel
             
@@ -254,6 +258,7 @@ end
 
 save('allR2.mat','R2_ALL')
 
+delete(gcp);
 
 
 
