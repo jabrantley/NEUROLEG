@@ -10,8 +10,11 @@ close all;
 clear;
 clc;
 
-% Define drive
-drive = 'project/contreras-vidal/justin/';
+% Define directory
+thisdir = pwd;
+idcs = strfind(pwd,'/');
+parentdir = thisdir(1:idcs(end-2));
+
 % if strcmpi(getenv('username'),'justi')% WHICHPC == 1
 %     drive = 'D:';
 % elseif strcmpi(getenv('username'),'jabrantl') %WHICHPC == 2
@@ -22,12 +25,12 @@ drive = 'project/contreras-vidal/justin/';
 
 % Define directories
 % datadir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
-datadir  = addpath(fullfile(drive,'TEMPDATA'));
+datadir  = fullfile(parentdir,'TEMPDATA');
 % basepath = fullfile(drive,'Dropbox','Research','Analysis','MATLAB FUNCTIONS');
 
 % Add paths
 %addpath(genpath(fullfile(basepath,'Brainstorm','brainstorm3','toolbox')));
-addpath(genpath(fullfile(drive,'NEUROLEG')));
+addpath(genpath(fullfile(parentdir,'NEUROLEG')));
 %addpath(genpath(fullfile(basepath,'Custom MATLAB Functions')));
 %addpath(genpath(fullfile(basepath,'shoeeg')));
 % addpath(fullfile(basepath,'eeglab'));
