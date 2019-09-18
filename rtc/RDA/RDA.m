@@ -44,7 +44,7 @@ function RDA()
             % check for existing data in socket buffer
             tryheader = pnet(con, 'read', header_size, 'byte', 'network', 'view', 'noblock');
             while ~isempty(tryheader)
-
+                
                 % Read header of RDA message
                 hdr = ReadHeader(con);
 
@@ -82,6 +82,7 @@ function RDA()
                         % Process EEG data, 
                         % in this case extract last recorded second,
                         EEGData = reshape(data, props.channelCount, length(data) / props.channelCount);
+                        tic
                         data1s = [data1s EEGData];
                         dims = size(data1s);
                         if dims(2) > 1000000 / props.samplingInterval
@@ -92,7 +93,7 @@ function RDA()
                             % set data buffer to empty for next full second
                             data1s = [];
                         end
-
+                        toc
 
                     case 3       % Stop message   
                         disp('Stop');
@@ -103,11 +104,13 @@ function RDA()
                         data = pnet(con, 'read', hdr.size - header_size);
                 end
                 tryheader = pnet(con, 'read', header_size, 'byte', 'network', 'view', 'noblock');
+
             end
         catch
             er = lasterror;
             disp(er.message);
         end
+        
     end % Main loop
     
     % Close all open socket connections
