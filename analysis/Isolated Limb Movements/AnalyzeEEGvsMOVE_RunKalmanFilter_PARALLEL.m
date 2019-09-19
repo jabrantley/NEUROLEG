@@ -244,7 +244,7 @@ for aa = 1:length(subjects)
             
             % Kalman Filter object
             KF = KalmanFilter('state',trainkin,'observation',traineeg,...
-                'augmented',1,'method','unscented');
+                'augmented',0,'method','normal');
             % Perform grid search
             foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
             KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
