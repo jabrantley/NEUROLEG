@@ -96,6 +96,7 @@ end
 
 % Initialize for storing R2
 R2_ALL = cell(length(subjects),1);
+PREDICT_ALL = cell(length(subjects),1);
 
 % Loop through each subject
 for aa = 1:length(subjects)
@@ -156,6 +157,7 @@ for aa = 1:length(subjects)
     
     % Initialize for storing R2
     R2_sub = cell(length(BANDS),length(chans2keep)+2);
+    predicted_sub = cell(length(BANDS),length(chans2keep)+2);
     % Loop through each frequency band
     for bb = 1:length(BANDS)
         
@@ -182,9 +184,9 @@ for aa = 1:length(subjects)
             %trialdata = filtdata(:,movetimes{cc,1});
             goniodata = GONIO(cc).data;
             % Get data for movements
-            window_buffer = 1*EEG.srate; % 1 second DILATION TO ACCOUNT FOR ONSET ERROR
+            window_buffer = 1*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
             for dd = 1:size(movetimes{cc,2},1)
-                temp_times = movetimes{cc,2}(dd,1)+window_buffer : movetimes{cc,2}(dd,2)+window_buffer;
+                temp_times = movetimes{cc,2}(dd,1)+window_buffer: movetimes{cc,2}(dd,2)+window_buffer;
                 alleeg   = cat(2,alleeg,filtdata(:,temp_times));
                 allgonio = cat(2,allgonio,goniodata(:,temp_times));
                 movedata{count,1} = filtdata(:,temp_times);
@@ -262,20 +264,26 @@ for aa = 1:length(subjects)
             end % dd = 1:size(movedata,1)
             
             % Rescale data between [0 1]
-            %             for dd = 1:size(trainkin,1)
-            %                 trainkin(dd,:) = rescale(trainkin(dd,:));
-            %                 testkin(dd,:) = rescale(testkin(dd,:));
-            %             end
-            %
-            %             for dd = 1:size(traineeg)
-            %                 traineeg(dd,:) = rescale(traineeg(dd,:));
-            %                 testeeg(dd,:) = rescale(testeeg(dd,:));
-            %             end
-            %
+%                         for dd = 1:size(trainkin,1)
+%                             trainkin(dd,:) = rescale_data(trainkin(dd,:));
+%                             testkin(dd,:) = rescale_data(testkin(dd,:));
+%                         end
+%             
+%                         for dd = 1:size(traineeg)
+%                             traineeg(dd,:) = rescale_data(traineeg(dd,:));
+%                             testeeg(dd,:) = rescale_data(testeeg(dd,:));
+%                         end
+%             
+            % Zscore data
+            trainkin = transpose(zscore(trainkin'));
+            traineeg = transpose(zscore(traineeg'));
+            testeeg  = transpose(zscore(testeeg'));
+            testkin  = transpose(zscore(testkin'));
+            
             
             % Kalman Filter object
             KF = KalmanFilter('state',trainkin,'observation',traineeg,...
-                'augmented',0,'method','unscented');
+                'augmented',1,'method','unscented');
             % Perform grid search
             foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
             KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
@@ -294,6 +302,8 @@ for aa = 1:length(subjects)
             
             % Store R2 values
             R2_sub{bb,cc} = KF.R2_Train;
+            predicted_sub{bb,cc} = [predicted(1,:); lagKIN_cut(1,:)];
+            
             
             % clean up
             % clear testeeg testkin testidx traineeg trainkin trainidx
@@ -304,9 +314,11 @@ for aa = 1:length(subjects)
     
     % Store R2 values
     R2_ALL{aa} = R2_sub;
+    PREDICT_ALL{aa} = predicted_sub;
 end
 
 save('allR2.mat','R2_ALL')
+save('allPredict.mat','PREDICT_ALL')
 
 delete(gcp);
 
