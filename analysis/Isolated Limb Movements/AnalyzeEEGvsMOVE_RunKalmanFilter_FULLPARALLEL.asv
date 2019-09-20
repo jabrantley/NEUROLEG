@@ -52,7 +52,7 @@ theta = [4 8];
 beta  = [15 30];
 gamma = [30 55];
 higamma = [65 90];
-full  = [.3 50];
+full  = [.3 99];
 BANDS = {lodelta,delta,theta,alpha,beta,gamma,higamma,full};
 % bcs =  blindcolors;
 % bcs = bcs([2,3,4,8,6,7],:);
@@ -61,7 +61,7 @@ BANDS = {lodelta,delta,theta,alpha,beta,gamma,higamma,full};
 chans2keep = {'FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
     'C1','C3','CP3','CP1','CPz','CP2','CP4'};
 %chans2keepExpanded = {'FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
-%   'C1','C3','CP3','CP1','CPz','CP2','CP4'};
+ %   'C1','C3','CP3','CP1','CPz','CP2','CP4'};
 leftMotor  = {'FC3','FC1','FT10','Cz',...
     'C1','C3','CP3','CP1','CPz'};
 
@@ -77,12 +77,12 @@ KF_LAMBDA = logspace(-2,2,5);
 
 % Setup parallel pool
 % if onClust
-try
-    parpool(length(chans2keep)+2);
-catch
-    numCores = feature('numcores');
-    parpool(numCores);
-end
+    try
+        parpool(length(chans2keep)+2);
+    catch
+        numCores = feature('numcores');
+        parpool(numCores);
+    end
 % end
 
 % Fix data using some kind of shifting: See here for how off it is
@@ -165,13 +165,8 @@ for aa = 1:length(subjects)
         for cc = 1:2
             combos{total,1} = BANDS{bb};
             combos{total,2} = montages{cc};
-            if any(bb == [1, 2, length(BANDS)])
-                combos{total,3} = 0;
-            else
-                combos{total,3} = 1;
-            end
             total = total + 1;
-        end
+        end 
     end
     total = total - 1;
     clear bb cc
@@ -182,7 +177,7 @@ for aa = 1:length(subjects)
     
     % Get EEG data for channels to keep
     eegdata  = EEG.data(chans2keepIDX,:);
-    
+        
     % Loop through each frequency band
     parfor bb = 1:total
         
@@ -197,7 +192,7 @@ for aa = 1:length(subjects)
             filtdata(cc,:) = use_ss_filter(bp_filt,eegdata(cc,:),xnn_bp);
         end
         
-        %         allfilt{bb} = filtdata;
+%         allfilt{bb} = filtdata;
         
         % Initialize for storing data for each movement
         movedata = [];
@@ -226,74 +221,103 @@ for aa = 1:length(subjects)
         
         % window for hilbert
         envwindow = srate;
-        
-        % Initialize
-        testeeg  = [];
-        testkin  = [];
-        testidx  = [];
-        trainidx = [];
-        traineeg = [];
-        trainkin = [];
-        
-        for dd = 1:size(movedata,1) % for each movement window
-            % Get data for specific channels
-            tempeeg = movedata{dd}(combos{total,2},:);
+
+            % Initialize
+            testeeg  = [];
+            testkin  = [];
+            testidx  = [];
+            trainidx = [];
+            traineeg = [];
+            trainkin = [];
             
-            % If delta then use raw potential, otherwise use envelope
-            if combos{total,3} == 0 
-                datavec = tempeeg;
-            else
-                [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
-                datavec = datavec';
-            end % if bb == 1
+            for dd = 1:size(movedata,1) % for each movement window
+                
+                % Use individual channels
+%                 if cc <= length(chans2keep)
+%                     tempeeg = movedata{dd}(cc,:);
+%                     % Use all channels
+%                 elseif cc == length(chans2keep)+1
+%                     tempeeg = movedata{dd};
+%                     % Use only left motor area for right leg move
+%                 elseif cc == length(chans2keep)+2
+%                     tempeeg = movedata{dd}([1,2,3,8,9,10,11,12,13],:);
+%                 end % end if cc <=
+
+                if cc == 1
+                    tempeeg = movedata{dd};
+                    % Use only left motor area for right leg move
+                elseif cc == 2
+                    tempeeg = movedata{dd}(LM_IDX,:);
+                end % end if cc <=
+                
+                % If delta then use raw potential, otherwise use envelope
+                if any(bb == [1,2,3,length(BANDS)])
+                    datavec = tempeeg;
+                else
+                    [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
+                    datavec = datavec';
+                end % if bb == 1
+                
+                %                 datavec = tempeeg;
+                
+                % Split training and testing
+                if dd <= train_trials
+                    traineeg = cat(2,traineeg,datavec);
+                    trainkin = cat(2,trainkin,movedata{dd,2}(1,:));
+                    trainidx = cat(2,trainidx,size(datavec,2));
+                else
+                    testeeg = cat(2,testeeg,datavec);
+                    testkin = cat(2,testkin,movedata{dd,2}(1,:));
+                    testidx = cat(2,testidx,size(datavec,2));
+                end % if dd < ...
+                
+            end % dd = 1:size(movedata,1)
             
-            % Split training and testing
-            if dd <= train_trials
-                traineeg = cat(2,traineeg,datavec);
-                trainkin = cat(2,trainkin,movedata{dd,2}(1,:));
-                trainidx = cat(2,trainidx,size(datavec,2));
-            else
-                testeeg = cat(2,testeeg,datavec);
-                testkin = cat(2,testkin,movedata{dd,2}(1,:));
-                testidx = cat(2,testidx,size(datavec,2));
-            end % if dd < ...
+            % Rescale data between [0 1]
+%                         for dd = 1:size(trainkin,1)
+%                             trainkin(dd,:) = rescale_data(trainkin(dd,:));
+%                             testkin(dd,:) = rescale_data(testkin(dd,:));
+%                         end
+%             
+%                         for dd = 1:size(traineeg)
+%                             traineeg(dd,:) = rescale_data(traineeg(dd,:));
+%                             testeeg(dd,:) = rescale_data(testeeg(dd,:));
+%                         end
+%             
+            % Zscore data
+            trainkin = transpose(zscore(trainkin'));
+            traineeg = transpose(zscore(traineeg'));
+            testeeg  = transpose(zscore(testeeg'));
+            testkin  = transpose(zscore(testkin'));
             
-        end % dd = 1:size(movedata,1)
-        
-        % Zscore data
-        trainkin = transpose(zscore(trainkin'));
-        traineeg = transpose(zscore(traineeg'));
-        testeeg  = transpose(zscore(testeeg'));
-        testkin  = transpose(zscore(testkin'));
-        
-        
-        % Kalman Filter object
-        KF = KalmanFilter('state',trainkin,'observation',traineeg,...
-            'augmented',1,'method','unscented');
-        % Perform grid search
-        foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
-        KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
-            'lambdaF',KF_LAMBDA,'kfold',foldIdx,'testidx',1)
-        
-        % Lag data
-        lagKIN = KalmanFilter.lag_data(testkin,KF.order);
-        lagEEG = KalmanFilter.lag_data(testeeg,KF.lags);
-        
-        % Trim off edges
-        lagKIN_cut = lagKIN(:,KF.lags+1:end);
-        lagEEG_cut = lagEEG(:,KF.lags+1:end);
-        
-        % Predict data
-        predicted = KF.evaluate(lagEEG_cut);
-        
-        % Store R2 values
-        R2_sub{bb} = KF.R2_Train;
-        predicted_sub{bb} = [predicted(1,:); lagKIN_cut(1,:)];
-        
-        
-        % clean up
-        % clear testeeg testkin testidx traineeg trainkin trainidx
-        
+            
+            % Kalman Filter object
+            KF = KalmanFilter('state',trainkin,'observation',traineeg,...
+                'augmented',1,'method','unscented');
+            % Perform grid search
+            foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
+            KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
+                'lambdaF',KF_LAMBDA,'kfold',foldIdx,'testidx',1)
+            
+            % Lag data
+            lagKIN = KalmanFilter.lag_data(testkin,KF.order);
+            lagEEG = KalmanFilter.lag_data(testeeg,KF.lags);
+            
+            % Trim off edges
+            lagKIN_cut = lagKIN(:,KF.lags+1:end);
+            lagEEG_cut = lagEEG(:,KF.lags+1:end);
+            
+            % Predict data
+            predicted = KF.evaluate(lagEEG_cut);
+            
+            % Store R2 values
+            R2_sub{bb} = KF.R2_Train;
+            predicted_sub{bb} = [predicted(1,:); lagKIN_cut(1,:)];
+            
+            
+            % clean up
+            % clear testeeg testkin testidx traineeg trainkin trainidx
+           
         
     end % end BANDS{bb}
     
