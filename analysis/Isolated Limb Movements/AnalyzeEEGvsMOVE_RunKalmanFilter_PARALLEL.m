@@ -45,15 +45,16 @@ addpath(genpath(fullfile(parentdir,'NEUROLEG')));
 subjects = {'TF01','TF02','TF03'};
 
 % Define frequency bands
+lodelta = [.3 1.5];
 delta = [.3 4];
 alpha = [8 13];
 himu  = [10 12];
 theta = [4 8];
 beta  = [15 30];
 gamma = [30 55];
-higamma = [65 100];
-full  = [.3 55];
-BANDS = {delta,theta,alpha,beta,gamma,full};
+higamma = [65 90];
+full  = [.3 99];
+BANDS = {lodelta,delta,theta,alpha,beta,gamma,higamma,full};
 % bcs =  blindcolors;
 % bcs = bcs([2,3,4,8,6,7],:);
 
@@ -74,7 +75,7 @@ KF_LAGS   = [3,10];
 KF_LAMBDA = logspace(-2,2,5);
 
 % Setup parallel pool
-parpool(length(chans2keep)+2);
+% parpool(length(chans2keep)+2);
 % parpool(8);
 
 % Fix data using some kind of shifting: See here for how off it is
@@ -171,15 +172,15 @@ for aa = 1:length(subjects)
         count = 1;
         for cc = 1:size(movetimes,1)
             % Get data for each trial
-            trialdata = filtdata(:,movetimes{cc,1});
+            %trialdata = filtdata(:,movetimes{cc,1});
             goniodata = GONIO(cc).data;
             % Get data for movements
             window_buffer = 1*EEG.srate; % 1 second DILATION TO ACCOUNT FOR ONSET ERROR
             for dd = 1:size(movetimes{cc,2},1)
-                temp_times = movetimes{cc,2}(dd,1)-window_buffer : movetimes{cc,2}(dd,2)+window_buffer;
-                alleeg   = cat(2,alleeg,trialdata(:,temp_times));
+                temp_times = movetimes{cc,2}(dd,1)+window_buffer : movetimes{cc,2}(dd,2)+window_buffer;
+                alleeg   = cat(2,alleeg,filtdata(:,temp_times));
                 allgonio = cat(2,allgonio,goniodata(:,temp_times));
-                movedata{count,1} = trialdata(:,temp_times);
+                movedata{count,1} = filtdata(:,temp_times);
                 movedata{count,2} = goniodata(:,temp_times);
                 count = count + 1;
             end
@@ -223,11 +224,14 @@ for aa = 1:length(subjects)
                 end % end if cc <=
                 
                 % If delta then use raw potential, otherwise use envelope
-                if bb == 1
+                if any(bb == [1,2,3,length(BANDS)])
                     datavec = tempeeg;
                 else
-                    [datavec, ~]= envelope(tempeeg,envwindow,'analytic'); % applies hilbert with specified window size: 1 second
+                    [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
+                    datavec = datavec';
                 end % if bb == 1
+                
+%                 datavec = tempeeg;
                 
                 % Split training and testing
                 if dd <= train_trials
@@ -241,14 +245,35 @@ for aa = 1:length(subjects)
                 end % if dd < ...
                 
             end % dd = 1:size(movedata,1)
-            
+%             
+%             for dd = 1:size(trainkin,1)
+%                 trainkin(dd,:) = rescale(trainkin(dd,:));
+%                 testkin(dd,:) = rescale(testkin(dd,:));
+%             end
+%             
+%             for dd = 1:size(traineeg)
+%                 traineeg(dd,:) = rescale(traineeg(dd,:));
+%                 testeeg(dd,:) = rescale(testeeg(dd,:));
+%             end
+%             
             % Kalman Filter object
             KF = KalmanFilter('state',trainkin,'observation',traineeg,...
-                'augmented',0,'method','normal');
+                'augmented',0,'method','unscented');
             % Perform grid search
             foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
             KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
                 'lambdaF',KF_LAMBDA,'kfold',foldIdx,'testidx',1)
+            
+            % Lag data
+            lagKIN = KalmanFilter.lag_data(testkin,KF.order);
+            lagEEG = KalmanFilter.lag_data(testeeg,KF.lags);
+            
+            % Trim off edges
+            lagKIN_cut = lagKIN(:,KF.lags+1:end);
+            lagEEG_cut = lagEEG(:,KF.lags+1:end);
+            
+            % Predict data
+            predicted = KF.evaluate(lagEEG_cut);
             
             % Store R2 values
             R2_sub{bb,cc} = KF.R2_Train;
