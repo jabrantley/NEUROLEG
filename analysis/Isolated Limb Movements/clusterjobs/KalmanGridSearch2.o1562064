@@ -1,0 +1,18 @@
+
+The following have been reloaded with a version change:
+  1) matlab/r2019a => matlab/r2018b
+
+License checkout failed.
+License Manager Error -15
+MATLAB is unable to connect to the license server. 
+Check that the license manager has been started, and that the MATLAB client machine can communicate
+with the license server.
+
+Troubleshoot this issue by visiting: 
+https://www.mathworks.com/support/lme/R2018b/15
+
+Diagnostic Information:
+Feature: MATLAB 
+License path: /home/jabrantl/.matlab/R2018b_licenses:/share/apps/matlab-r2018b/licenses/license.dat:/share/apps/ma
+tlab-r2018b/licenses/network.lic 
+Licensing error: -15,570. System Error: 115

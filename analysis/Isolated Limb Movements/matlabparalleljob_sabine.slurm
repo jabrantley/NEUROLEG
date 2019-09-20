@@ -1,10 +1,10 @@
 #!/bin/bash
 ### Specify job parameters (use this for CPU heavy computations)
-#SBATCH -J KalmanGridSearch
-#SBATCH -o clusterjobs/KalmanGridSearch.o%j      # name of the job
+#SBATCH -J KalmanGridSearch2
+#SBATCH -o clusterjobs/KalmanGridSearch2.o%j      # name of the job
 #SBATCH -t 16:00:00         # time requested
 #SBATCH -N 1 -n 17 -c 1
-#SBATCH -p batch --constraint="gen10"
+#SBATCH -p long
 #SBATCH --mem=32GB
 #SBATCH -A contreras-vidal
 #SBATCH --mail-user=justin.a.brantley@gmail.com
