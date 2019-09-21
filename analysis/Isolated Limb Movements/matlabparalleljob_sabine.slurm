@@ -1,9 +1,9 @@
 #!/bin/bash
 ### Specify job parameters (use this for CPU heavy computations)
-#SBATCH -J KalmanGridSearch2
-#SBATCH -o clusterjobs/KalmanGridSearch2.o%j      # name of the job
-#SBATCH -t 16:00:00         # time requested
-#SBATCH -N 1 -n 17 -c 1
+#SBATCH -J KalmanGridSearch
+#SBATCH -o clusterjobs/KalmanGridSearch.o%j      # name of the job
+#SBATCH -t 6:00:00         # time requested
+#SBATCH -N 1 -n 8  -c 1
 #SBATCH -p long
 #SBATCH --mem=32GB
 #SBATCH -A contreras-vidal
@@ -11,4 +11,4 @@
 #SBATCH --mail-type=END,FAIL
 
 module load matlab/r2018b
-matlab -nodisplay < AnalyzeEEGvsMOVE_RunKalmanFilter_PARALLEL.m
+matlab -nodisplay < AnalyzeEEGvsMOVE_RunKalmanFilter_FULLPARALLEL.m

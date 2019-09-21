@@ -11,7 +11,7 @@ clear;
 clc;
 
 % Run parallel for
-onClust = 0;
+onClust = 1;
 
 % Define directory
 thisdir = pwd;
@@ -78,7 +78,7 @@ KF_LAMBDA = logspace(-2,2,5);
 % Setup parallel pool
 % if onClust
 try
-    parpool(length(chans2keep)+2);
+    parpool(16);
 catch
     numCores = feature('numcores');
     parpool(numCores);

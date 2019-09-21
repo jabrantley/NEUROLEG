@@ -209,7 +209,7 @@ for aa = 1:length(subjects)
         envwindow = EEG.srate;
         
         %ax = tight_subplot(3,5);
-        for cc = 1:2%length(chans2keep)+2 % for each channel
+        parfor cc = 1:2%length(chans2keep)+2 % for each channel
             
             % Initialize
             testeeg  = [];
