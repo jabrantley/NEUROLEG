@@ -23,7 +23,7 @@ classdef biometrics_datalog < hgsetget
         samplesavail; % number of available sample for streaming
         usech;
         usechdata; % Streamed data of selected channel
-        OnLineInterfaceStr; % Label 
+        OnLineInterfaceStr; % Label
         OnLinePathStr;
         values;
         pDataNum;
@@ -82,53 +82,64 @@ classdef biometrics_datalog < hgsetget
         end
         % Clear buffer on datalog
         function clearbuffer(self)
-            calllib(self.OnLineInterfaceStr, 'OnLineStatus', self.usech, self.ONLINE_GETSAMPLES, self.pStatus);
-            if (self.pStatus.Value > 0)     % empty buffer only if something is in it and an error has not occurred (-ve)
-                mSinBuffer = floor(self.pStatus.Value * 1000 / self.samplerate);  % round down mS; note that a number of mS must be passed to OnLineGetData.
-                numberInBuffer = mSinBuffer * self.samplerate / 1000;        % recalculate after a possible rounding
-                self.values.rgsabound.cElements = numberInBuffer;            % initialise array to receive the new data
-                self.values.rgsabound.lLbound = numberInBuffer;
-                self.values.pvData = int16(1:numberInBuffer);
-                calllib(self.OnLineInterfaceStr, 'OnLineGetData', self.usech, mSinBuffer, self.values, self.pDataNum);
+            for aa = 1:length(self.usech)
+                ch = self.usech(aa);
+                calllib(self.OnLineInterfaceStr, 'OnLineStatus',ch, self.ONLINE_GETSAMPLES, self.pStatus);
+                if (self.pStatus.Value > 0)     % empty buffer only if something is in it and an error has not occurred (-ve)
+                    mSinBuffer = floor(self.pStatus.Value * 1000 / self.samplerate);  % round down mS; note that a number of mS must be passed to OnLineGetData.
+                    numberInBuffer = mSinBuffer * self.samplerate / 1000;        % recalculate after a possible rounding
+                    self.values.rgsabound.cElements = numberInBuffer;            % initialise array to receive the new data
+                    self.values.rgsabound.lLbound = numberInBuffer;
+                    self.values.pvData = int16(1:numberInBuffer);
+                    calllib(self.OnLineInterfaceStr, 'OnLineGetData',ch, mSinBuffer, self.values, self.pDataNum);
+                end
             end
         end
         % Get available samples
         function samplesavail = getsamplesavail(self)
-            calllib('OnLineInterface64', 'OnLineStatus', self.usech, self.ONLINE_GETSAMPLES, self.pStatus);
-            samplesavail = self.pStatus.Value;
-            self.samplesavail = samplesavail;
+            for aa = 1:length(self.usech)
+                ch = self.usech(aa);
+                calllib('OnLineInterface64', 'OnLineStatus', ch, self.ONLINE_GETSAMPLES, self.pStatus);
+                samplesavail = self.pStatus.Value;
+                self.samplesavail(aa) = samplesavail;
+            end
         end
         % Get channel gains
         function getchannelgain(self)
-           % nothing yet
+            % nothing yet
         end
         % Get data from datalog
         function data = getdata(self)
             
             % First initialise the return values from the DLL functions
-            calllib(self.OnLineInterfaceStr, 'OnLineStatus', self.usech, OLI.ONLINE_GETSAMPLES, self.pStatus);
-            numberToGet = self.pStatus.Value;
-            if numberToGet < 0
-                % an error has occurred such as buffer overrun (-4) so exit
-                str = ['OnLineStatus returned ', num2str(numberToGet)];
-                disp(str);
-            end
-            mStoGet = floor(numberToGet * 1000 / self.samplerate);   % round down mS; note that a number of mS must be passed to OnLineGetData.
-            numberToGet = mStoGet * self.samplerate / 1000;          % recalculate after a possible rounding
-            
-            if numberToGet > 0
-                % initialise array to receive the new data
-                self.values.rgsabound.cElements = numberToGet;
-                self.values.rgsabound.lLbound = numberToGet;
-                self.values.pvData = int16(1:numberToGet);
+            for aa = 1:length(self.usech)
+                ch = self.usech(aa);
+                calllib(self.OnLineInterfaceStr, 'OnLineStatus', ch, self.ONLINE_GETSAMPLES, self.pStatus);
+                numberToGet = self.pStatus.Value;
                 
-                % get numberToGet samples from interface
-                calllib(self.OnLineInterfaceStr, 'OnLineGetData', self.usech, mStoGet, self.values, self.pDataNum);
-                numberOfSamplesReceived = self.pDataNum.Value;   % The number of samples actually returned is pDataNum.Value
-                data=self.values.pvData(:);
-                self.data = data;
-            else
-                data = [];
+                if numberToGet < 0
+                    % an error has occurred such as buffer overrun (-4) so exit
+                    str = ['OnLineStatus returned ', num2str(numberToGet)];
+                    disp(str);
+                end
+                
+                mStoGet = floor(numberToGet * 1000 / self.samplerate);   % round down mS; note that a number of mS must be passed to OnLineGetData.
+                numberToGet = mStoGet * self.samplerate / 1000;          % recalculate after a possible rounding
+                
+                if numberToGet > 0
+                    % initialise array to receive the new data
+                    self.values.rgsabound.cElements = numberToGet;
+                    self.values.rgsabound.lLbound = numberToGet;
+                    self.values.pvData = int16(1:numberToGet);
+                    
+                    % get numberToGet samples from interface
+                    calllib(self.OnLineInterfaceStr, 'OnLineGetData', ch, mStoGet, self.values, self.pDataNum);
+                    numberOfSamplesReceived = self.pDataNum.Value;   % The number of samples actually returned is pDataNum.Value
+                    data(:,aa) = self.values.pvData(:);
+                    self.data = data;
+                else
+                    data = [];
+                end
             end
         end
         function start(self)

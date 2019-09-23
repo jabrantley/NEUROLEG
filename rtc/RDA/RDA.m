@@ -35,6 +35,7 @@ function RDA()
         disp('connection established');
     end
 
+    lasttime = tic;
     
     % --- Main reading loop ---
     header_size = 24;
@@ -82,7 +83,7 @@ function RDA()
                         % Process EEG data, 
                         % in this case extract last recorded second,
                         EEGData = reshape(data, props.channelCount, length(data) / props.channelCount);
-                        tic
+                        size(EEGData)
                         data1s = [data1s EEGData];
                         dims = size(data1s);
                         if dims(2) > 1000000 / props.samplingInterval
@@ -93,8 +94,7 @@ function RDA()
                             % set data buffer to empty for next full second
                             data1s = [];
                         end
-                        toc
-
+toc(lasttime)
                     case 3       % Stop message   
                         disp('Stop');
                         data = pnet(con, 'read', hdr.size - header_size);
