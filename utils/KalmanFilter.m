@@ -392,7 +392,7 @@ classdef KalmanFilter < handle
                 % Compute R2
                 SSE  = sum((X-Y).^2);   % Sum of squared error
                 SST  = sum((X-mean(X)).^2); % Sum of squared total
-                R2(ii) = max(0,1-SSE/SST);             % R squared
+                R2(ii) = 1-SSE/SST;%max(0,1-SSE/SST);             % R squared
             end
         end %end rsquared
         
