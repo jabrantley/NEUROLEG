@@ -185,7 +185,7 @@ classdef KalmanFilter < handle
             Xt_out = self.Xt; % return predicted state
             
         end % end predict
-     
+        
         % Evaluate model using training data
         function prediction = evaluate(self,observedata)
             T = size(observedata,2);
@@ -264,7 +264,6 @@ classdef KalmanFilter < handle
                     case 'lambdab' % vector/scalar ridge param for B
                         params.lambdaB=val;
                     case 'kfold' % vector of fold sizes or number of folds (scalar)
-                        % Get fold breaks
                         if length(val) > 1 % already length of each fold
                             params.kfold=val;
                         else % get length of each fold window
@@ -284,6 +283,10 @@ classdef KalmanFilter < handle
             observe_orig = self.observation;
             % Initialize array for storing R2 values
             allR2 = zeros(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
+            % Create folds if not specified
+            if ~isfield(params,'kfold')
+                params.kfold=round(linspace(1,size(self.state,2),3));
+            end
             % Get total number of iterations
             totalIterations = (numel(allR2)*(length(params.kfold)-1))+1; % +1 accounts for where counter is in loop
             fprintf('Total number of iterations: %d\n\n',totalIterations)
@@ -292,6 +295,7 @@ classdef KalmanFilter < handle
             % Separate data into folds
             state_folds    = cell(1,length(params.kfold)-1);
             observe_folds  = cell(1,length(params.kfold)-1);
+            % Get fold breaks
             foldIdx = params.kfold;
             for numfolds = 1:length(foldIdx)-1
                 state_folds{numfolds}  = state_orig(:,foldIdx(numfolds):foldIdx(numfolds+1)-1);
@@ -358,9 +362,9 @@ classdef KalmanFilter < handle
             pause(1); delete(wb); pause(1);
             % Plot distribution of R2
             try
-            figure; histfig = histogram(allR2(:));
-            histfig.FaceColor = 'k';
-            histfig.NumBins = 10;
+                figure; histfig = histogram(allR2(:));
+                histfig.FaceColor = 'k';
+                histfig.NumBins = 10;
             catch err
                 % do nothing
             end

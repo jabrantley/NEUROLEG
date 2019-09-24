@@ -17,7 +17,7 @@ classdef KernelRidgeRegression < hgsetget
     
     methods (Access = public)
         %Constructer
-        function self = Kernel_Ridge_Regression(predictor,response,sigma,lambda)
+        function self = KernelRidgeRegression(predictor,response,sigma,lambda)
             % Assign inputs to class
             self.predictor = predictor;
             self.response  = response;

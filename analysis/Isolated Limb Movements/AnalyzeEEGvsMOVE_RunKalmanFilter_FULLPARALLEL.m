@@ -11,7 +11,8 @@ clear;
 clc;
 
 % Run parallel for
-onClust = 1;
+onCluster   = 0;
+runParallel = 1;
 
 % Define directory
 thisdir = pwd;
@@ -20,7 +21,7 @@ parentdir = thisdir(1:idcs(end-2));
 addpath(genpath(fullfile(parentdir,'NEUROLEG')));
 
 % Set data dir
-if onClust
+if onCluster
     datadir  = fullfile(parentdir,'TEMPDATA');
 else
     % Set drive location
@@ -58,13 +59,15 @@ BANDS = {lodelta,delta,theta,alpha,beta,gamma,higamma,full};
 % bcs = bcs([2,3,4,8,6,7],:);
 
 % Channels to keep for analysis NOTE: FT10 is in FCz location
-chans2keep = {'FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
-    'C1','C3','CP3','CP1','CPz','CP2','CP4'};
+chans2keep = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
+    'C1','C3',};%'CP3','CP1','CPz','CP2','CP4'};
+randorder1 = randperm(length(chans2keep));
 %chans2keepExpanded = {'FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
 %   'C1','C3','CP3','CP1','CPz','CP2','CP4'};
-leftMotor  = {'FC3','FC1','FT10','Cz',...
-    'C1','C3','CP3','CP1','CPz'};
-
+leftMotor  = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','Cz',...
+    'C1','C3'};%,'CP3','CP1','CPz'};
+randorder2 = randperm(length(leftMotor));
+randord = {randorder1,randorder2};
 % Filter parameters
 filter_order = 2;
 use_velocity = 1;
@@ -76,14 +79,17 @@ KF_LAGS   = [3,10];
 KF_LAMBDA = logspace(-2,2,5);
 
 % Setup parallel pool
-% if onClust
-try
-    parpool(16);
-catch
-    numCores = feature('numcores');
-    parpool(numCores);
+if runParallel
+    poo = gcp('nocreate');
+    if isempty(poo)
+        try
+            parpool(16);
+        catch
+            numCores = feature('numcores');
+            parpool(numCores);
+        end
+    end
 end
-% end
 
 % Fix data using some kind of shifting: See here for how off it is
 % plot(GONIO(1).data)
@@ -154,8 +160,8 @@ for aa = 1:length(subjects)
     end % bb = 1:size(STIM,1)
     
     % Common average reference
-    meanEEG = repmat(mean(EEG.data,1),size(EEG.data,1),1);
-    EEG.data = EEG.data - meanEEG;
+    %     meanEEG = repmat(mean(EEG.data,1),size(EEG.data,1),1);
+    %     EEG.data = EEG.data - meanEEG;
     allfilt = cell(length(BANDS),1);
     srate = EEG.srate;
     
@@ -165,6 +171,7 @@ for aa = 1:length(subjects)
         for cc = 1:2
             combos{total,1} = BANDS{bb};
             combos{total,2} = montages{cc};
+            combos{total,4} = randord{cc};
             if any(bb == [1, 2, length(BANDS)])
                 combos{total,3} = 0;
             else
@@ -185,6 +192,7 @@ for aa = 1:length(subjects)
     
     % Loop through each frequency band
     parfor bb = 1:total
+        %for bb = 1:total
         
         % Design filters
         bp_filt = make_ss_filter(filter_order,combos{bb,1},srate,'bandpass');
@@ -240,7 +248,7 @@ for aa = 1:length(subjects)
             tempeeg = movedata{dd}(combos{total,2},:);
             
             % If delta then use raw potential, otherwise use envelope
-            if combos{total,3} == 0 
+            if combos{total,3} == 0
                 datavec = tempeeg;
             else
                 [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
@@ -260,12 +268,59 @@ for aa = 1:length(subjects)
             
         end % dd = 1:size(movedata,1)
         
+        
+        % TIMING LOOP HERE
+        tstart = 1;
+        tend   = tstart + 1/20 * srate;
+        traineeg_win = []; trainkin_win = [];
+        while tend <= size(trainkin,2)
+            % Get window of mean power/potential and corresponding kin val
+            traineeg_win = [traineeg_win, mean(traineeg(:,tstart:tend),2)];
+            trainkin_win = [trainkin_win, trainkin(:,tend)];
+            % Update start and end
+            tstart = tend + 1;
+            tend   = tstart + 1/20 * srate;
+        end
+        tstart = 1;
+        tend   = tstart + 1/20 * srate;
+        testeeg_win = [];  testkin_win = [];
+        while tend <= size(testkin,2)
+            % Get window of mean power/potential and corresponding kin val
+            testeeg_win = [testeeg_win, mean(testeeg(:,tstart:tend),2)];
+            testkin_win = [testkin_win, testkin(:,tend)];
+            % Update start and end
+            tstart = tend + 1;
+            tend   = tstart + 1/20 * srate;
+        end
+        
+        trainkin = trainkin_win;
+        traineeg = traineeg_win(combos{total,4},:);
+        testkin  = testkin_win;
+        testeeg  = testeeg_win(combos{total,4},:);
+        
+        
         % Zscore data
         trainkin = transpose(zscore(trainkin'));
         traineeg = transpose(zscore(traineeg'));
         testeeg  = transpose(zscore(testeeg'));
         testkin  = transpose(zscore(testkin'));
         
+        %         ord = 3;
+        %         lagKINtrain = KalmanFilter.lag_data(trainkin,1);
+        %         lagEEGtrain = KalmanFilter.lag_data(traineeg,1);
+        %         lagKINtest = KalmanFilter.lag_data(testkin,1);
+        %         lagEEGtest = KalmanFilter.lag_data(testeeg,1);
+        %         svr = fitrsvm(traineeg',trainkin','KernelFunction','rbf',...
+        %              'Standardize',true,'KernelScale','auto');
+        %          svr = fitrsvm(lagEEGtrain',lagKINtrain','KernelFunction','rbf',...
+        %              'Standardize',true,'KernelScale','auto','KFold',5);
+        %          cvsvr = crossval(svr);
+        
+        %          predicted = predict(svr,testeeg');
+        %
+        %          % Store R2 values
+        %          R2_sub{bb} = KalmanFilter.rsquared(predicted,testkin);
+        %          predicted_sub{bb} = [predicted(:)'; testkin(:)'];
         
         % Kalman Filter object
         KF = KalmanFilter('state',trainkin,'observation',traineeg,...
@@ -273,7 +328,7 @@ for aa = 1:length(subjects)
         % Perform grid search
         foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
         KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
-            'lambdaF',KF_LAMBDA,'kfold',foldIdx,'testidx',1)
+            'lambdaF',KF_LAMBDA,'testidx',1);%,'kfold',foldIdx);
         
         % Lag data
         lagKIN = KalmanFilter.lag_data(testkin,KF.order);
@@ -302,10 +357,10 @@ for aa = 1:length(subjects)
     PREDICT_ALL{aa} = predicted_sub;
 end
 
-save('allR2_2.mat','R2_ALL')
-save('allPredict_2.mat','PREDICT_ALL')
+save('allR2_50msWindow_FrontalChans_shuffle.mat','R2_ALL')
+save('allPredict_50msWindow_FrontalChans_shuffle.mat','PREDICT_ALL')
 
-delete(gcp);
+delete(gcp('nocreate'));
 
 
 
