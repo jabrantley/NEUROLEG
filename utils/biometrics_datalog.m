@@ -23,6 +23,8 @@ classdef biometrics_datalog < hgsetget
         samplesavail; % number of available sample for streaming
         usech;
         usechdata; % Streamed data of selected channel
+        changain;  % Gain applied to each type of channel
+        chantype;  % Type of channel 'EMG','GONIO','DIGITAL'
         OnLineInterfaceStr; % Label
         OnLinePathStr;
         values;
@@ -39,6 +41,7 @@ classdef biometrics_datalog < hgsetget
         %Constructor
         function self = biometrics_datalog(varargin)
             self.usech = get_varargin(varargin,'usech',0);
+            self.chantype = get_varargin(varargin,'chantype','EMG');
             self.OnLineInterfaceStr = get_varargin(varargin,'OnLineInterfaceStr','OnLineInterface64');
             self.OnLinePathStr = get_varargin(varargin,'OnLinePathStr',cd);
             
@@ -106,41 +109,59 @@ classdef biometrics_datalog < hgsetget
         end
         % Get channel gains
         function getchannelgain(self)
-            % nothing yet
+            channel_gains = zeros(length(self.usech));
+            for aa = 1:length(self.usech)
+                channel_type = self.chantype{aa};
+                switch lower(channel_type)
+                    case 'emg'
+                        channel_gains(aa) = self.EMG_GAIN;
+                    case 'gonio'
+                        channel_gains(aa) = self.GONIO_GAIN;
+                    case 'digital'
+                        channel_gains(aa) = 1;
+                end
+            end % end for aa
+            self.changain = channel_gains;
         end
         % Get data from datalog
         function data = getdata(self)
             
             % First initialise the return values from the DLL functions
-            for aa = 1:length(self.usech)
-                ch = self.usech(aa);
-                calllib(self.OnLineInterfaceStr, 'OnLineStatus', ch, self.ONLINE_GETSAMPLES, self.pStatus);
-                numberToGet = self.pStatus.Value;
+            calllib(self.OnLineInterfaceStr, 'OnLineStatus', 0, self.ONLINE_GETSAMPLES, self.pStatus);
+            numberToGet = self.pStatus.Value;
+            
+            if numberToGet < 0
+                % an error has occurred such as buffer overrun (-4) so exit
+                str = ['OnLineStatus returned ', num2str(numberToGet)];
+                disp(str);
+            end
+            
+            mStoGet = floor(numberToGet * 1000 / self.samplerate);   % round down mS; note that a number of mS must be passed to OnLineGetData.
+            numberToGet = mStoGet * self.samplerate / 1000;
+            
+            % recalculate after a possible rounding
+            if numberToGet > 0
+                % initialise array to receive the new data
+                self.values.rgsabound.cElements = numberToGet;
+                self.values.rgsabound.lLbound = numberToGet;
+                self.values.pvData = int16(1:numberToGet);
                 
-                if numberToGet < 0
-                    % an error has occurred such as buffer overrun (-4) so exit
-                    str = ['OnLineStatus returned ', num2str(numberToGet)];
-                    disp(str);
-                end
-                
-                mStoGet = floor(numberToGet * 1000 / self.samplerate);   % round down mS; note that a number of mS must be passed to OnLineGetData.
-                numberToGet = mStoGet * self.samplerate / 1000;          % recalculate after a possible rounding
-                
-                if numberToGet > 0
-                    % initialise array to receive the new data
-                    self.values.rgsabound.cElements = numberToGet;
-                    self.values.rgsabound.lLbound = numberToGet;
-                    self.values.pvData = int16(1:numberToGet);
-                    
-                    % get numberToGet samples from interface
+                % get numberToGet samples from interface
+                data = zeros(length(self.usech),numberToGet);
+                for aa = 1:length(self.usech)
+                    ch = self.usech(aa);
                     calllib(self.OnLineInterfaceStr, 'OnLineGetData', ch, mStoGet, self.values, self.pDataNum);
                     numberOfSamplesReceived = self.pDataNum.Value;   % The number of samples actually returned is pDataNum.Value
-                    data(:,aa) = self.values.pvData(:);
-                    self.data = data;
-                else
-                    data = [];
+%                     try
+                        data(aa,:) = transpose(self.values.pvData(:));
+%                     catch er
+%                         disp(er.message)
+%                     end
                 end
+            else
+                data = [];
             end
+%             self.data = data;
         end
         function start(self)
             calllib('OnLineInterface64', 'OnLineStatus', 0, self.ONLINE_START, 0);

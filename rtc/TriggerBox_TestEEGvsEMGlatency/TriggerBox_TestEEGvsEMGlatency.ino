@@ -80,17 +80,17 @@ void setup() {
   pinMode(eeg_in2LED, OUTPUT);
 
   // Turn LEDs on and off 5x to indicate start up
-  for (int ii = 0; ii <= 10; ii++) {
+  for (int ii = 0; ii <= 5; ii++) {
     digitalWriteFast(led_trigger, HIGH);
     digitalWriteFast(eeg_in1LED, HIGH);
     digitalWriteFast(eeg_in2LED, HIGH);
 //    setXBeeState(0x5);
-    delay(500);
+    delay(100);
     digitalWriteFast(led_trigger, LOW);
     digitalWriteFast(eeg_in1LED, LOW);
     digitalWriteFast(eeg_in2LED, LOW);
 //    setXBeeState(0x4);
-    delay(500);
+    delay(100);
   }
 
   // Setup interrupts
@@ -262,21 +262,26 @@ void serialEvent() {
   switch (rxChar) {
     case 's':
     case 'S':                          // If received 's' or 'S':
+    for (int ii = 0; ii <= 2; ii++){
+    digitalWriteFast(led_trigger, HIGH);
       // Set pins to high
       digitalWriteFast(eeg_outS1, HIGH);
       digitalWriteFast(synch_out1, HIGH);
       // blink twice to indicate start
       //for (int ii = 0; ii <= 2; ii++) {
       digitalWriteFast(led_trigger, HIGH);
-      delay(500);
-      digitalWriteFast(led_trigger, LOW);
+      delay(100);
+      
       //}
-      delay(10);
+      //delay(10);
       // Set pin to low
       digitalWriteFast(eeg_outS1, LOW);
       digitalWriteFast(synch_out1, LOW);
+      digitalWriteFast(led_trigger, LOW);
       // Return "ok" for matlab to confirm rx
-      Serial.write("ok");
+      //Serial.write("ok");
+      delay(100);
+    }
       break;
     // Indicate end of experiment
     case 'e':

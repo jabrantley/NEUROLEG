@@ -39,10 +39,10 @@ switch StartButton
     case 'Start'
         % Start Data Collection
         b.clearbuffer;
+        % Start biometrics
+        b.start;
         % Run training
-        [EEG,BIO,ANGLES] = neuroleg_realtime_stream(params,b);
-        % Close all serial
-        fclose(instrfind);
+        [RAWEEG,MRKREEG,RAWBI,ANGLEVEC] = neuroleg_realtime_train(params,b);
     otherwise
         % Just in case not previously stopped
         b.stop;
@@ -50,11 +50,6 @@ switch StartButton
         return;
 end
 
-%% Train UKF
-
-
-
-
-
-
+%% Close teensy
+fclose(instrfind);
 

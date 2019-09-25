@@ -12,31 +12,67 @@
 % Written by: Justin Brantley - justin.a.brantley@gmail.com
 % 09/20/2019: Date created
 
-function [cleandata,filtdata,params] = neuroleg_realtime_processing(eegdata,eogdata,params)
+function [params,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_processing(params,eegdata,eogdata,emgdata)
+
+% Check for EMG data
+if nargin < 4
+    emgdata = [];
+end
 
 % Generate noise template from eogdata
 eye_artifacts = [eogdata(:,3) - eogdata(:,4),...
     eogdata(:,1) - eogdata(:,2),...
     ones(size(eogdata,1),1)];
 
-cleandata = zeros(size(eegdata));
-noisedata = zeros(size(eye_artifacts));
+% Preallocate
+cleaneeg = zeros(size(eegdata));
+% noisedata = zeros(size(eye_artifacts)); Currently unused--second output of hinfinity_local
 
 % Run Hinfinity to remove eye artifacts - operates on all channels @ a
 % single time point
 for ii = 1:size(eegdata,1) % all chans @ 1 time point
-    [cleandata(ii,:),~,params.hinf.pt, params.hinf.wh] = hinfinity_local(eegdata(ii,:), eye_artifacts(ii,:), params.hinf.gamma, params.hinf.pt, params.hinf.wh, params.hinf.q);
+    [cleaneeg(ii,:),~,params.hinf.pt, params.hinf.wh] = hinfinity_local(eegdata(ii,:), eye_artifacts(ii,:), params.hinf.gamma, params.hinf.pt, params.hinf.wh, params.hinf.q);
 end
 
-% Filter data - filter each channel across time
-xnn_temp = zeros(size(params.emg_bp_filt.xnn));
-filtdata = zeros(size(cleandata));
-for ii = 1:size(eegdata,2) % all time for a single channel
-    [filtdata(:,ii),xnn_temp(:,ii)] = ss_filter_local(cleandata(:,ii),params.eeg_bp_filt.xnn(:,ii),params.A,params.B,params.C,params.D);
+% Filter EEG data - filter each channel across time
+xnn_temp = zeros(size(params.eeg_bp_filt.xnn));
+filteeg  = zeros(size(cleaneeg));
+for  ii  = 1:size(eegdata,2) % all time for a single channel
+    [filteeg(:,ii),xnn_temp(:,ii)] = ss_filter_local(cleaneeg(:,ii),params.eeg_bp_filt.xnn(:,ii),...
+        params.eeg_bp_filt.A,params.eeg_bp_filt.B,params.eeg_bp_filt.C,params.eeg_bp_filt.D);
 end
-params.eeg_bp_filt.xnn = xnn_temp;
+params.eeg_bp_filt.xnn = xnn_temp; 
+clearvars ii xnn_temp
 
+% Filter EMG data
+if ~isempty(emgdata)
+    
+    % Bandpass filter data - filter each channel across time
+    xnn_temp = zeros(size(params.emg_bp_filt.xnn));
+    filtemg  = zeros(size(emgdata));
+    for  ii  = 1:size(emgdata,2) % all time for a single channel
+        [filtemg(:,ii),xnn_temp(:,ii)] = ss_filter_local(emgdata(:,ii),params.emg_bp_filt.xnn(:,ii),...
+            params.emg_bp_filt.A,params.emg_bp_filt.B,params.emg_bp_filt.C,params.emg_bp_filt.D);
+    end
+    params.eeg_bp_filt.xnn = xnn_temp;
+    clearvars ii xnn_temp
+    
+    % Lowpass filter data - filter each channel across time
+    xnn_temp = zeros(size(params.emg_lp_filt.xnn));
+    envemg   = zeros(size(filtemg));
+    for  ii  = 1:size(filtemg,2) % all time for a single channel
+        [envemg(:,ii),xnn_temp(:,ii)] = ss_filter_local(abs(filtemg(:,ii)),params.emg_lp_filt.xnn(:,ii),...
+            params.emg_lp_filt.A,params.emg_lp_filt.B,params.emg_lp_filt.C,params.emg_lp_filt.D);
+    end
+    params.eeg_lp_filt.xnn = xnn_temp;
+    clearvars ii xnn_temp
+else
+    filtemg = [];
+    envemg  = [];
+    
 end
+
+end% end neuroleg_realtime_processing()
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                          %
