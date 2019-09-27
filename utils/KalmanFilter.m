@@ -1,16 +1,16 @@
 classdef KalmanFilter < handle
     properties (SetAccess = private, GetAccess = public)
         %%% UNIVERSAL PROPERTIES %%%
-        F       % State transition matrix
-        Q       % State covariance
-        B       % Neural tuning model
-        R       % Neural tuning model covariance
-        Xt      % Actual state
-        Pt      % Actual state covariance
-        Xtp     % Predicted state
-        Ptp     % Predicted covariance
-        z       % Predicted observation (e.g., neural data)
-        KGain   % Kalman gain
+        F          % State transition matrix
+        Q          % State covariance
+        B          % Neural tuning model
+        R          % Neural tuning model covariance
+        Xt         % Actual state
+        Pt         % Actual state covariance
+        Xtp        % Predicted state
+        Ptp        % Predicted covariance
+        z          % Predicted observation (e.g., neural data)
+        KGain      % Kalman gain
         
         %%% KF PROPERTIES %%%
         St      % Covariance matrix for predicted observation
@@ -110,8 +110,8 @@ classdef KalmanFilter < handle
         end % end train
         
         % Predict using trained Kalman Filter model
-        function Xt_out = predict(self,X,Y) % X is state, Y is observe
-            Xt_1 = X;                 % X(t-1) - past X values
+        function Xt_out = predict(self,Y) % X is state, Y is observe
+            Xt_1 = self.Xt;           % X(t-1) - past X values
             Yt   = Y;                 % Y(t)   - current Y value
             N    = self.order;        % Filter order
             % Get dimension after order
@@ -199,7 +199,8 @@ classdef KalmanFilter < handle
                 % Get current observation
                 currentobs = observedata(:,ii);
                 % Predict new data
-                KF_Out = self.predict(paststate,currentobs);
+                %KF_Out = self.predict(paststate,currentobs);
+                KF_Out = self.predict(currentobs);
                 % Store predicted value
                 prediction(:,ii) = KF_Out;
             end
@@ -342,7 +343,7 @@ classdef KalmanFilter < handle
                                     % Get current observation
                                     currentobs  = fliplr(test_observe(:,ff-lag+1:ff));
                                     % Predict new data
-                                    KF_Out = self.predict(paststate(:),currentobs(:));
+                                    KF_Out = self.predict(currentobs(:));
                                     % Predicted value
                                     prediction(ff) = KF_Out(1);
                                 end
@@ -361,13 +362,13 @@ classdef KalmanFilter < handle
             waitbar(1,wb,'Finished!');
             pause(1); delete(wb); pause(1);
             % Plot distribution of R2
-            try
-                figure; histfig = histogram(allR2(:));
-                histfig.FaceColor = 'k';
-                histfig.NumBins = 10;
-            catch err
-                % do nothing
-            end
+%             try
+%                 figure; histfig = histogram(allR2(:));
+%                 histfig.FaceColor = 'k';
+%                 histfig.NumBins = 10;
+%             catch err
+%                 % do nothing
+%             end
             % Get index of max
             [idx1, idx2, idx3, idx4] = ind2sub(size(allR2), find(allR2==max(allR2(:))));
             % Add values to struct - idx*(1) is chosen in case multiple

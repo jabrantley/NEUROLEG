@@ -11,7 +11,7 @@ clear;
 clc;
 
 % Run parallel for
-onClust = 1;
+onClust = 0;
 
 % Define directory
 thisdir = pwd;
@@ -197,7 +197,7 @@ for aa = 1:length(subjects)
         
         % Loop through channels and movement windows
         % figure('color','w');
-        window_size = 200;
+        window_size = 50;
         window_overlap = 0.5;
         window_shift = floor(window_overlap * window_size);
         

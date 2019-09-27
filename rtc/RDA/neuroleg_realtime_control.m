@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                         %
-%                NEUROLEG REAL TIME STREAMING FOR TRAINING                %
+%                NEUROLEG REAL TIME STREAMING FOR CONTROL                 %
 %                                                                         %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -33,11 +33,8 @@
 % ***********************************************************************
 
 % Main RDA Client function
-function [SYNCHEEG,SYNCHBIO,SYNCHANGLE] = neuroleg_realtime_stream(params,b,teensyLeg,teensySynch)
-
-SYNCHEEG = [];
-SYNCHBIO = [];
-SYNCHANGLE = [];
+function [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG,eegMean,eegStDv,control,gain,standardize)
+%SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHFILTEMG,SYNCHENVEMG,
 
 repeat = 1;
 
@@ -45,25 +42,34 @@ while repeat
     % Preallocate for data
     RAWEEG           = zeros(params.setup.allEEGchans + params.setup.numEOGchans,...
         params.setup.numEEGpnts * length(params.sinewave.time));
+    HINFEEG          = zeros(length(params.setup.chans2keep),...
+        params.setup.numEEGpnts * length(params.sinewave.time));
+    FILTEREEG        = zeros(length(params.setup.chans2keep),...
+        params.setup.numEEGpnts * length(params.sinewave.time));
+    WINEEG           = zeros(params.setup.numEEGchans,length(params.sinewave.time));
+    LAGEEG           = zeros(params.setup.numEEGchans,KF_EEG.lags);
+    LAGEMG           = zeros(size(KF_EMG.observation,1),KF_EMG.lags);
     MRKREEG          = zeros(1,size(RAWEEG,2));
     numAnalog        = length(find(params.setup.BIOchannels<8));
     numDigital       = params.setup.numBIOchans - numAnalog;
     RAWBIO           = zeros(numAnalog, size(RAWEEG,2));
+    WINBIO           = zeros(numAnalog,length(params.sinewave.time));
     MRKRBIO          = zeros(numDigital, size(RAWEEG,2));
     ANGLEVEC         = zeros(1,size(RAWEEG,2));
     startEEG         = 1;
     startBIO         = 1;
     trigger_interval = floor(params.sinewave.time(end)/6);
+    cycle_time       = zeros(1,length(params.sinewave.time));
+    predicted_value  = zeros(1,length(params.sinewave.time));
     
-    %     teensySynch = serial('COM34','BaudRate',115200);
-    %     fopen(teensySynch)
-    
-    % Plot for EMG
+    % Plot for EMG - activate sine axes
     axes(params.fig.f.Children(1));
-    p_emg = stem(nan(1,length(params.sinewave.wave)));
-    p_emg.Marker = 'none';
-    p_emg.LineWidth = 1.15;
-    p_emg.Color =  0.7.*ones(1,3);
+    hold on;
+    s_predict1 = scatter(0,0,'filled');
+    % Plot for EMG - activate linear axes
+    axes(params.fig.f.Children(2));
+    hold on;
+    s_predict2 = scatter(0,0,'filled');
     
     % Open serial if closed and ON = true
     if ~isempty(teensySynch) && strcmpi(teensySynch.Status,'closed')
@@ -73,8 +79,9 @@ while repeat
         fopen(teensyLeg)
     end
     
-    % Initialize
+     % Initialize
     fs = stoploop('Stop trial...');
+    
     
     % Change for individual recorder host
     recorderip = '127.0.0.1';
@@ -99,6 +106,7 @@ while repeat
     finish = false;
     
     while ~finish
+        
         % check if stop button pressed
         if fs.Stop()
             b.stop;
@@ -137,9 +145,14 @@ while repeat
                         
                         % set data buffer to empty
                         data1s = [];
-                        
+                       
                     case 4       % 32Bit Data block
                         
+                        
+                        if counter == 1
+                            % Get start time
+                            start_time = tic;
+                        end
                         % Update line figure
                         params.fig.s.XData = params.sinewave.wave(counter);
                         params.fig.s.YData = params.sinewave.wave(counter);
@@ -148,12 +161,6 @@ while repeat
                         params.fig.s1.XData = params.sinewave.time(counter);
                         params.fig.s1.YData = params.sinewave.wave(counter)/max(params.sinewave.wave);
                         
-                        % Write to neuroleg
-                        if ~isempty(teensyLeg)
-                            fprintf(teensyLeg,'%.2f\n',round(params.sinewave.wave(counter)));
-                            %fprintf(teensyLeg,'%s','\n');
-                        end
-                        
                         % Update counter
                         counter = counter + 1;
                         
@@ -161,7 +168,6 @@ while repeat
                             finish = true;
                             break;
                         end
-                        
                         % Read data and markers from message
                         [datahdr, data, markers] = ReadDataMessage(con, hdr, props);
                         
@@ -184,7 +190,7 @@ while repeat
                         RAWEEG(:,startEEG:endEEG) = eegdata;
                         MRKREEG(1,startEEG+markers.position) = 1;
                         ANGLEVEC(:,startEEG:endEEG) = params.sinewave.wave(counter)/max(params.sinewave.wave) .* ones(1,length(startEEG:endEEG));
-                        startEEG = endEEG + 1;
+                        
                         
                         % Get Biometrics data
                         biodata = [];
@@ -203,10 +209,110 @@ while repeat
                             RAWBIO(:,startBIO:endBIO) = biodata;
                             MRKRBIO(:,startBIO:endBIO) = biodigi;
                             startBIO = endBIO + 1;
-                            p_emg.XData(counter) = params.sinewave.time(counter);
-                            p_emg.YData(counter) = quantile((abs(biodata(1,:))./3),.85);
                         end
                         
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        %                                              %
+                        %                PROCESS DATA                  %
+                        %                                              %
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                        % Get EOG data
+                        if ~isempty(params.setup.EOGchannels)
+                            EOG = eegdata(params.setup.EOGchannels,:);
+                        else
+                            EOG = [];
+                        end
+                        
+                        % Keep desired EEG channels
+                        EEG = eegdata(params.setup.chans2keep,:);
+                       
+                        
+                        % Get EMG
+                        if ~isempty(temp)
+                            EMG = temp(1,:).*b.changain(1);
+                        else
+                            EMG = [];
+                        end
+                        % Filter and clean data
+                        [params,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_processing(params,EEG',EOG',EMG');
+                        
+                        % Save clean and filter EEG
+                        HINFEEG(:,startEEG:endEEG) = cleaneeg;
+                        FILTEREEG(:,startEEG:endEEG) = filteeg;
+                        startEEG = endEEG + 1;
+                        
+                        % Zscore data based on train data
+                        if standardize
+                            filteeg = bsxfun(@rdivide,bsxfun(@minus,filteeg,eegMean),eegStDv);
+                        end
+                        
+                        % Compute mean value for EEG
+                        meanEEG = mean(filteeg,2);
+                        WINEEG(:,counter) = meanEEG;
+                        
+                        % Compute mean value for EMG
+                        if ~isempty(temp)
+                            meanEMG = mean(envemg,2);
+                        else % temp is empty
+                            if counter ==1 % set to zeros
+                                meanEMG = zeros(size(WINBIO,1),1);
+                            else % hold last value
+                                meanEMG = WINBIO(:,counter-1);
+                            end
+                        end
+                        WINBIO(:,counter) = meanEMG;
+                        
+                        % Get past observation data - LAGExG: channels x time (lags)
+                        % Tranpsose so its time x channels, so then
+                        % expanded vertically, its [Ch0_t ... Ch0_t-n,
+                        % Ch1_t ... Ch1_t-n, Ch2_t ... Ch2_t-n, ...]
+                        LAGEMG = transpose([meanEMG LAGEMG(:,1:KF_EMG.lags-1)]);
+                        LAGEEG = transpose([meanEEG LAGEEG(:,1:KF_EEG.lags-1)]);
+                        
+                        % Predict value
+                        if toc(start_time) >= params.setup.time2cut
+                            predictedFromEEG(:,counter) =  gain.*KF_EEG.predict(LAGEEG(:));
+                            predictedFromEMG(:,counter) =  gain.*KF_EMG.predict(LAGEMG(:));
+                        else
+                            predictedFromEEG(:,counter) =  gain.*KF_EEG.Xt;
+                            predictedFromEMG(:,counter) =  gain.*KF_EMG.Xt;
+                        end
+                        
+                        % Transpose back to channels x lags
+                        LAGEMG = transpose(LAGEMG);
+                        LAGEEG = transpose(LAGEEG);
+                        
+                        % Assign value and save
+                        if strcmpi(control,'EEG')
+                            final_predicted_value = predictedFromEEG(1,counter);
+                        elseif strcmpi(control,'EMG')
+                            final_predicted_value = predictedFromEMG(1,counter);
+                        end
+                        
+                        % Constrain to joint limits [1 60]/60 - later
+                        % multiply by max to get actual angle in degrees
+                        if final_predicted_value < params.setup.joint_angles(1)/params.setup.joint_angles(2)
+                            final_predicted_value = params.setup.joint_angles(1)/params.setup.joint_angles(2);
+                        elseif final_predicted_value > 1
+                            final_predicted_value = 1;
+                        end
+                        
+                        % Update sinewave figure
+                        s_predict1.XData(counter) = params.sinewave.time(counter);
+                        s_predict1.YData(counter) = final_predicted_value;
+                        % Update linear figure
+                        s_predict2.XData = final_predicted_value.*params.setup.joint_angles(2);
+                        s_predict2.YData = final_predicted_value.*params.setup.joint_angles(2);
+                        
+                        predicted_value(counter) = final_predicted_value.*params.setup.joint_angles(2);
+                        
+                        % Write to neuroleg
+                        if ~isempty(teensyLeg)
+                            fprintf(teensyLeg,'%.2f\n',round(final_predicted_value.*params.setup.joint_angles(2)));
+                            %fprintf(teensyLeg,'%s','\n');
+                        end
+                        
+                        cycle_time(counter) = toc(start_time);
                     case 3       % Stop message
                         disp('Stop');
                         data = pnet(con, 'read', hdr.size - header_size);
@@ -232,6 +338,29 @@ while repeat
     % Close biometrics
     b.stop;
     
+    
+    % Plot data for display purposes
+    bc = blindcolors;
+    r2_val = KalmanFilter.rsquared(params.sinewave.wave,predicted_value);
+    if strcmpi(control,'EMG')
+        figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
+        fill(params.sinewave.time,WINBIO,0.7.*ones(1,3),'edgecolor','none'); hold on;
+        plot(params.sinewave.time,params.sinewave.wave./params.setup.joint_angles(2),'color',bc(6,:),'linewidth',2);
+        plot(params.sinewave.time,predicted_value./params.setup.joint_angles(2),'color',bc(8,:),'linewidth',2);
+        ax.XTick = []; ax.YTick = [];
+        ax.XColor = 'w'; ax.YColor = 'w';
+        legend({'EMG Envelope','Desired Angle','Predicted Angle'})
+        title(['R^{2} = ' num2str(round(r2_val,2))]);
+    elseif strcmpi(control,'EEG')
+        figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
+        plot(params.sinewave.time,transpose(WINEEG)./max(WINEEG(:)),'color',0.7.*ones(1,3),'linewidth',2); hold on;
+        plot(params.sinewave.time,params.sinewave.wave./params.setup.joint_angles(2),'color',bc(6,:),'linewidth',2);
+        plot(params.sinewave.time,predicted_value./params.setup.joint_angles(2),'color',bc(8,:),'linewidth',2);
+        ax.XTick = []; ax.YTick = [];
+        ax.XColor = 'w'; ax.YColor = 'w';
+        legend({'EEG Potential','Desired Angle','Predicted Angle'})
+        title(['R^{2} = ' num2str(round(r2_val,2))]);
+    end
     % Trim data - rescale markers between [0 1]
     RAWEEG   = RAWEEG(:,1:endEEG);
     MRKREEG  = rescale_data(MRKREEG(:,1:endEEG),'rows',[0 1]);
@@ -255,28 +384,28 @@ while repeat
         synch_warning = warndlg('Alignment error. Re-training is required. Press OK to start.','Warning');
         uiwait(synch_warning)
         b.clearbuffer;
-        % Delete old data
-        delete(p_emg);
+        % Close figure;
+        close all
+        params = neuroleg_realtime_setup;
         % Close all serial
         fclose(instrfind);
     else
-        repeat = 0;
         % Delete old data
-        delete(p_emg);
+        delete(s_predict1);
+        delete(s_predict2);
+        repeat = 0;
+        
     end
 end % end while repeat
 
 % Shift data
 SYNCHBIO = RAWBIO(:,1:end-(abs(IDXshift)-1));
+% SYNCHFILTEMG = filtemg(:,1:end-(abs(IDXshift)-1));
+% SYNCHENVEMG = envemg(:,1:end-(abs(IDXshift)-1));
 SYNCHEEG = RAWEEG(:,abs(IDXshift):minPoints);
+SYNCHCLEANEEG = HINFEEG(:,abs(IDXshift):minPoints);
+SYNCHFILTEEG = FILTEREEG(:,abs(IDXshift):minPoints);
 SYNCHANGLE = ANGLEVEC(:,abs(IDXshift):minPoints);
-
-% Plot data for display purposes
-figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
-plot(SYNCHBIO(1,:)./max(SYNCHBIO(1,:)));
-hold on; plot(smooth(SYNCHANGLE,20),'color',0.5.*ones(1,3),'linewidth',2);
-ax.XTick = []; ax.YTick = [];
-ax.XColor = 'w'; ax.YColor = 'w';
 
 % Display a message
 disp('Done streaming EEG and Biometrics.');
