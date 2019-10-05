@@ -67,8 +67,8 @@ r = ~ishandle(H) ; % false if message box still exists
 function clearfun(H)
 % clear the message box if it still exists
 if ishandle(H),
-    delete(H) ;
-    close;
+    delete(H);
+%     close(H);
 end
 
 

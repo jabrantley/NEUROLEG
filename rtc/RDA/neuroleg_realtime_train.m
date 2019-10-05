@@ -10,7 +10,7 @@
 % Written by: Justin Brantley - justin.a.brantley@gmail.com
 % 09/24/2019: Date created
 
-function [params,KF_EMG,KF_EEG,cleaneeg,filteeg,filtemg,envemg,eegMean,eegStDv] = neuroleg_realtime_train(params,EEG,EMG,ANGLES,standardize)
+function [params,KF_EMG,KF_EEG,standardize,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_train(params,EEG,EMG,ANGLES)
 
 % Get EOG data
 if ~isempty(params.setup.EOGchannels)
@@ -19,7 +19,7 @@ else
     EOG = [];
 end
 % Remove EOG from EEG data
-%EEG(params.setup.EOGc))hannels,:) = [];
+%EEG(params.setup.EOGchannels,:) = [];
 EEG = EEG(params.setup.chans2keep,:);
 
 % Process data
@@ -33,16 +33,25 @@ envemg   = envemg(:,params.setup.time2cut*params.setup.eegsrate:end);
 ANGLES   = ANGLES(:,params.setup.time2cut*params.setup.eegsrate:end);
 
 % Compute mean and std of each channel
-eegMean = mean(filteeg,2);
-eegStDv = std(filteeg,[],2);
+meaneeg = mean(filteeg,2);
+stdeeg  = std(filteeg,[],2);
+meanemg = mean(filtemg,2);
+stdemg  = std(filtemg,[],2);
 
 % Zscore EEG
-if standardize
+if params.setup.standardizeEEG
     zscore_eeg = transpose(zscore(filteeg'));
 else
     zscore_eeg = filteeg;
 end
-    
+
+% Zscore EMG
+if params.setup.standardizeEMG
+    zscore_emg = transpose(zscore(envemg'));
+else
+    zscore_emg = envemg;
+end
+
 % Smooth angles using moving average
 filtangles = smooth(ANGLES,20)';
 
@@ -54,10 +63,10 @@ dAngle_neg = find([0 diff(ANGLES>0)]<0);   % Get negative derivative
 foldsidx   = [dAngle_pos length(ANGLES)]; % Get breaks between angles
 
 % Plot segmentation
-bc = blindcolors;
-figure('color','w'); plot(ANGLES,'color',0.5.*ones(1,3));
-hold on; stem(foldsidx,ones(1,length(foldsidx)),'filled',...
-    'color',bc(6,:),'linewidth',1.15,'MarkerSize',10)
+% bc = blindcolors;
+% figure('color','w'); plot(ANGLES,'color',0.5.*ones(1,3));
+% hold on; stem(foldsidx,ones(1,length(foldsidx)),'filled',...
+%     'color',bc(6,:),'linewidth',1.15,'MarkerSize',10)
 
 % Get train/test folds
 N = 0.80; % 80 percent for test
@@ -74,11 +83,11 @@ train_emg = []; train_eeg = []; train_ang = [];
 test_emg  = []; test_eeg  = []; test_ang  = [];
 while stop <= foldsidx(end)
     if stop < foldsidx(idxNpercent)
-        train_emg = [train_emg, mean(envemg(:,start:stop),2)];
+        train_emg = [train_emg, mean(zscore_emg(:,start:stop),2)];
         train_eeg = [train_eeg, mean(zscore_eeg(:,start:stop),2)];
         train_ang = [train_ang, mean(ANGLES(:,start:stop),2)];
     else
-        test_emg =  [test_emg,  mean(envemg(:,start:stop),2)];
+        test_emg =  [test_emg,  mean(zscore_emg(:,start:stop),2)];
         test_eeg =[test_eeg, mean(zscore_eeg(:,start:stop),2)];
         test_ang = [test_ang, mean(ANGLES(:,start:stop),2)];
     end
@@ -88,7 +97,7 @@ end
 
 %% Train Kalman Filter - EMG vs ANGLES
 KF_EMG = KalmanFilter('state',train_ang,'observation',train_emg,'augmented',0,...
-    'method','normal');
+    'method','normal','mean',meanemg,'std',stdemg);
 
 % Perform grid search
 KF_EMG.grid_search('order',params.kalman.order,'lags',params.kalman.lags,'lambdaB',params.kalman.lambda,'lambdaF',params.kalman.lambda,'testidx',1);
@@ -107,7 +116,7 @@ R2_EMG = KF_EMG.rsquared(predictionEMG(1,:),test_ang_cut(1,:));
 
 %% Train Kalman Filter - EMG vs ANGLES
 KF_EEG = KalmanFilter('state',train_ang,'observation',train_eeg,'augmented',0,...
-    'method','normal');
+    'method','unscented','mean',meaneeg,'std',stdeeg);
 
 % Perform grid search
 KF_EEG.grid_search('order',params.kalman.order,'lags',params.kalman.lags,'lambdaB',params.kalman.lambda,'lambdaF',params.kalman.lambda,'testidx',1);
@@ -123,4 +132,19 @@ predictionEEG = KF_EEG.evaluate(test_eeg_cut);
 % Compute R2 value
 R2_EEG = KF_EEG.rsquared(predictionEEG(1,:),test_ang_cut(1,:));
 
+%% Plot data  & print r2 values
+bc = blindcolors;
+figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
+plot(test_ang_cut(1,:),'color',0.7.*ones(1,3),'linewidth',2);
+plot(predictionEMG(1,:),'color',bc(6,:),'linewidth',2);
+plot(predictionEEG(1,:),'color',bc(8,:),'linewidth',2);
+ax.XTick = []; ax.YTick = [];
+ax.XColor = 'w'; ax.YColor = 'w';
+legend({'Desired Angle','Predicted Angle EMG','Predicted Angle EEG'})
+title(['R^{2}_{EMG} = ' num2str(round(R2_EMG,2)) '; R^{2}_{EEG} = ' num2str(round(R2_EEG,2))]);
+
+% Print r2 values
+fprintf(['\n-------------------------------',...
+    '\n\n R2_EMG = %.2d, R2_EEG = %.2d \n\n',...
+    '-------------------------------\n'],R2_EMG,R2_EEG)
 end

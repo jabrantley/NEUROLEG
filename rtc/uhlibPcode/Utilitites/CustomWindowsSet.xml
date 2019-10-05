@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CustomKeySet derivedfrom="Windows" modifieddefault="false">
+   <Context id="Global">
+      <Action id="kill-line">
+         <Stroke code="VK_K" ctrl="on"/>
+      </Action>
+      <Action id="caret-down">
+         <Stroke code="VK_DOWN"/>
+         <Stroke code="VK_KP_DOWN"/>
+         <Stroke alt="on" code="VK_J"/>
+         <Stroke code="VK_J" meta="on"/>
+      </Action>
+      <Action id="caret-up">
+         <Stroke code="VK_UP"/>
+         <Stroke code="VK_KP_UP"/>
+         <Stroke alt="on" code="VK_K"/>
+         <Stroke code="VK_K" meta="on"/>
+      </Action>
+      <Action id="prev-bookmark">
+         <Stroke code="VK_F2" shift="on"/>
+         <Stroke alt="on" code="VK_I"/>
+         <Stroke code="VK_I" meta="on"/>
+      </Action>
+      <Action id="next-bookmark">
+         <Stroke code="VK_F2"/>
+         <Stroke alt="on" code="VK_M"/>
+         <Stroke code="VK_M" meta="on"/>
+      </Action>
+      <Action id="toggle-bookmark">
+         <Stroke code="VK_F2" ctrl="on"/>
+         <Stroke alt="on" code="VK_B"/>
+         <Stroke code="VK_B" meta="on"/>
+      </Action>
+      <Action id="caret-forward">
+         <Stroke code="VK_RIGHT"/>
+         <Stroke code="VK_KP_RIGHT"/>
+         <Stroke alt="on" code="VK_K" shift="on"/>
+         <Stroke code="VK_K" meta="on" shift="on"/>
+      </Action>
+   </Context>
+   <Context id="MATLABEditor">
+      <Action id="caret-end-line">
+         <Stroke alt="on" code="VK_L"/>
+         <Stroke code="VK_L" meta="on"/>
+      </Action>
+      <Action id="caret-begin-line">
+         <Stroke alt="on" code="VK_H"/>
+         <Stroke code="VK_H" meta="on"/>
+      </Action>
+      <Action id="caret-backward">
+         <Stroke alt="on" code="VK_J" shift="on"/>
+         <Stroke code="VK_J" meta="on" shift="on"/>
+      </Action>
+   </Context>
+   <Context id="CommandWindow">
+      <Action id="kill-line"/>
+   </Context>
+</CustomKeySet>

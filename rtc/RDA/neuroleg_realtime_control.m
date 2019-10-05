@@ -33,7 +33,7 @@
 % ***********************************************************************
 
 % Main RDA Client function
-function [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG,eegMean,eegStDv,control,gain,standardize)
+function [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG)
 %SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHFILTEMG,SYNCHENVEMG,
 
 repeat = 1;
@@ -82,7 +82,6 @@ while repeat
      % Initialize
     fs = stoploop('Stop trial...');
     
-    
     % Change for individual recorder host
     recorderip = '127.0.0.1';
     
@@ -101,6 +100,7 @@ while repeat
     % Create counter
     counter = 1;
     % totaltime=toc(startTime);
+    
     % --- Main reading loop ---
     header_size = 24;
     finish = false;
@@ -196,13 +196,17 @@ while repeat
                         biodata = [];
                         biodigi = [];
                         temp = double(b.getdata);
+                        isEMG = [];
                         if ~isempty(temp)
-                            for ii = 1:params.setup.numBIOchans
+                            for ii = 1:length(b.usech)
                                 chandata = temp(ii,:);
                                 if strcmpi(b.chantype(ii),'digital')
                                     biodigi = [biodigi; chandata(:)'.*b.changain(ii)];
                                 else
                                     biodata = [biodata; chandata(:)'.*b.changain(ii)];
+                                end
+                                if strcmpi(b.chantype(ii),'EMG')
+                                    isEMG = [isEMG, ii];
                                 end
                             end
                             endBIO = startBIO + size(biodata,2) - 1;
@@ -226,10 +230,9 @@ while repeat
                         % Keep desired EEG channels
                         EEG = eegdata(params.setup.chans2keep,:);
                        
-                        
                         % Get EMG
                         if ~isempty(temp)
-                            EMG = temp(1,:).*b.changain(1);
+                            EMG = temp(isEMG,:).*b.EMG_GAIN;
                         else
                             EMG = [];
                         end
@@ -242,8 +245,12 @@ while repeat
                         startEEG = endEEG + 1;
                         
                         % Zscore data based on train data
-                        if standardize
+                        if params.setup.standardizeEEG
                             filteeg = bsxfun(@rdivide,bsxfun(@minus,filteeg,eegMean),eegStDv);
+                        end
+                        
+                        if params.setup.standardizeEMG
+                            envemg = bsxfun(@rdivide,bsxfun(@minus,envemg,KF_EMG.mu),KF_EMG.sigma);
                         end
                         
                         % Compute mean value for EEG
@@ -319,7 +326,7 @@ while repeat
                         finish = true;
                         %                     temp = double(b.getdata).*b.EMG_GAIN;
                         % Stop biometrics
-                        temp = double(b.getdata).*b.EMG_GAIN;
+                        %temp = double(b.getdata).*b.EMG_GAIN;
                         
                     otherwise    % ignore all unknown types, but read the package from buffer
                         data = pnet(con, 'read', hdr.size - header_size);

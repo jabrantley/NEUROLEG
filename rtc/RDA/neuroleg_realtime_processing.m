@@ -29,8 +29,7 @@ if ~isempty(eogdata)
     cleaneeg = zeros(size(eegdata));
     % noisedata = zeros(size(eye_artifacts)); Currently unused--second output of hinfinity_local
     
-    % Run Hinfinity to remove eye artifacts - operates on all channels @ a
-    % single time point
+    % Run Hinfinity to remove eye artifacts - operates on all channels @ single time point
     for ii = 1:size(eegdata,1) % all chans @ 1 time point
         [cleaneeg(ii,:),~,params.hinf.pt, params.hinf.wh] = hinfinity_local(eegdata(ii,:), eye_artifacts(ii,:), params.hinf.gamma, params.hinf.pt, params.hinf.wh, params.hinf.q);
     end

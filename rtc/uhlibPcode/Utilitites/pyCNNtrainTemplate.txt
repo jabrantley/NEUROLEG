@@ -1,0 +1,74 @@
+"""
+"""
+#==============================================================================
+# IMPORT PACKAGES
+import tensorflow as tf
+import matplotlib.pyplot as plt
+
+# DEFINE HYPER PARAMETERS
+LEARN_RATE = 0.001
+DECAY_RATE = 0.1
+DECAY_STEPS = 1000
+BATCH_SIZE = 64
+DROP_OUT = 0.5
+SAVE_STEP = 2
+
+# VARIABLES
+now = datetime.datetime.now(pytz.timezone('US/Central')).strftime('%y-%m-%d-%H')
+logdir = '{}/running-{}'.format(ROOT_LOGDIR,now)
+
+#==============================================================================
+# TENSORFLOW
+# Placeholder
+x = tf.placeholder(tf.float32, shape = (BATCH_SIZE, IMG_SIZE, IMG_SIZE, IMG_CHANS), name = 'Trainset')
+actual = tf.placeholder(tf.float32, shape = (BATCH_SIZE, trainset.num_category), name = 'Actual')
+keep_prob = tf.placeholder(tf.float32, name = 'Drop') # dropout (keep probability)
+
+# Neural Net Model
+global_step = tf.Variable(0, trainable=False)
+lr = tf.train.exponential_decay(LEARN_RATE, global_step, 1000, DECAY_RATE, staircase=True)
+train_step = optimizer.minimize(cost, global_step=global_step)	
+
+# Cost Function
+with tf.name_scope('Cross_Entropy'):
+    cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = pred, labels = actual))
+
+# Optimizer
+optimizer = tf.train.AdamOptimizer(learning_rate = lr)
+
+# Accuracy
+with tf.name_scope('Accuracy'):
+    correct_pred = tf.equal(tf.argmax(pred, name = 'Label_Pred'), 
+                            tf.argmax(actual, name = 'Label_True'), 
+                            name = 'Compare')
+    accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32), name = 'Accuracy')
+
+#==============================================================================
+# Create summary and log files
+# Summary
+tf.summary.scalar('Loss', cost)
+tf.summary.scalar('Accuracy',accuracy)
+mergedSum = tf.summary.merge_all()
+
+# Log files and check points
+logWriter = tf.summary.FileWriter(logdir)
+
+def train_step(loss_value, global_step):
+    # Our learning rate is an exponential decay (stepped down)
+    model_learning_rate = tf.train.exponential_decay(LEARN_RATE, global_step, DECAY_STEPS, DECAY_RATE, staircase=True)
+    # Create optimizer
+    my_optimizer = tf.train.GradientDescentOptimizer(model_learning_rate)
+    # Initialize train step
+    train_step = my_optimizer.minimize(loss_value)
+    return(train_step)
+
+def batchAccuracy(logits, targets):
+    # Make sure targets are integers and drop extra dimensions
+    targets = tf.squeeze(tf.cast(targets, tf.int32))
+    # Get predicted values by finding which logit is the greatest
+    batch_predictions = tf.cast(tf.argmax(logits, 1), tf.int32)
+    # Check if they are equal across the batch
+    predicted_correctly = tf.equal(batch_predictions, targets)
+    # Average the 1's and 0's (True's and False's) across the batch size
+    accuracy = tf.reduce_mean(tf.cast(predicted_correctly, tf.float32))
+    return(accuracy)

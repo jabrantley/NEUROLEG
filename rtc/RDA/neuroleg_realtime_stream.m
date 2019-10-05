@@ -33,7 +33,7 @@
 % ***********************************************************************
 
 % Main RDA Client function
-function [SYNCHEEG,SYNCHBIO,SYNCHANGLE] = neuroleg_realtime_stream(params,b,teensyLeg,teensySynch)
+function [SYNCHEEG,SYNCHBIO,SYNCHANGLE] = neuroleg_realtime_stream(params,b,teensyLeg,teensySynch,moveleg)
 
 SYNCHEEG = [];
 SYNCHBIO = [];
@@ -46,7 +46,7 @@ while repeat
     RAWEEG           = zeros(params.setup.allEEGchans + params.setup.numEOGchans,...
         params.setup.numEEGpnts * length(params.sinewave.time));
     MRKREEG          = zeros(1,size(RAWEEG,2));
-    numAnalog        = length(find(params.setup.BIOchannels<8));
+    numAnalog        = length(find(b.usech<8));
     numDigital       = params.setup.numBIOchans - numAnalog;
     RAWBIO           = zeros(numAnalog, size(RAWEEG,2));
     MRKRBIO          = zeros(numDigital, size(RAWEEG,2));
@@ -54,9 +54,6 @@ while repeat
     startEEG         = 1;
     startBIO         = 1;
     trigger_interval = floor(params.sinewave.time(end)/6);
-    
-    %     teensySynch = serial('COM34','BaudRate',115200);
-    %     fopen(teensySynch)
     
     % Plot for EMG
     axes(params.fig.f.Children(1));
@@ -108,7 +105,9 @@ while repeat
         try
             % Update rate
             if ge(toc(startTime) - lasttime,trigger_interval)
-                fprintf(teensySynch,'S')
+                if ~isempty(teensySynch) && strcmpi(teensySynch.Status,'open')
+                    fprintf(teensySynch,'S')
+                end
                 % Get new time
                 lasttime = toc(startTime);
             end
@@ -149,7 +148,7 @@ while repeat
                         params.fig.s1.YData = params.sinewave.wave(counter)/max(params.sinewave.wave);
                         
                         % Write to neuroleg
-                        if ~isempty(teensyLeg)
+                        if ~isempty(teensyLeg) && moveleg
                             fprintf(teensyLeg,'%.2f\n',round(params.sinewave.wave(counter)));
                             %fprintf(teensyLeg,'%s','\n');
                         end
@@ -171,13 +170,6 @@ while repeat
                         end
                         lastBlock = datahdr.block;
                         
-                        % print marker info to MATLAB console
-                        % if datahdr.markerCount > 0
-                        %    for m = 1:datahdr.markerCount
-                        %        disp(markers(m));
-                        %    end
-                        % end
-                        
                         % Get EEG data
                         eegdata = double(reshape(data, props.channelCount, length(data) / props.channelCount));
                         endEEG  = startEEG+size(eegdata,2) - 1;
@@ -191,7 +183,7 @@ while repeat
                         biodigi = [];
                         temp = double(b.getdata);
                         if ~isempty(temp)
-                            for ii = 1:params.setup.numBIOchans
+                            for ii = 1:length(b.usech)
                                 chandata = temp(ii,:);
                                 if strcmpi(b.chantype(ii),'digital')
                                     biodigi = [biodigi; chandata(:)'.*b.changain(ii)];
@@ -201,10 +193,12 @@ while repeat
                             end
                             endBIO = startBIO + size(biodata,2) - 1;
                             RAWBIO(:,startBIO:endBIO) = biodata;
-                            MRKRBIO(:,startBIO:endBIO) = biodigi;
+                            if any(b.usech >= 8)
+                                MRKRBIO(:,startBIO:endBIO) = biodigi;
+                            end
                             startBIO = endBIO + 1;
                             p_emg.XData(counter) = params.sinewave.time(counter);
-                            p_emg.YData(counter) = quantile((abs(biodata(1,:))./3),.85);
+                            p_emg.YData(counter) = quantile((abs(biodata(b.usech(1),:))./3),.85);
                         end
                         
                     case 3       % Stop message
@@ -231,6 +225,7 @@ while repeat
     
     % Close biometrics
     b.stop;
+    fs.Clear();
     
     % Trim data - rescale markers between [0 1]
     RAWEEG   = RAWEEG(:,1:endEEG);

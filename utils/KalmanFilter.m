@@ -19,6 +19,11 @@ classdef KalmanFilter < handle
         Pzz     % Covariance of predicted observation (neural data)
         Pxz     % State-observation cross-covariance
         
+        %%% Store data properties %%%
+        mu          % Mean data
+        sigma       % Standard deviation of data
+        standardize % Standardize data
+        
         % R2 value after performing grid search
         R2_Train
         
@@ -69,6 +74,10 @@ classdef KalmanFilter < handle
                             self.futuretaps=val;
                         case 'method'
                             self.method=val;
+                        case 'mean'
+                            self.mu=val;
+                        case 'std'
+                            self.sigma=val;
                         otherwise
                     end
                 end
