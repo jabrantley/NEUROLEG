@@ -10,7 +10,7 @@
 % Written by: Justin Brantley - justin.a.brantley@gmail.com
 % 09/24/2019: Date created
 
-function [params,KF_EMG,KF_EEG,standardize,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_train(params,EEG,EMG,ANGLES)
+function [params,KF_EMG,KF_EEG,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_train(params,EEG,EMG,ANGLES)
 
 % Get EOG data
 if ~isempty(params.setup.EOGchannels)
@@ -134,17 +134,19 @@ R2_EEG = KF_EEG.rsquared(predictionEEG(1,:),test_ang_cut(1,:));
 
 %% Plot data  & print r2 values
 bc = blindcolors;
-figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
-plot(test_ang_cut(1,:),'color',0.7.*ones(1,3),'linewidth',2);
-plot(predictionEMG(1,:),'color',bc(6,:),'linewidth',2);
-plot(predictionEEG(1,:),'color',bc(8,:),'linewidth',2);
+figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); 
+ax = axes; hold on;
+minpnts = min([size(predictionEMG,2),size(predictionEEG,2)]);
+plot(test_ang_cut(1,1:minpnts),'color',0.7.*ones(1,3),'linewidth',2);
+plot(predictionEMG(1,1:minpnts),'color',bc(6,:),'linewidth',2);
+plot(predictionEEG(1,1:minpnts),'color',bc(8,:),'linewidth',2);
 ax.XTick = []; ax.YTick = [];
 ax.XColor = 'w'; ax.YColor = 'w';
 legend({'Desired Angle','Predicted Angle EMG','Predicted Angle EEG'})
-title(['R^{2}_{EMG} = ' num2str(round(R2_EMG,2)) '; R^{2}_{EEG} = ' num2str(round(R2_EEG,2))]);
+title(['R^{2}_{EMG} = ' num2str(round(R2_EMG,2)) '   ,   R^{2}_{EEG} = ' num2str(round(R2_EEG,2))]);
 
 % Print r2 values
 fprintf(['\n-------------------------------',...
-    '\n\n R2_EMG = %.2d, R2_EEG = %.2d \n\n',...
+    '\n\n   R2_EMG = %.2d\n   R2_EEG = %.2d \n\n',...
     '-------------------------------\n'],R2_EMG,R2_EEG)
 end

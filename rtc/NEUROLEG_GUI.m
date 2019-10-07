@@ -1,842 +1,818 @@
-function varargout = NEUROLEG_GUI(varargin)
+function varargout = NEUROLEG_GUIDE(varargin)
+% NEUROLEG_GUI MATLAB code for NEUROLEG_GUI.fig
+%      NEUROLEG_GUI, by itself, creates a new NEUROLEG_GUI or raises the existing
+%      singleton*.
+%
+%      H = NEUROLEG_GUI returns the handle to a new NEUROLEG_GUI or the handle to
+%      the existing singleton*.
+%
+%      NEUROLEG_GUI('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in NEUROLEG_GUI.M with the given input arguments.
+%
+%      NEUROLEG_GUI('Property','Value',...) creates a new NEUROLEG_GUI or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before NEUROLEG_GUI_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to NEUROLEG_GUI_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
 
-% Add Paths and external libs
-uhlib = '\uhlibPcode';
-addpath('\Includes');
-addpath(genpath(uhlib));
+% Edit the above text to modify the response to help NEUROLEG_GUI
 
-% Import Java
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.lang.*;
+% Last Modified by GUIDE v2.5 07-Oct-2019 07:53:16
 
-global gvar
-gvar.username = getenv('username');
-% Graphics
-gvar.margin.l=0.01;gvar.margin.r=0.01;
-gvar.margin.t=0.01;gvar.margin.b=0.05;
-gvar.margin.gap=0.01;
-gvar.page.bgcolor='w';
-gvar.myfont='Arial';
-gvar.fontsizexl = 14;
-gvar.fontsizel = 12;
-gvar.fontsize = 10;
-gvar.fontsizes = 8;
-gvar.axfont = 8;
-gvar.marker={'o','^','square','diamond','v','>','<','+','*','.','x'};
-gvar.mycolor = class_color;
-gvar.mysymbol = uh_symbol;
-% Utilities
-gvar.timenow = class_datetime;
-
-%====STEP 1: FRAME========================================================
-handles.iconlist=getmatlabicons;
-% Create a new figure
-[handles.figure, handles.jstatusbarhdl,handles.jwaitbarhdl]=uh_uiframe('figname',mfilename,...
-    'units','norm','position',[0.2 0.075 0.55 0.85],...
-    'toolbar','figure',...
-    'statusbar',1,...
-    'waitbarpos','East','waitbarstr',0,...
-    'icon',handles.iconlist.uh,'logo','none',...
-    'logopos',[0.89,0.79,0.2,0.2]);
-
-%==============================UI CONTROL=================================
-% Set Look and Feel
-uisetlookandfeel('window');
-
-% Warning off
-warning('off','MATLAB:HandleGraphics:ObsoletedProperty:JavaFrame');
-warning('off','MATLAB:uigridcontainer:MigratingFunction');
-warning('off','MATLAB:uitree:MigratingFunction');
-warning('off','MATLAB:uitreenode:DeprecatedFunction');
-
-% Menu bar;
-handles=uimenubar(handles);
-
-
-% Subject setup
-uistring = {'Name:',...
-        '',...
-        ''};
-    [container_subinfo(1),...
-        handles.subinfo_name,...
-        ] = uigridcomp({'label','edit',...
-        'label'},...
-        'uistring',uistring,...
-        'gridsize',[1 3],'gridmargin',1,'hweight',[3 5 2]);
-uistring = {'# of channels:',...
-        '',''};
-    [container_subinfo(2),...
-        handles.subinfo_dir,handles.subinfo_dirbutton(1)...
-        ] = uigridcomp({'label','edit','pushbutton'},...
-        'uistring',uistring,...
-        'gridsize',[1 3],'gridmargin',1,'hweight',[3 5 2]);
-uipanel_subinfo=uipanellist('title','SUBJECT INFORMATION',...
-    'objects',[container_subinfo],...
-    'itemheight',0.9/length(container_subinfo)*ones(1,length(container_subinfo)),...
-    'itemwidth',[0.99],...
-    'gap',[0 gvar.margin.gap]);
-w = .45; h = .1;
-set(uipanel_subinfo,'position',[gvar.margin.l 1-2*gvar.margin.l-h w h])
-
-% EEG setup
-uistring = {'Sampling Rate:','',' Hz',...
-    '# of Channels:', '',''};
-[container_eeginfo,...
-    ~,handles.edit_eegchans,...
-    ~,handles.edit_eegsrate,...
-    ] = uigridcomp({'label','edit','label'...
-    'label','edit','label'},...
-    'uistring',uistring,...
-    'gridsize',[2 3],'gridmargin',1,'hweight',[5 4],'vweight',[1 1 1]);
-uipanel_subinfo = uipanellist('title','EEG SETTINGS',...
-    'objects',[container_eeginfo],...
-    'itemheight',0.95,...
-    'itemwidth',[0.95],...
-    'gap',[0 gvar.margin.gap]);
-
-
-
-uistring = {'Sampling Rate:',...
-        '',...
-        ' Hz'};
-    [container_eeginfo(1),...
-        handles.edit_calib(1),...
-        ] = uigridcomp({'label','edit',...
-        'label'},...
-        'uistring',uistring,...
-        'gridsize',[1 3],'gridmargin',1,'hweight',[4 3 3]);
-uistring = {'# of channels:',...
-        '',''};
-    [container_eeginfo(2),...
-        handles.edit_calib(2),handles.eegpushbutton(1)...
-        ] = uigridcomp({'label','edit','pushbutton'},...
-        'uistring',uistring,...
-        'gridsize',[1 3],'gridmargin',1,'hweight',[4 3 3]);
-uipanel_eeg=uipanellist('title','EEG SETTINGS',...
-    'objects',[container_eeginfo],...
-    'itemheight',0.9/length(container_eeginfo)*ones(1,length(container_eeginfo)),...
-    'itemwidth',[0.99],...
-    'gap',[0 gvar.margin.gap]);
-% w=0.25-gvar.margin.gap; eeg_h=0.1;
-% set(uipanel_eeg,'position',[gvar.margin.l 1-2*gvar.margin.l-.2 w eeg_h])
-
-% DATALOG SETUP
-uistring = {'Sampling Rate:',...
-        '',...
-        ' Hz'};
-    [container_dataloginfo(1),...
-        handles.edit_calib(3),...
-        ] = uigridcomp({'label','edit',...
-        'label'},...
-        'uistring',uistring,...
-        'gridsize',[1 3],'gridmargin',1,'hweight',[4 3 3]);
-nb_chans = 8;
-handles.nb_chans = nb_chans;
-
-% EMG channels
-for ii = 1 : nb_chans
-    uistring = {sprintf('Ch %d',ii),...
-        {'EMG','Gonio'},...
-        '',...
-        'Gain'};
-    [container_dataloginfo(ii+1),...
-        handles.checkbox_chinfo(ii+1),...
-        handles.popupmenu_chinfo(ii+1),...
-        ] = uigridcomp({'checkbox',...
-        'popupmenu'},...
-        'uistring',uistring,...
-        'gridsize',[1 2],'gridmargin',1,'hweight',[2 3]);
-    set(handles.popupmenu_chinfo(ii+1),'tag', sprintf('popup%d',ii+1));
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+    'gui_Singleton',  gui_Singleton, ...
+    'gui_OpeningFcn', @NEUROLEG_GUI_OpeningFcn, ...
+    'gui_OutputFcn',  @NEUROLEG_GUI_OutputFcn, ...
+    'gui_LayoutFcn',  [] , ...
+    'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
 end
-% Enable digitals
-uistring = {'Enable digitals'};
-[container_dataloginfo(ii+2),...
-    handles.checkbox_chinfo(ii+2),...
-    ] = uigridcomp({'checkbox'},...
-    'uistring',uistring,...
-    'gridsize',[1 2],'gridmargin',1,'hweight',[2 3]);
-%     set(handles.popupmenu_chinfo(ii),'tag', sprintf('popup%d',ii));
-    
-% uistring = {'','',icontext(handles.iconlist.action.assign,'Init'),'',...
-%     };
-% [container_dataloginfo(1),...
-%     ~,~,handles.pushbutton_datalog_init,~,...
-%     ] = uigridcomp({'label',...
-%     'label',...
-%     'pushbutton',...
-%     'label'},...
-%     'uistring',uistring,...
-%     'gridsize',[1 4],'gridmargin',1,'hweight',[2 3 3 1]);
-uipanel_datalog=uipanellist('title','DATALOG SETTINGS',...
-    'objects',[container_dataloginfo],...
-    'itemheight',0.9/length(container_dataloginfo)*ones(1,length(container_dataloginfo)),...
-    'itemwidth',[0.99],...
-    'gap',[0 gvar.margin.gap]);
-w=0.25-gvar.margin.gap; h=0.45;
-set(uipanel_datalog,'position',[gvar.margin.l 1-2*gvar.margin.l-h-2.*eeg_h-gvar.margin.l w h])
-disp('done.')
 
-
-
-
-
-%=============
-% Current Directory and File list box
-function pushbutton_updir_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-currdir=get(handles.combobox_currdir,'selecteditem');
-% ==== START
-if strfind(currdir,'.\')
-    slash=strfind(currdir,'\');
-    updir=currdir(1:slash(end));
-    if strcmpi(currdir,'.\')
-        [updir,~,~]=fileparts(cd);
-    end
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
 else
-    [updir,~,~]=fileparts(currdir);
+    gui_mainfcn(gui_State, varargin{:});
 end
-handles.combobox_currdir.insertItemAt(updir,0);
-set(handles.combobox_currdir,'selectedindex',0);
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
+% End initialization code - DO NOT EDIT
 
-function pushbutton_newdir_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-currdir=get(handles.combobox_currdir,'selecteditem');
-% ==== START
-todaydirList = globFiles('dir',currdir,'filetype','dir',...
-    'key',datestr(now(),'yyyy_mm_dd'));
-if ~isempty(todaydirList)
-    latestDir = todaydirList{end}    ;
-    [~,dirname] = uh_fileparts('fullpath',latestDir,'level',2)    ;
-    trialNum = str2num(dirname(end-1:end));
-    newDirname = dirname;
-    newDirname(end-1:end) = sprintf('%.2d',trialNum+1);
-    defaultAnswer{1} = newDirname;
-else
-    defaultAnswer = {strcat(datestr(now(),'yyyy_mm_dd'),'-S01-T01')};
-end
-% Input dialog for use to enter folder name.
-% Default Answer based on available folder in current directory
-prompt = 'Folder Name';
-name = 'New Fodler';
-numline = [1 50];
-newDir = inputdlg(prompt,...
-    name,numline, defaultAnswer);
-dirList = globFiles('dir',currdir,'filetype','dir');
-% If the answer from user is available. e.g., Do not Cancel
-if ~isempty(newDir)
-    if any(~cellfun(@isempty, strfind(dirList,newDir{1})))
-        msg = sprintf('Folder name: %s already exist', newDir{1});
-        msgbox(msg,'Existing Folder');
-    else
-        mkdir(fullfile(currdir,newDir{1}));
-    end
-end
-uijlist_setfiles(handles.jlistbox_filenameinput,...
-    get(handles.combobox_currdir,'selectedItem'));
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                      %
+%                    OPENING FUNCTION - SET DEFAULTS                   %
+%                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --- Executes just before NEUROLEG_GUI is made visible.
+function NEUROLEG_GUI_OpeningFcn(hObject, eventdata, handles, varargin)
+% Choose default command line output for NEUROLEG_GUI
+handles.output = hObject;
+% Get default params
+params = neuroleg_realtime_setup;
+% Set params in handles
+handles = neuroleg_realtime_params2handles(params,handles);
+% Initialize teensys
+handles.teensyLeg = [];
+handles.teensySynch = [];
+% Turn off EEG and BIOMETRICS by default
+handles.checkbox_enable_eeg.Value = 1;
+checkbox_enable_eeg_Callback(handles.checkbox_enable_eeg,eventdata,handles)
+handles.checkbox_enable_biometrics.Value = 1;
+checkbox_enable_biometrics_Callback(handles.checkbox_enable_biometrics,eventdata,handles)
+% Set predict to phantom by default
+handles.radio_predict_phantom.Value = 0;
+handles.radio_predict_intact.Value = 0;
+handles.radio_predict_both.Value = 1;
+% Update handles structure
+guidata(hObject, handles);
+% UIWAIT makes NEUROLEG_GUI wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
 
-function combobox_currdir_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-newdir=get(hObject,'selecteditem');
-% ==== START
-if strcmpi(newdir,'.\');
-    newdir=cd;
-end
-if ~strcmpi(newdir,hObject.getItemAt(0))
-    hObject.insertItemAt(newdir,0);
-end
-uijlist_setfiles(handles.jlistbox_filenameinput,newdir,'type',{'.all'});
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
+% --- Outputs from this function are returned to the command line.
+function varargout = NEUROLEG_GUI_OutputFcn(hObject, eventdata, handles)
+varargout{1} = handles.output;
 
-% MOUSE and KEYBOARD
-function jlistbox_filenameinput_Mouse_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-eventinf=get(eventdata);
-% ==== START
-if eventinf.Button==1 && eventinf.ClickCount==2 %double left click
-    % Convert list item with html char (icon) to filename
-    filename = html2item(get(hObject,'SelectedValue'));
-    [~,selname,ext]=fileparts(filename);
-    currdir = get(handles.combobox_currdir,'selecteditem');
-    if isempty(ext)     %folder selection
-        if strcmpi(currdir(end),'\')
-            newdir=strcat(currdir,selname);
-        else
-            newdir=strcat(currdir,'\',selname);
-        end
-        uijlist_setfiles(hObject,newdir,'type',{'.all'});
-        updatejcombo(handles.combobox_currdir,newdir)
-    elseif strcmpi(ext,'.txt')
-        %         winopen(fullfile(currdir,filename));
-        myFile = class_FileIO('fullfilename',fullfile(currdir,filename));
-        fid = fopen(myFile.fullfilename,'r');
-        timestamp = fscanf(fid,'%f');
-        fclose(fid);
-        figure;
-        plot(1./diff(timestamp))
-    elseif strcmpi(ext,'.m')
-        edit(fullfile(currdir,filename));
-    elseif strcmpi(ext,'.mat')
-        myfile = class_FileIO('filename',filename,'filedir',currdir);
-        myfile.loadtows;
-        assignin('base','FileObj',myfile);
-    else
-    end
-end
-% ==== END
-setappdata(handles.figure,'handles',handles);
-
-function handles=KeyboardThread_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI input
-handles=getappdata(handles.figure,'handles');
-% ==== START
-if isprop(eventdata,'Key')
-    key = lower(eventdata.Key); % Matlab component; Ctrl: 'control'
-else
-    key = lower(char(eventdata.getKeyText(eventdata.getKeyCode)));    % Java component;
-end
-if any([strcmpi(key,'g'),strcmpi(key,'ctrl'),strcmpi(key,'control'),...
-        strcmpi(key,'shift'),strcmpi(key,'alt')])
-    handles.keyholder = key;
-    setappdata(handles.figure,'handles',handles);
-    return;
-end
-% fprintf('KeyPressed: %s\n',key);
-% Go to component;
-if strcmpi(key,'delete')
-    filename = html2item(get(hObject,'SelectedValue'));
-    [~,selname,ext]=fileparts(filename);
-    currdir = get(handles.combobox_currdir,'selecteditem');
-    if isempty(ext) % Remove folder
-        if ~strcmpi(pwd, currdir)
-            cd(currdir);
-        end
-        strcmd=sprintf('rmdir %s s',selname);
-    else
-        strcmd=sprintf('delete(''%s'')',filename);
-    end
-    eval(strcmd);
-    uijlist_setfiles(handles.jlistbox_filenameinput,currdir,'type',{'.all'});
-    fprintf('File deleted\n');
-end
-if strcmpi(handles.keyholder,'g')
-    if strcmpi(key,'f') % Set focus on function list
-        handles.jlistbox_filenameinput.requestFocus;
-        fprintf('jlistbox_filenameinput is selected.\n');
-    end
-elseif strcmpi(handles.keyholder,'shift')
-elseif strcmpi(handles.keyholder,'ctrl') || strcmpi(handles.keyholder,'control') && strcmpi(key,'s')
-    %     pushbutton_save_Callback(handles.pushbutton_save,[],handles);
-else
-    if strcmpi(key,'f1')
-        winopen('.\hotkey.txt');
-    end
-end
-handles.keyholder = ''; % reset keyholder;
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-function handles=uimenubar(handles)
-import javax.swing.*
-import java.awt.*
-import java.awt.event.*
-icons=handles.iconlist;
-jMenuBar=JMenuBar;
-% Build a menu bar
-% + File
-%       +New
-%           + File Type 1...
-%       + Open...
-% + Help
-jMenuBar=JMenuBar;
-[menu_file, menu_fileItems] = uimenu_create(jMenuBar,handles,...
-    'mainmenu','File',...
-    'listmenu',{'Open...'},...
-    'icons',{icons.action.open});
-callbackFcn = {'jMenu_fileOpen_Callback'};
-setMenuCallback(menu_fileItems, callbackFcn, handles)
-[~, menu_fileNewItems] = uimenu_create(menu_file,handles,'mainmenu','New...',...
-    'listmenu',{'Module','Function'},...
-    'icons',{icons.file.m, icons.function});
-callbackFcn = {'jMenuItemModule_Callback','jMenuItemFunc_Callback'};
-setMenuCallback(menu_fileNewItems, callbackFcn, handles);
-
-% Help Menu
-[menu_help, menu_helpItems] = uimenu_create(jMenuBar,handles,...
-    'mainmenu','Help',...
-    'listmenu',{'Docs'},...
-    'icons',{icons.web});
-callbackFcn = {'jMenu_helpDocs_Callback'};
-setMenuCallback(menu_helpItems, callbackFcn, handles)
-
-javacomponent(jMenuBar,'North',handles.figure);
-
-function jMenu_fileOpen_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% Start
-uigetfile('.\*.m','Select File');
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-function jMenu_helpDocs_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-function varargout = setMenuCallback(menuItems, callbackFcn, handles)
-for i = 1 : length(menuItems)
-    hjMenuItem = handle(menuItems{i},'CallbackProperties');
-    thisCallback = callbackFcn{i};
-    cmdstr = sprintf('set(hjMenuItem,''ActionPerformedCallback'',{@%s,handles});',thisCallback);
-    eval(cmdstr);
-end
-
-% Serial Related
-function pushbutton_serialScan_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-if ~isempty(instrfind)
-    delete(instrfind)
-end
-comList = seriallist;
-if ~isempty(comList)
-    uisetjcombolist(handles.combobox_serialList, comList);
-end
-set(handles.combobox_serialList,'selectedindex',0);
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-function pushbutton_serialOpen_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-if ~isempty(instrfind)
-    delete(instrfind)
-end
-selCom = get(handles.combobox_serialList,'selectedItem');
-selBaud = get(handles.combobox_serialBaudrate,'selectedItem');
-mySerial = serial(selCom, 'Baudrate', str2double(selBaud));
-% mySerial.InputBufferSize = 10;
-flushinput(mySerial);
-currStr = get(hObject,'string');
-if ~isempty(strfind(lower(get(hObject,'string')),'open'))
-    try fopen(mySerial)
-        set(handles.edit_serialStatus,'string','Port Open');
-        set(handles.edit_serialStatus,'backgroundcolor','g');
-        currStr = strrep(currStr,'OPEN','CLOSE');
-        set(hObject,'string',currStr);
-    catch
-        set(handles.edit_serialStatus,'string','Failed to Open','backgroundcolor','r');
-    end
-else
-    fclose(mySerial);
-    currStr = strrep(currStr,'CLOSE','OPEN');
-    set(hObject,'string',currStr);
-    set(handles.edit_serialStatus,'string','Port Closed','backgroundcolor',[1 1 0]);
-end
-handles.mySerial = mySerial;
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-function pushbutton_serialRead_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-mySerial = handles.mySerial;
-dataList = get(handles.list_serialData,'string');
-if isempty(dataList)
-    dataList{1} = '';
-end
-if  strcmpi(get(mySerial,'status'),'open')
-    if get(mySerial, 'BytesAvailable') > 0
-        set(handles.list_serialData,'string','');
-        inData = fscanf(mySerial);
-        inData(ismember(char(inData),[10,13])) = [];
-        temp = dataList;
-        dataList{1} = inData;
-        for i = 1 : length(temp)
-            dataList{i+1} = temp{i};
-        end
-        if length(dataList) == 10
-            dataList(end) = [];
-        end
-        set(handles.list_serialData,'string',dataList);
-    end
-end
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-function pushbutton_serialWrite_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-mySerial = handles.mySerial;
-fprintf(mySerial, get(handles.edit_serialWrite,'string'));
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-% Slider and Edit Setting Related
-function slider_edit_param1_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-edit_hdl = handles.edit_param1;
-slider_hdl = handles.slider_param1;
-if strcmpi(get(hObject,'style'),'slider')
-    sliderVal = get(hObject,'value');
-    set(edit_hdl,'string',num2str(sliderVal));
-elseif strcmpi(get(hObject,'style'),'edit')
-    editVal = str2num(get(hObject,'string'));
-    slider_min = get(slider_hdl,'min');
-    slider_max = get(slider_hdl,'max');
-    if editVal > slider_max
-        errmsg{1} = sprintf('Maximum value is: %.2f',slider_max);
-        editVal = slider_max;
-        msgbox(errmsg,'Invalid Value','error');
-    elseif editVal < slider_min
-        errmsg{1} = sprintf('Minimum value is: %.2f',slider_min);
-        editVal = slider_min;
-        msgbox(errmsg,'Invalid Value','error');
-    end
-    set(hObject,'string',num2str(editVal));
-    set(slider_hdl,'value',editVal);
-else
-end
-% set(handles.edit_vibDuration,'string',num2str(delayVal));
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-% TIMER related
-function timerFcn_Callback(hObject,eventdata,handles)
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-avai_samples = handles.datalog.getavaisamples();
-comm_stat = handles.datalog.get_comm_status();
-buffer_stat = handles.datalog.get_buffer_status();
-set(handles.edit_datalog_avaisamples,'string', num2str(avai_samples),...
-    'backgroundcolor', 'w');
-if avai_samples < 0
-    set(handles.edit_datalog_avaisamples, 'backgroundcolor','r');
-end
-if comm_stat < 0    
-    set(handles.edit_datalog_hardwarecomm, 'string', 'COMM_ERROR',...
-        'backgroundcolor','r');    
-else
-    set(handles.edit_datalog_hardwarecomm, 'string', num2str(comm_stat),...
-        'backgroundcolor','w');    
-end
-if buffer_stat < 0    
-    set(handles.edit_datalog_bufferoverflow, 'string', 'OVERFLOW',...
-        'backgroundcolor','r');    
-else
-    set(handles.edit_datalog_bufferoverflow, 'string', num2str(buffer_stat),...
-        'backgroundcolor','w');    
-end
-if comm_stat < 0 || buffer_stat < 0
-    stop(hObject);
-else
-%     datalogval = handles.datalog.getdata();
-%     toc_startTime = toc(handles.startTime);
-%     if ~isempty(datalogval)
-%         addpoints(handles.dataLine,toc_startTime, datalogval(1));
-%         set(gca,'XLim',datenum([toc_startTime - handles.npts_dataLine/handles.loopRate,...
-%             toc_startTime]));
-%         drawnow limitrate;        
-% %         % Send EMG value
-% %         emg = datalogval(1)
-% %         msg = ['e', char(toByte(datalogval(1),handles.emgRange)),...
-% %             char(10)]; % Send 'e' character for EMG.
-% %         fwrite(handles.mySerial,msg);
-% %         fwrite(fid, [inChar; 13; 10], 'uint8');
-%     end
-end
-
-% thisStamp = tic;
-% Check if serial port is available and opened.
-% if ~isempty(handles.mySerial) && strcmpi(get(handles.mySerial,'status'),'open')
-% else
-%     stop(hObject);
-% end
-% % Read data from Serial port
-% nbyte_read = 3;
-% inChar = uint8(0);
-% serialVal = [];
-% if get(handles.mySerial, 'BytesAvailable') > 0
-%     inChar = fread(handles.mySerial,nbyte_read,'uint8');
-%     % Remove \r\n
-%     inChar(ismember(char(inChar),[10,13])) = [];
-%     % Decode Serial message
-%     if length(inChar) == nbyte_read
-%         uint16Data = inChar(1)*256+inChar(2);
-%         % Map byte to value
-%         res = bitshift(1,16) - 1;
-%         dataRange = [-90, 90];
-%         serialVal = double(uint16Data*diff(dataRange)/res + dataRange(1));
-%     end
-% end
-% % flushinput(handles.mySerial);
-% % Update plot
-% if ~isempty(serialVal)
-%     ax = gca;
-%     t = toc(handles.startTime);
-%     addpoints(handles.dataLine,t,serialVal);
-%     ax.XLim = datenum([t-10 t]);
-%     drawnow;
-% end
-% Update Status bar
-% jwait = get(handles.jwaitbarhdl,'value');
-% if jwait == 100, jwait = 0; end;
-% set(handles.jwaitbarhdl,'value',jwait + 1);
-% elapsedTime =  toc(thisStamp);
-% while (elapsedTime < handles.loopTime)
-%     elapsedTime = toc(thisStamp);
-% end
-% saveOpt = get(handles.checkbox_saveOption,'value');
-% if saveOpt == 1
-% fprintf(handles.fid,'%.3f \n',toc(handles.startTime));
-% handles.logData = [handles.logData; toc(handles.startTime)];
-% end
-% ==== END
-setappdata(handles.figure,'handles',handles);
-
-function timerStopFcn_Callback(hObject,eventdata,handles)
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-fprintf('Stop Timer.\n');
-% ==== END
-setappdata(handles.figure,'handles',handles);
-
-function timerErrorFcn_Callback(hObject,eventdata,handles)
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-% ==== END
-setappdata(handles.figure,'handles',handles);
-
-% PLAY and SAVE
-function pushbutton_datalogInit_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-% ==BIOMETRICS
-biometricslibname = 'OnLineInterface64.dll';
-if ~libisloaded(biometricslibname)
-    [notfound, warning] = loadlibrary(biometricslibname);
-    fprintf('Lib: %s is loaded.\n', biometricslibname);
-else
-    fprintf('Lib: %s is already loaded.\n', biometricslibname);
-end
-% Get number of channels
-used_chans = [];
-type_chans = {};
-ch_gains = [];
-k = 1;
-for i = 1 : handles.nb_chans
-    isuse = get(handles.checkbox_chinfo(i), 'value');    
-    if isuse == 1
-        used_chans(k) = i;
-        ch_gains(k) = str2double(get(handles.edit_calib(i),'string'));
-        temp = get(handles.popupmenu_chinfo(i),'value');
-        if temp == 1;
-            type_chans{k} = 'gonio';
-        else
-            type_chans{k} = 'emg';
-        end
-        k = k + 1;
-    end
-end
-datalog = class_Biometrics_64bits_ASR_V2('numberofvalues',1,...
-    'usech', used_chans, ...
-    'sensor', type_chans,...
-    'gain', ch_gains);
-set(handles.edit_datalog_samplingrate, 'string', num2str(datalog.getsamplerate));
-datalog.clearBuffer;
-handles.datalog = datalog;
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-
-function pushbutton_play_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-% Reset plot
-axes(handles.axes_serial);
-cla(gca,'reset');
-set(gca,'ylim', handles.emgRange);
-
-xlabel(gca,'Time (s)');
-ylabel(gca,'Datalog');
-% Animated line
-npts_dataLine = 3*handles.loopRate;
-set(gca,'xlim', [0,10]);
-% dataLine = animatedline('MaximumNumPoints',npts_dataLine,...
-%     'color','k');
-dataLine = animatedline('color','k'); %**** Changed here *****
-handles.npts_dataLine = npts_dataLine;
-handles.dataLine = dataLine;
-% bin_filename = strrep('emglogfile.bin');
-if strfind(lower(get(hObject, 'string')), 'play')
-    set(hObject, 'string', icontext(handles.iconlist.status.stop,'STOP'));    
-    handles.startTime = tic;
-    
-    
-    Datalog_it.values = libstruct('tagSAFEARRAY'); % this is the array that receives data from OnLineInterface
-    Datalog_it.values.cDims = int16(1);
-    Datalog_it.values.cbElements = 2;   % 2-byte values
-    Datalog_it.values.cLocks = 0;
-    Datalog_it.pdataNum = libpointer('int32Ptr', 0);   % some pointers needed by OnLineInterface
-    Datalog_it.pStatus = libpointer('int32Ptr',0);
-    Datalog_it.EMG_data=[];
- 
-    %***** Double check this guy!!
-    Datalog_it.ch = 0; 
-    calllib('OnLineInterface64', 'OnLineStatus', Datalog_it.ch, OLI.ONLINE_GETRATE, Datalog_it.pStatus);
-
-    % get the sample rate which is returned as an integer
-    Datalog_it.sampleRate = double(Datalog_it.pStatus.Value); % force all maths using sampleRate to use floating point
-%                      
-    calllib('OnLineInterface64', 'OnLineStatus', Datalog_it.ch, OLI.ONLINE_GETSAMPLES, Datalog_it.pStatus);
-    if (Datalog_it.pStatus.Value > 0)     % empty buffer only if something is in it and an error has not occurred (-ve)
-        mSinBuffer = floor(Datalog_it.pStatus.Value * 1000 / Datalog_it.sampleRate);  % round down mS; note that a number of mS must be passed to OnLineGetData.
-        numberInBuffer = mSinBuffer * Datalog_it.sampleRate / 1000;        % recalculate after a possible rounding
-        Datalog_it.values.rgsabound.cElements = numberInBuffer;            % initialise array to receive the new data
-        Datalog_it.values.rgsabound.lLbound = numberInBuffer;
-        Datalog_it.values.pvData = int16(1:numberInBuffer);
-        calllib('OnLineInterface64', 'OnLineGetData', Datalog_it.ch, mSinBuffer, Datalog_it.values, Datalog_it.pdataNum);
-    end
-
-    calllib('OnLineInterface64','OnLineStatus', Datalog_it.ch, OLI.ONLINE_START, Datalog_it.pStatus); 
-    Datalog_it.inputIndex=1; Datalog_it.datalogval=[];graph_endpoint=10* Datalog_it.sampleRate;
-    while(1)
-        [handles,Datalog_it] = handles.datalog.getdata(handles,Datalog_it);
-
-
-        if Datalog_it.numberOfSamplesReceived~=0
-                    addpoints(handles.dataLine,...
-                                                double([Datalog_it.inputIndex:Datalog_it.inputIndexEnd])/Datalog_it.sampleRate,...
-                                                double(Datalog_it.values.pvData)*3/4000); 
-        end
-        Datalog_it.inputIndex = Datalog_it.inputIndex + Datalog_it.numberOfSamplesReceived; 
-        if Datalog_it.inputIndexEnd>graph_endpoint
-                Datalog_it.inputIndex=1;
-                clearpoints(handles.dataLine)
-        end
-    end
+% --- Executes on button press in str2double(get(hObject,'String'))_train.
+function button_train_Callback(hObject, eventdata, handles)
+% Parse params struct into handles
+handles = neuroleg_realtime_parsehandles(handles);
+% Loop through each training iteration
+for aa = 1:handles.params.setup.trainiterations
+    StartButton = questdlg(['Iteration ' num2str(aa) ': Ready to start?'],'Stream Data','Start','Stop','Stop');
+    switch StartButton
+        case 'Start'
             
-
-%     handles.datalog.start;    
-%     handles.fid = fopen(fullfile(currdir, bin_filename),'w');
-    setappdata(handles.figure,'handles',handles);    
-%     start(handles.mytimer);
-else
-    set(hObject, 'string', icontext(handles.iconlist.action.play,'PLAY'));
-    stop(handles.mytimer);
-    assignin('base','EMG_data',Datalog_it.EMG_data)
-%     fclose(handles.fid);
-    handles.datalog.stop;
-end
-% while(1)
-
-
-% end
-% ==== END
-fprintf('DONE: %s.\n',thisFuncName);
-setappdata(handles.figure,'handles',handles);
-
-% DATALOG SETTING
-function popupmenu_chinfo_Callback(hObject,eventdata,handles)
-[stacktrace, ~]=dbstack;
-thisFuncName=stacktrace(1).name;
-fprintf('RUNNING: %s.\n',thisFuncName);
-% ==== GUI INPUT
-handles=getappdata(handles.figure,'handles');
-% ==== START
-tagstr = get(hObject, 'tag');
-chType = get(hObject, 'value');
-for i = 1 : 8
-    if strcmpi(tagstr, sprintf('popup%d',i));
-        if chType == 1
-            gain = num2str(180/4000);
-        else
-            gain = num2str(3/4000);
-        end
-        set(handles.edit_calib(i), 'string', gain)
+            % Make sure biometrics is initialized
+            if ~isfield(handles,'biometrics') || isempty(handles.biometrics)
+                button_biometrics_init_Callback(handles.button_biometrics_init,eventdata,handles);
+            end
+            
+            if isempty(handles.biometrics)
+                disp('Biometrics not initialized. Check connection.');
+                return;
+            end
+            
+            % Start Data Collection
+            handles.biometrics.clearbuffer;
+            % Open serial if closed and ON = true
+            if handles.synchbox_checkbox.Value && strcmpi(handles.teensySynch.Status,'closed')
+                fopen(handles.teensySynch)
+            end
+            if handles.neuroleg_checkbox.Value && strcmpi(handles.teensyLeg.Status,'closed')
+                fopen(handles.teensyLeg)
+            end
+            % Run training - leg 1
+            if handles.radio_predict_intact.Value || handles.radio_predict_both.Value
+                handles.params.fig = build_movement_fig(handles.params.sinewave);
+                [EEG_ALL{1,aa},BIO_ALL{1,aa},ANGLES_ALL{1,aa}] = neuroleg_realtime_stream(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,0);
+            end
+            close(handles.params.fig.f);
+            
+            % Pause between iterations to continue
+            if handles.radio_predict_both.Value
+                StartButton2 = questdlg(['Next leg. Ready to start?'],'Stream Data','Start','Stop','Stop');
+                switch StartButton2
+                    case 'Start'
+                        % continue to next trial
+                    otherwise
+                        % Just in case not previously stopped
+                        handles.biometrics.stop;
+                        figHandles = findall(groot, 'Type', 'figure');
+                        thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+                        closefigs = setdiff(1:length(figHandles),thisFig);
+                        close(figHandles(closefigs));
+                        % Close all serial
+                        fclose(instrfind);
+                        return;
+                end
+            end
+            
+            % Run training - leg 2
+            if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
+                handles.params.fig = build_movement_fig(handles.params.sinewave);
+                [EEG_ALL{2,aa},BIO_ALL{2,aa},ANGLES_ALL{2,aa}] = neuroleg_realtime_stream(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,1);
+            end
+            close(handles.params.fig.f);
+            
+            % Close all serial
+            fclose(instrfind);
+            
+        otherwise
+            % Just in case not previously stopped
+            handles.biometrics.stop;
+            figHandles = findall(groot, 'Type', 'figure');
+            thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+            closefigs = setdiff(1:length(figHandles),thisFig);
+            close(figHandles(closefigs));
+            % Close all serial
+            fclose(instrfind);
+            return;
     end
 end
 
-function yout = toByte(xIn, range)
-% This function convert an input xIn within a range into
-% two byte valute;
-nbits = 16; % 
-a = range(1); b = range(2);
-res = bitshift(1,nbits)-1;
-temp = uint16(res*(xIn - a)/(b-a));
-yout = typecast(swapbytes(temp),'uint8');
+% Save raw data
+subname = handles.edit_subject_name.String;
+flname0 = [strjoin({subname,'train','rawdata',datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+params = rmfield(handles.params,'fig');
+save(flname0,'params','EEG_ALL','BIO_ALL','ANGLES_ALL');
+
+% Initialize empty variables
+cleaneeg = cell(2,1);
+filteeg  = cell(2,1);
+filtemg  = cell(2,1);
+envemg   = cell(2,1);
+
+% Train model - intact
+if handles.radio_predict_intact.Value || handles.radio_predict_both.Value
+    EEG_TEMP = EEG_ALL(1,:); BIO_TEMP = BIO_ALL(1,:); ANGLES_TEMP = ANGLES_ALL(1,:);
+    [handles.params,intact.KF_EMG,intact.KF_EEG,cleaneeg{1},filteeg{1},filtemg{1},envemg{1}] = neuroleg_realtime_train(handles.params,cat(2,EEG_TEMP{:}),cat(2,BIO_TEMP{:}),cat(2,ANGLES_TEMP{:}));
+else
+    intact = [];
+end
+
+% Train model - phantom
+if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
+    EEG_TEMP = EEG_ALL(2,:); BIO_TEMP = BIO_ALL(2,:); ANGLES_TEMP = ANGLES_ALL(2,:);
+    [handles.params,phantom.KF_EMG,phantom.KF_EEG,cleaneeg{2},filteeg{2},filtemg{2},envemg{2}] = neuroleg_realtime_train(handles.params,cat(2,EEG_TEMP{:}),cat(2,BIO_TEMP{:}),cat(2,ANGLES_TEMP{:}));
+else
+    phantom = [];
+end
+
+% Store in handles
+handles.intact = intact;
+handles.phantom = phantom;
+
+% Save Kalman Filter model
+params = rmfield(handles.params,'fig');
+flname1 = [strjoin({subname,'train','model',datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+save(flname1,'params','intact','phantom');
+% Save training data after cleaning
+flname2 = [strjoin({subname,'train','traindata',datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+save(flname2,'cleaneeg','filteeg','filtemg','envemg');
+
+% Just in case not previously stopped
+handles.biometrics.stop;
+figHandles = findall(groot, 'Type', 'figure');
+thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+closefigs = setdiff(1:length(figHandles),thisFig);
+close(figHandles(closefigs));
+% Close all serial
+fclose(instrfind);
+
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in button_test.
+function button_test_Callback(hObject, eventdata, handles)
+% Parse params struct into handles
+handles = neuroleg_realtime_parsehandles(handles);
+% Start button
+StartButton = questdlg('Ready to start?','Stream Data','Start','Stop','Stop');
+if isfield(handles,'phantom') && isfield(handles,'intact')    
+switch StartButton
+    case 'Start'
+        % Start Data Collection
+        if ~isfield(handles,'biometrics')
+            button_biometrics_init_Callback(handles.button_biometrics_init,eventdata,handles);
+        end
+        
+        if isempty(handles.biometrics)
+            disp('Biometrics not initialized. Check connection.');
+            return;
+        end
+        
+        handles.biometrics.clearbuffer;
+        % Run testing
+        if (handles.radio_predict_intact.Value || handles.radio_predict_both.Value) && ~isempty(handles.intact)
+            handles.params.fig = build_movement_fig(handles.params.sinewave);
+            [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.intact.KF_EEG,handles.intact.KF_EMG);
+        end
+        
+        % Pause between iterations to continue
+        if handles.radio_predict_both.Value
+            StartButton2 = questdlg(['Next leg. Ready to start?'],'Stream Data','Start','Stop','Stop');
+            switch StartButton2
+                case 'Start'
+                    % continue to next trial
+                otherwise
+                    % Just in case not previously stopped
+                    handles.biometrics.stop;
+                    figHandles = findall(groot, 'Type', 'figure');
+                    thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+                    closefigs = setdiff(1:length(figHandles),thisFig);
+                    close(figHandles(closefigs));
+                    % Close all serial
+                    fclose(instrfind);
+                    return;
+            end
+        end
+        
+        if (handles.radio_predict_phantom.Value || handles.radio_predict_both.Value) && ~isempty(handles.phantom)
+            [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG);
+        end
+        fclose(instrfind);
+    otherwise
+        % Just in case not previously stopped
+        handles.biometrics.stop;
+        figHandles = findall(groot, 'Type', 'figure');
+        thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+        closefigs = setdiff(1:length(figHandles),thisFig);
+        close(figHandles(closefigs));
+        % Close all serial
+        fclose(instrfind);
+        % Update handles structure
+        guidata(hObject, handles);
+        return;
+end
+
+subname = handles.edit_subject_name.String;
+flname = [strjoin({subname,'test','data',control,datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+save(flname,'SYNCHEEG','SYNCHCLEANEEG','SYNCHFILTEEG','SYNCHBIO','SYNCHANGLE','WINBIO','WINEEG','predicted_value','predictedFromEEG','predictedFromEMG');
+
+else
+    disp('No model avaialble. Please train or load model.');
+end
+
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in button_freemove.
+function button_freemove_Callback(hObject, eventdata, handles)
+% hObject    handle to button_freemove (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDEmDATA)
+
+% --- Executes on button press in button_loadtrain.
+function button_loadtrain_Callback(hObject, eventdata, handles)
+% hObject    handle to button_loadtrain (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDEmDATA)
 
 
+% --- Executes on button press in button_trainmerge.
+function button_trainmerge_Callback(hObject, eventdata, handles)
+% hObject    handle to button_trainmerge (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDEmDATA)
+
+
+% --- Executes on button press in button_stop.
+function button_stop_Callback(hObject, eventdata, handles)
+% hObject    handle to button_stop (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDEmDATA)
+
+% --- Executes on button press in checkbox_enable_eeg.
+function checkbox_enable_eeg_Callback(hObject, eventdata, handles)
+if hObject.Value == 0
+    handles.eeg_nbchans.Enable           = 'off';
+    handles.edit_eeg_srate.Enable        = 'off';
+    handles.edit_eeg_filtfreq.Enable     = 'off';
+    handles.edit_hinf_gamma.Enable       = 'off';
+    handles.edit_hinf_q.Enable           = 'off';
+    handles.edit_eeg_predict_gain.Enable = 'off';
+    handles.zscore_eegdata.Enable        = 'off';
+    handles.radio_eeg_control.Enable     = 'off';
+    handles.eeg_gain_auto.Enable         = 'off';
+else
+    handles.eeg_nbchans.Enable           = 'on';
+    handles.edit_eeg_srate.Enable        = 'on';
+    handles.edit_eeg_filtfreq.Enable     = 'on';
+    handles.edit_hinf_gamma.Enable       = 'on';
+    handles.edit_hinf_q.Enable           = 'on';
+    handles.edit_eeg_predict_gain.Enable = 'on';
+    handles.zscore_eegdata.Enable        = 'on';
+    handles.radio_eeg_control.Enable     = 'on';
+    handles.eeg_gain_auto.Enable         = 'on';
+end
+
+% --- Executes on button press in checkbox_enable_biometrics.
+function checkbox_enable_biometrics_Callback(hObject, eventdata, handles)
+if hObject.Value == 0
+    handles.checkbox_channel1.Enable      = 'off';
+    handles.checkbox_channel2.Enable      = 'off';
+    handles.checkbox_channel3.Enable      = 'off';
+    handles.checkbox_channel4.Enable      = 'off';
+    handles.checkbox_channel5.Enable      = 'off';
+    handles.checkbox_channel6.Enable      = 'off';
+    handles.checkbox_channel7.Enable      = 'off';
+    handles.checkbox_channel8.Enable      = 'off';
+    handles.checkbox_digitals.Enable      = 'off';
+    handles.chanselect1.Enable            = 'off';
+    handles.chanselect2.Enable            = 'off';
+    handles.chanselect3.Enable            = 'off';
+    handles.chanselect4.Enable            = 'off';
+    handles.chanselect5.Enable            = 'off';
+    handles.chanselect6.Enable            = 'off';
+    handles.chanselect7.Enable            = 'off';
+    handles.chanselect8.Enable            = 'off';
+    handles.button_biometrics_init.Enable = 'off';
+    handles.edit_biometrics_srate.Enable  = 'off';
+    handles.edit_emg_filtfreq.Enable      = 'off';
+    handles.zscore_emgdata.Enable         = 'off';
+    handles.radio_emg_control.Enable      = 'off';
+else
+    handles.checkbox_channel1.Enable      = 'on';
+    handles.checkbox_channel2.Enable      = 'on';
+    handles.checkbox_channel3.Enable      = 'on';
+    handles.checkbox_channel4.Enable      = 'on';
+    handles.checkbox_channel5.Enable      = 'on';
+    handles.checkbox_channel6.Enable      = 'on';
+    handles.checkbox_channel7.Enable      = 'on';
+    handles.checkbox_channel8.Enable      = 'on';
+    handles.checkbox_digitals.Enable      = 'on';
+    handles.chanselect1.Enable            = 'on';
+    handles.chanselect2.Enable            = 'on';
+    handles.chanselect3.Enable            = 'on';
+    handles.chanselect4.Enable            = 'on';
+    handles.chanselect5.Enable            = 'on';
+    handles.chanselect6.Enable            = 'on';
+    handles.chanselect7.Enable            = 'on';
+    handles.chanselect8.Enable            = 'on';
+    handles.button_biometrics_init.Enable = 'on';
+    handles.edit_biometrics_srate.Enable  = 'on';
+    handles.edit_emg_filtfreq.Enable      = 'on';
+    handles.zscore_emgdata.Enable         = 'on';
+    handles.radio_emg_control.Enable      = 'on';
+end
+% Update handles structure
+guidata(hObject, handles);
+
+function eeg_nbchans_Callback(hObject, eventdata, handles)
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function eeg_nbchans_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function edit_biometrics_srate_Callback(hObject, eventdata, handles)
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_biometrics_srate_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function edit_subject_name_Callback(hObject, eventdata, handles)
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_subject_name_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in zscore_eegdata.
+function zscore_eegdata_Callback(hObject, eventdata, handles)
+
+
+function edit_eeg_filtfreq_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function edit_eeg_filtfreq_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in neuroleg_checkbox.
+function neuroleg_checkbox_Callback(hObject, eventdata, handles)
+% If checked, turn on teensy
+fclose(instrfind);
+try
+    teensyLeg = serial('COM32','BaudRate',115200);
+    fopen(teensyLeg);
+    % Add to handles
+    handles.teensyLeg = teensyLeg;
+catch err
+    disp(err.message);
+    fprintf(['\n-------------------------------',...
+        '\n\n   Is the teensy plugged in? \n\n',...
+        '-------------------------------\n'])
+    handles.teensyLeg = [];
+    hObject.Value = 0;
+end
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in synchbox_checkbox.
+function synchbox_checkbox_Callback(hObject, eventdata, handles)
+% If checked, turn on teensy
+fclose(instrfind);
+if hObject.Value
+    try
+        teensySynch = serial('COM34','BaudRate',115200);
+        fopen(teensySynch);
+        % Add to handles
+        handles.teensySynch = teensySynch;
+    catch err
+        disp(err.message);
+        fprintf(['\n-------------------------------',...
+            '\n\n   Is the teensy plugged in? \n\n',...
+            '-------------------------------\n'])
+        handles.teensySynch = [];
+        hObject.Value = 0;
+    end
+end
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in button_biometrics_init.
+function button_biometrics_init_Callback(hObject, eventdata, handles)
+use_channels = [];
+chantype     = [];
+% Check for each channel type 0-7
+cnt = 1;
+for ii = 1:8
+    eval(['val = handles.checkbox_channel' num2str(ii) '.Value;'])
+    if val
+        use_channels = [use_channels, ii - 1];
+        eval(['idx = handles.chanselect' num2str(ii) '.Value;'])
+        eval(['chantype{cnt} = handles.chanselect' num2str(ii) '.String{idx};'])
+        cnt = cnt + 1;
+    end
+end
+% Check digital channels
+val = handles.checkbox_digitals.Value;
+if val
+    use_channels = [use_channels, ii];
+    chantype{cnt}    = 'DIGITAL';
+end
+% Setup biometrics
+if ~isempty(use_channels)
+    try
+        b = biometrics_datalog('usech',use_channels,'chantype',chantype);
+        % Add to handles
+        handles.biometrics = b;
+    catch err
+        disp(err.message)
+    end
+else
+    handles.biometrics = [];
+    disp('No channels selected.');
+end
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in checkbox_channel1.
+function checkbox_channel1_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect1.
+function chanselect1_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect1_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel2.
+function checkbox_channel2_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect2.
+function chanselect2_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect2_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel3.
+function checkbox_channel3_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect3.
+function chanselect3_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect3_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel4.
+function checkbox_channel4_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect4.
+function chanselect4_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect4_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel5.
+function checkbox_channel5_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect5.
+function chanselect5_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect5_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel6.
+function checkbox_channel6_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect6.
+function chanselect6_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect6_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel7.
+function checkbox_channel7_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect7.
+function chanselect7_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect7_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_channel8.
+function checkbox_channel8_Callback(hObject, eventdata, handles)
+
+% --- Executes on selection change in chanselect8.
+function chanselect8_Callback(hObject, eventdata, handles)
+
+% --- Executes during object creation, after setting all properties.
+function chanselect8_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in checkbox_digitals.
+function checkbox_digitals_Callback(hObject, eventdata, handles)
+
+function edit_eeg_srate_Callback(hObject, eventdata, handles)
+% Get EEG srate
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_eeg_srate_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% Get dir name
+function dir_name_Callback(hObject, eventdata, handles)
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function dir_name_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+handles.dir_name.string = pwd;
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in button_savedir.
+function button_savedir_Callback(hObject, eventdata, handles)
+savedir = uigetdir(pwd);
+handles.dir_name.String = savedir;
+handles.button_savedir.UserData =  savedir;
+% Update handles structure
+guidata(hObject, handles);
+
+function edit_emg_filtfreq_Callback(hObject, eventdata, handles)
+% EMG filter freq
+hObject.Value = str2num(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_emg_filtfreq_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function edit_hinf_gamma_Callback(hObject, eventdata, handles)
+% Hinfinity gamma
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_hinf_gamma_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function edit_hinf_q_Callback(hObject, eventdata, handles)
+% Hinfinity q
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_hinf_q_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% Edit box for Kalman filter order
+function edit_kalman_ord_Callback(hObject, eventdata, handles)
+% Kalman order
+hObject.Value = str2num(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_kalman_ord_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function edit_eeg_predict_gain_Callback(hObject, eventdata, handles)
+% Prediction gain
+hObject.Value;
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_eeg_predict_gain_CreateFcn(hObject, eventdata, handles)
+% Set default
+hObject.Value = 1;
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in eeg_gain_auto.
+function eeg_gain_auto_Callback(hObject, eventdata, handles)
+% Turn off manual gain entry if auto is chosen
+if hObject.Value
+    handles.edit_eeg_predict_gain.Enable = 'off';
+else
+    handles.edit_eeg_predict_gain.Enable = 'on';
+end
+% Update handles structure
+guidata(hObject, handles);
+
+function edit_move_freq_Callback(hObject, eventdata, handles)
+% Update value
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_move_freq_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+function edit_cycles_per_trial_Callback(hObject, eventdata, handles)
+% Update value
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_cycles_per_trial_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+function edit_num_trainiter_Callback(hObject, eventdata, handles)
+% Update value
+hObject.Value = str2double(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_num_trainiter_CreateFcn(hObject, eventdata, handles)
+
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% Edit box for Kalman filter lambda values
+function edit_kalman_lambda_Callback(hObject, eventdata, handles)
+% Update value
+hObject.Value = str2num(hObject.String);
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes during object creation, after setting all properties.
+function edit_kalman_lambda_CreateFcn(hObject, eventdata, handles)
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+% --- Executes on button press in zscore_emgdata.
+function zscore_emgdata_Callback(hObject, eventdata, handles)
+% Update handles structure
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_eeg_control.
+function radio_eeg_control_Callback(hObject, eventdata, handles)
+if handles.checkbox_enable_biometrics.Value
+    handles.radio_emg_control.Value = ~hObject.Value;
+end
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_emg_control.
+function radio_emg_control_Callback(hObject, eventdata, handles)
+if handles.checkbox_enable_eeg.Value
+    handles.radio_eeg_control.Value = ~hObject.Value;
+end
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_predict_phantom.
+function radio_predict_phantom_Callback(hObject, eventdata, handles)
+handles.radio_predict_intact.Value = ~hObject.Value;
+handles.radio_predict_both.Value = ~hObject.Value;
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_predict_intact.
+function radio_predict_intact_Callback(hObject, eventdata, handles)
+handles.radio_predict_phantom.Value = ~hObject.Value;
+handles.radio_predict_both.Value = ~hObject.Value;
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_predict_both.
+function radio_predict_both_Callback(hObject, eventdata, handles)
+handles.radio_predict_intact.Value = ~hObject.Value;
+handles.radio_predict_phantom.Value = ~hObject.Value;
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_phantom_left.
+function radio_phantom_left_Callback(hObject, eventdata, handles)
+handles.radio_phantom_right.Value = ~hObject.Value;
+guidata(hObject, handles);
+
+% --- Executes on button press in radio_phantom_right.
+function radio_phantom_right_Callback(hObject, eventdata, handles)
+handles.radio_phantom_left.Value = ~hObject.Value;
+guidata(hObject, handles);

@@ -27,13 +27,15 @@ train_iters   = 4;
 standardizeEEG  = 1;
 standardizeEMG  = 1;
 control        = 'EMG';
+eeggain        = 1;
 
 % Store setup variables
 setup         = struct('emgsrate',emgsrate,'eegsrate',eegsrate,'updaterate',updaterate,...
     'numEEGchans',numEEGchans,'EOGchannels',EOGchannels,'numEOGchans',numEOGchans,'numEEGpnts',numEEGpnts,...
     'chans2keep',chans2keep,'allEEGchans',allEEGchans,'numBIOchans',numBIOchans,'BIOchannels',BIOchannels,...
     'joint_angles',joint_angles,'time2cut',time2cut,'trainiterations',train_iters,...
-    'standardizeEEG',standardizeEEG,'standardizeEMG',standardizeEMG,'control',control);
+    'standardizeEEG',standardizeEEG,'standardizeEMG',standardizeEMG,'control',control,...
+    'EEGgain',eeggain);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                  %

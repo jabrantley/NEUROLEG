@@ -62,6 +62,9 @@ while repeat
     cycle_time       = zeros(1,length(params.sinewave.time));
     predicted_value  = zeros(1,length(params.sinewave.time));
     
+    % Get channel gain 
+    gain = params.setup.EEGgain;
+    
     % Plot for EMG - activate sine axes
     axes(params.fig.f.Children(1));
     hold on;
@@ -161,8 +164,6 @@ while repeat
                         params.fig.s1.XData = params.sinewave.time(counter);
                         params.fig.s1.YData = params.sinewave.wave(counter)/max(params.sinewave.wave);
                         
-                        % Update counter
-                        counter = counter + 1;
                         
                         if counter > length(params.sinewave.wave)
                             finish = true;
@@ -211,6 +212,9 @@ while repeat
                             end
                             endBIO = startBIO + size(biodata,2) - 1;
                             RAWBIO(:,startBIO:endBIO) = biodata;
+                            if any(b.usech >= 8)
+                                MRKRBIO(:,startBIO:endBIO) = biodigi;
+                            end
                             MRKRBIO(:,startBIO:endBIO) = biodigi;
                             startBIO = endBIO + 1;
                         end
@@ -246,7 +250,7 @@ while repeat
                         
                         % Zscore data based on train data
                         if params.setup.standardizeEEG
-                            filteeg = bsxfun(@rdivide,bsxfun(@minus,filteeg,eegMean),eegStDv);
+                            filteeg = bsxfun(@rdivide,bsxfun(@minus,filteeg,KF_EEG.mu),KF_EEG.sigma);
                         end
                         
                         if params.setup.standardizeEMG
@@ -290,9 +294,9 @@ while repeat
                         LAGEEG = transpose(LAGEEG);
                         
                         % Assign value and save
-                        if strcmpi(control,'EEG')
+                        if strcmpi(params.setup.control,'EEG')
                             final_predicted_value = predictedFromEEG(1,counter);
-                        elseif strcmpi(control,'EMG')
+                        elseif strcmpi(params.setup.control,'EMG')
                             final_predicted_value = predictedFromEMG(1,counter);
                         end
                         
@@ -320,6 +324,11 @@ while repeat
                         end
                         
                         cycle_time(counter) = toc(start_time);
+                        
+                        % Update counter
+                        counter = counter + 1;
+                        
+                        
                     case 3       % Stop message
                         disp('Stop');
                         data = pnet(con, 'read', hdr.size - header_size);
@@ -349,7 +358,7 @@ while repeat
     % Plot data for display purposes
     bc = blindcolors;
     r2_val = KalmanFilter.rsquared(params.sinewave.wave,predicted_value);
-    if strcmpi(control,'EMG')
+    if strcmpi(params.setup.control,'EMG')
         figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
         fill(params.sinewave.time,WINBIO,0.7.*ones(1,3),'edgecolor','none'); hold on;
         plot(params.sinewave.time,params.sinewave.wave./params.setup.joint_angles(2),'color',bc(6,:),'linewidth',2);
@@ -358,7 +367,7 @@ while repeat
         ax.XColor = 'w'; ax.YColor = 'w';
         legend({'EMG Envelope','Desired Angle','Predicted Angle'})
         title(['R^{2} = ' num2str(round(r2_val,2))]);
-    elseif strcmpi(control,'EEG')
+    elseif strcmpi(params.setup.control,'EEG')
         figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
         plot(params.sinewave.time,transpose(WINEEG)./max(WINEEG(:)),'color',0.7.*ones(1,3),'linewidth',2); hold on;
         plot(params.sinewave.time,params.sinewave.wave./params.setup.joint_angles(2),'color',bc(6,:),'linewidth',2);

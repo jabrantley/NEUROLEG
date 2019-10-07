@@ -26,6 +26,8 @@ if handles.radio_eeg_control.Value && ~handles.radio_emg_control.Value
 elseif ~handles.radio_eeg_control.Value && handles.radio_emg_control.Value
     params.setup.control = 'EMG';
 end
+% Get EEG gain
+params.setup.EEGgain = handles.edit_eeg_predict_gain.Value;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                  %

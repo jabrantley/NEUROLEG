@@ -198,7 +198,7 @@ while repeat
                             end
                             startBIO = endBIO + 1;
                             p_emg.XData(counter) = params.sinewave.time(counter);
-                            p_emg.YData(counter) = quantile((abs(biodata(b.usech(1),:))./3),.85);
+                            p_emg.YData(counter) = quantile((abs(biodata(1,:))./3),.85);
                         end
                         
                     case 3       % Stop message
