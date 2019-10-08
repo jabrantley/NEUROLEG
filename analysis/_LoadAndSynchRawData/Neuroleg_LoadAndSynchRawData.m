@@ -485,7 +485,7 @@ for aa = 3 %1:length(subs)
         bipolarEOG = [EEG.eogdata(3,:)-EEG.eogdata(4,:);
             EEG.eogdata(1,:)-EEG.eogdata(2,:);
             ones(1,size(EEG.data,2))];
-        hinfdata = hinfinity(EEG.data',bipolarEOG','parallel','on');
+        hinfdata = hinfinity(EEG.data',bipolarEOG','parallel','on','gamma',1.1);
         %EEG.prehinf = EEG.data;
         EEG.data = hinfdata';
         

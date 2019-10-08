@@ -39,7 +39,7 @@ end
 
 % Initialize matrices
 sh    = zeros(size(Yf));           % Filtered data
-wh    = zeros(3,size(Yf,2));               % Weights matrix
+wh    = zeros(size(Rf,1),size(Yf,2));               % Weights matrix
 
 % SET DEFAULT PARAMETERS
 gamma = 1.15;                      % Controls supression.  1.05:.05:1.50 all ok.  1.15 seems best

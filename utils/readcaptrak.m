@@ -5,7 +5,7 @@
 % Adapted from code provided by Trieu Phat Luu and Atilla Kilicarslan
 % Laboratory for Non Invasive Brain Machine Interface Systems
 % University of Houston
-% Written by: Justin Brantley
+% Written by: Justin Brantley (justin dot a dot brantley at gmail dot com)
 % 08/07/2019
 function chanlocs = readcaptrak(filename)
 % Parse xml
@@ -74,8 +74,7 @@ end
 function idx = neuroleg_cap(label)
 % Ref:
 % actiCap montage: http://www.brainproducts.com/downloads.php?kid=8
-% FT9 move to GND, AFz and FT10 move to Ref, FCz; ?? Check with Justin
-% Captrack file didn't change FT9 to AFz and FT10 to FCz.
+% FT9 move to GND, AFz and FT10 move to Ref, FCz
 % Remove 4 channels for EOG in Captrak: PO9, PO10, TP9, TP10
 actiCaplabel = {'Fp1','Fp2',...                 % Green label channel
     'F7','F3','Fz','F4','F8',...
