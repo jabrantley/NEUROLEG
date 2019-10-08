@@ -111,7 +111,11 @@ classdef biometrics_datalog < hgsetget
         function getchannelgain(self)
             channel_gains = zeros(length(self.usech),1);
             for aa = 1:length(self.usech)
+                if length(self.usech) > 1
                 channel_type = self.chantype{aa};
+                else
+                    channel_type = self.chantype;
+                end
                 switch lower(channel_type)
                     case 'emg'
                         channel_gains(aa) = self.EMG_GAIN;
