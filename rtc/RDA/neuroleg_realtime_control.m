@@ -33,7 +33,7 @@
 % ***********************************************************************
 
 % Main RDA Client function
-function [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG)
+function out = neuroleg_realtime_control(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG)
 %SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHFILTEMG,SYNCHENVEMG,
 
 repeat = 1;
@@ -75,11 +75,22 @@ while repeat
     s_predict2 = scatter(0,0,'filled');
     
     % Open serial if closed and ON = true
-    if ~isempty(teensySynch) && strcmpi(teensySynch.Status,'closed')
+    if isempty(teensySynch)
+        fprintf(['\n-------------------------------',...
+        '\n\n No synchbox. Synchronization cannot occur. \n\n',...
+        '-------------------------------\n'])
+        out = [];
+        return;
+    elseif ~isempty(teensySynch) && strcmpi(teensySynch.Status,'closed')
         fopen(teensySynch)
     end
-    if ~isempty(teensyLeg) && strcmpi(teensyLeg.Status,'closed')
-        fopen(teensyLeg)
+    
+    if isempty(teensyLeg)
+        fprintf(['\n\n-------------------------------',...
+        '\n\n Neuroleg not connected. No leg control. \n\n',...
+        '-------------------------------\n'])
+    elseif ~isempty(teensyLeg) && strcmpi(teensyLeg.Status,'closed')
+        fopen(teensyLeg) 
     end
     
      % Initialize
@@ -151,11 +162,16 @@ while repeat
                        
                     case 4       % 32Bit Data block
                         
-                        
                         if counter == 1
                             % Get start time
                             start_time = tic;
                         end
+                        
+                        if counter > length(params.sinewave.wave)
+                            finish = true;
+                            break;
+                        end
+                        
                         % Update line figure
                         params.fig.s.XData = params.sinewave.wave(counter);
                         params.fig.s.YData = params.sinewave.wave(counter);
@@ -164,11 +180,6 @@ while repeat
                         params.fig.s1.XData = params.sinewave.time(counter);
                         params.fig.s1.YData = params.sinewave.wave(counter)/max(params.sinewave.wave);
                         
-                        
-                        if counter > length(params.sinewave.wave)
-                            finish = true;
-                            break;
-                        end
                         % Read data and markers from message
                         [datahdr, data, markers] = ReadDataMessage(con, hdr, props);
                         
@@ -328,7 +339,7 @@ while repeat
                         % Update counter
                         counter = counter + 1;
                         
-                        
+                    
                     case 3       % Stop message
                         disp('Stop');
                         data = pnet(con, 'read', hdr.size - header_size);
@@ -423,7 +434,14 @@ SYNCHCLEANEEG = HINFEEG(:,abs(IDXshift):minPoints);
 SYNCHFILTEEG = FILTEREEG(:,abs(IDXshift):minPoints);
 SYNCHANGLE = ANGLEVEC(:,abs(IDXshift):minPoints);
 
+out = struct('EEGRAW',SYNCHEEG,'EEGCLEAN',SYNCHCLEANEEG,'EEGFILT',SYNCHFILTEEG,...
+             'BIO',SYNCHBIO,'ANGLE',SYNCHANGLE,'WINBIO',WINBIO,'WINEEG',WINEEG,...
+             'predictedValue',predicted_value,'predictedFromEEG',predictedFromEEG,...
+             'predictedFromEMG',predictedFromEMG);
+         out = out;
+         
 % Display a message
+
 disp('Done streaming EEG and Biometrics.');
 
 

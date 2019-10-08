@@ -19,7 +19,6 @@ function varargout = NEUROLEG_GUIDE(varargin)
 %      instance to run (singleton)".
 %
 % See also: GUIDE, GUIDATA, GUIHANDLES
-
 % Edit the above text to modify the response to help NEUROLEG_GUI
 
 % Last Modified by GUIDE v2.5 07-Oct-2019 07:53:16
@@ -76,6 +75,14 @@ guidata(hObject, handles);
 % --- Outputs from this function are returned to the command line.
 function varargout = NEUROLEG_GUI_OutputFcn(hObject, eventdata, handles)
 varargout{1} = handles.output;
+
+function close_figs
+figHandles = findall(groot, 'Type', 'figure');
+thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+closefigs = setdiff(1:length(figHandles),thisFig);
+close(figHandles(closefigs));
+% Close all serial
+fclose(instrfind);
 
 % --- Executes on button press in str2double(get(hObject,'String'))_train.
 function button_train_Callback(hObject, eventdata, handles)
@@ -189,10 +196,12 @@ handles.phantom = phantom;
 
 % Save Kalman Filter model
 params = rmfield(handles.params,'fig');
-flname1 = [strjoin({subname,'train','model',datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+date1 = datestr(now,'yymmdd');
+date2 = datestr(now,'HHMMSS');
+flname1 = [strjoin({subname,'train','model',date1,date2},'_') '.mat'];
 save(flname1,'params','intact','phantom');
 % Save training data after cleaning
-flname2 = [strjoin({subname,'train','traindata',datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+flname2 = [strjoin({subname,'train','processdata',date1,date2},'_') '.mat'];
 save(flname2,'cleaneeg','filteeg','filtemg','envemg');
 
 % Just in case not previously stopped
@@ -213,67 +222,69 @@ function button_test_Callback(hObject, eventdata, handles)
 handles = neuroleg_realtime_parsehandles(handles);
 % Start button
 StartButton = questdlg('Ready to start?','Stream Data','Start','Stop','Stop');
-if isfield(handles,'phantom') && isfield(handles,'intact')    
-switch StartButton
-    case 'Start'
-        % Start Data Collection
-        if ~isfield(handles,'biometrics')
-            button_biometrics_init_Callback(handles.button_biometrics_init,eventdata,handles);
-        end
-        
-        if isempty(handles.biometrics)
-            disp('Biometrics not initialized. Check connection.');
-            return;
-        end
-        
-        handles.biometrics.clearbuffer;
-        % Run testing
-        if (handles.radio_predict_intact.Value || handles.radio_predict_both.Value) && ~isempty(handles.intact)
-            handles.params.fig = build_movement_fig(handles.params.sinewave);
-            [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.intact.KF_EEG,handles.intact.KF_EMG);
-        end
-        
-        % Pause between iterations to continue
-        if handles.radio_predict_both.Value
-            StartButton2 = questdlg(['Next leg. Ready to start?'],'Stream Data','Start','Stop','Stop');
-            switch StartButton2
-                case 'Start'
-                    % continue to next trial
-                otherwise
-                    % Just in case not previously stopped
-                    handles.biometrics.stop;
-                    figHandles = findall(groot, 'Type', 'figure');
-                    thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
-                    closefigs = setdiff(1:length(figHandles),thisFig);
-                    close(figHandles(closefigs));
-                    % Close all serial
-                    fclose(instrfind);
-                    return;
+if isfield(handles,'phantom') && isfield(handles,'intact')
+    switch StartButton
+        case 'Start'
+            % Start Data Collection
+            if ~isfield(handles,'biometrics')
+                button_biometrics_init_Callback(handles.button_biometrics_init,eventdata,handles);
             end
-        end
-        
-        if (handles.radio_predict_phantom.Value || handles.radio_predict_both.Value) && ~isempty(handles.phantom)
-            [SYNCHEEG,SYNCHCLEANEEG,SYNCHFILTEEG,SYNCHBIO,SYNCHANGLE,WINBIO,WINEEG,predicted_value,predictedFromEEG,predictedFromEMG] = neuroleg_realtime_control(params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG);
-        end
-        fclose(instrfind);
-    otherwise
-        % Just in case not previously stopped
-        handles.biometrics.stop;
-        figHandles = findall(groot, 'Type', 'figure');
-        thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
-        closefigs = setdiff(1:length(figHandles),thisFig);
-        close(figHandles(closefigs));
-        % Close all serial
-        fclose(instrfind);
-        % Update handles structure
-        guidata(hObject, handles);
-        return;
-end
-
-subname = handles.edit_subject_name.String;
-flname = [strjoin({subname,'test','data',control,datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
-save(flname,'SYNCHEEG','SYNCHCLEANEEG','SYNCHFILTEEG','SYNCHBIO','SYNCHANGLE','WINBIO','WINEEG','predicted_value','predictedFromEEG','predictedFromEMG');
-
+            % Check biometrics
+            if isempty(handles.biometrics)
+                disp('Biometrics not initialized. Check connection.');
+                return;
+            end
+            % clear buffer
+            handles.biometrics.clearbuffer;
+            % Run testing
+            if (handles.radio_predict_intact.Value || handles.radio_predict_both.Value) && ~isempty(handles.intact)
+                handles.params.fig = build_movement_fig(handles.params.sinewave);
+                test_intact = neuroleg_realtime_control(handles.params,handles.biometrics,[],handles.teensySynch,handles.intact.KF_EEG,handles.intact.KF_EMG);
+            else
+                test_intact = [];
+            end
+            % Pause between iterations to continue
+            if handles.radio_predict_both.Value
+                StartButton2 = questdlg(['Next leg. Ready to start?'],'Stream Data','Start','Stop','Stop');
+                switch StartButton2
+                    case 'Start'
+                        % continue to next trial
+                    otherwise
+                        % Just in case not previously stopped
+                        handles.biometrics.stop;
+                        figHandles = findall(groot, 'Type', 'figure');
+                        thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+                        closefigs = setdiff(1:length(figHandles),thisFig);
+                        close(figHandles(closefigs));
+                        % Close all serial
+                        fclose(instrfind);
+                        return;
+                end
+            end
+            % Phantom leg
+            if (handles.radio_predict_phantom.Value || handles.radio_predict_both.Value) && ~isempty(handles.phantom)
+                handles.params.fig = build_movement_fig(handles.params.sinewave);
+                test_phantom = neuroleg_realtime_control(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG);
+            else
+                test_phantom = [];
+            end
+            % close serial
+            fclose(instrfind);
+        otherwise
+            % Just in case not previously stopped
+            if isfield(handles,'biometrics')
+                handles.biometrics.stop;
+            end
+            close_figs;
+            % Update handles structure
+            guidata(hObject, handles);
+            return;
+    end
+    % Save data
+    subname = handles.edit_subject_name.String;
+    flname = [strjoin({subname,'test','data',[handles.params.setup.control 'control'],datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+    save(flname,'test_intact','test_phantom');
+    
 else
     disp('No model avaialble. Please train or load model.');
 end
@@ -283,29 +294,148 @@ guidata(hObject, handles);
 
 % --- Executes on button press in button_freemove.
 function button_freemove_Callback(hObject, eventdata, handles)
-% hObject    handle to button_freemove (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDEmDATA)
+% Parse params struct into handles
+handles = neuroleg_realtime_parsehandles(handles);
+% Start button
+StartButton = questdlg('Ready to start?','Stream Data','Start','Stop','Stop');
+if isfield(handles,'phantom') && isfield(handles,'intact')
+    switch StartButton
+        case 'Start'
+            % Start Data Collection
+            if ~isfield(handles,'biometrics')
+                button_biometrics_init_Callback(handles.button_biometrics_init,eventdata,handles);
+            end
+            % Check biometrics
+            if isempty(handles.biometrics)
+                disp('Biometrics not initialized. Check connection.');
+                return;
+            end
+            % clear buffer
+            handles.biometrics.clearbuffer;
+            
+            % Phantom leg
+            if (handles.radio_predict_phantom.Value || handles.radio_predict_both.Value) && ~isempty(handles.phantom)
+                test_phantom = neuroleg_realtime_freemove(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG);
+            else
+                test_phantom = [];
+            end
+            
+            % close serial
+            fclose(instrfind);
+        otherwise
+            % Just in case not previously stopped
+            if isfield(handles,'biometrics')
+                handles.biometrics.stop;
+            end
+            figHandles = findall(groot, 'Type', 'figure');
+            thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+            closefigs = setdiff(1:length(figHandles),thisFig);
+            close(figHandles(closefigs));
+            % Close all serial
+            fclose(instrfind);
+            % Update handles structure
+            guidata(hObject, handles);
+            return;
+    end
+    % Save data
+    subname = handles.edit_subject_name.String;
+    flname = [strjoin({subname,'freemove','data',[handles.params.setup.control 'control'],datestr(now,'yymmdd'),datestr(now,'HHMMSS')},'_') '.mat'];
+    save(flname,'test_phantom');
+    
+else
+    disp('No model avaialble. Please train or load model.');
+end
+
+% Update handles structure
+guidata(hObject, handles);
 
 % --- Executes on button press in button_loadtrain.
 function button_loadtrain_Callback(hObject, eventdata, handles)
-% hObject    handle to button_loadtrain (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDEmDATA)
-
+model = uigetfile('*model*.mat');
+load(model);
+handles.intact  = intact;
+handles.phantom = phantom;
+handles.params  = params;
+% Update handles structure
+guidata(hObject, handles);
 
 % --- Executes on button press in button_trainmerge.
 function button_trainmerge_Callback(hObject, eventdata, handles)
-% hObject    handle to button_trainmerge (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDEmDATA)
+% Get files to merge
+filenames = uigetfile('*train_rawdata*.mat','MultiSelect','on');
+EEGALL = []; BIOALL = []; ANGALL = [];
+% Load data and concatenate
+for ii = 1:length(filenames)
+    load(filenames{ii});
+    EEGALL = cat(2,EEGALL,EEG_ALL);
+    BIOALL = cat(2,BIOALL,BIO_ALL);
+    ANGALL = cat(2,ANGALL,ANGLES_ALL);
+end
+clear EEG_ALL BIO_ALL ANGLES_ALL
+EEG_ALL    = EEGALL;
+BIO_ALL    = BIOALL;
+ANGLES_ALL = ANGALL;
+clear EEGALL BIOALL ANGALL
 
+% Parse params struct into handles
+handles = neuroleg_realtime_parsehandles(handles);
+
+% Initialize empty variables
+cleaneeg = cell(2,1);
+filteeg  = cell(2,1);
+filtemg  = cell(2,1);
+envemg   = cell(2,1);
+
+% Train model - intact
+if handles.radio_predict_intact.Value || handles.radio_predict_both.Value
+    EEG_TEMP = EEG_ALL(1,:); BIO_TEMP = BIO_ALL(1,:); ANGLES_TEMP = ANGLES_ALL(1,:);
+    [handles.params,intact.KF_EMG,intact.KF_EEG,cleaneeg{1},filteeg{1},filtemg{1},envemg{1}] = neuroleg_realtime_train(handles.params,cat(2,EEG_TEMP{:}),cat(2,BIO_TEMP{:}),cat(2,ANGLES_TEMP{:}));
+else
+    intact = [];
+end
+
+% Train model - phantom
+if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
+    EEG_TEMP = EEG_ALL(2,:); BIO_TEMP = BIO_ALL(2,:); ANGLES_TEMP = ANGLES_ALL(2,:);
+    [handles.params,phantom.KF_EMG,phantom.KF_EEG,cleaneeg{2},filteeg{2},filtemg{2},envemg{2}] = neuroleg_realtime_train(handles.params,cat(2,EEG_TEMP{:}),cat(2,BIO_TEMP{:}),cat(2,ANGLES_TEMP{:}));
+else
+    phantom = [];
+end
+
+% Store in handles
+handles.intact = intact;
+handles.phantom = phantom;
+
+% Save Kalman Filter model
+if isfield(handles.params,'fig')
+    params = rmfield(handles.params,'fig');
+end
+subname = handles.edit_subject_name.String;
+date1 = datestr(now,'yymmdd');
+date2 = datestr(now,'HHMMSS');
+flname1 = [strjoin({subname,'train','mergemodel',date1,date2},'_') '.mat'];
+save(flname1,'params','intact','phantom','filenames');
+% Save training data after cleaning
+flname2 = [strjoin({subname,'train','mergedata',date1,date2},'_') '.mat'];
+save(flname2,'cleaneeg','filteeg','filtemg','envemg','filenames');
+
+% Update handles structure
+guidata(hObject, handles);
 
 % --- Executes on button press in button_stop.
 function button_stop_Callback(hObject, eventdata, handles)
-% hObject    handle to button_stop (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDEmDATA)
+fprintf('\n\n...In the name of love!!\n\n')
+% Just in case not previously stopped
+if isfield(handles,'biometrics')
+    handles.biometrics.stop;
+end
+% Close all figures
+figHandles = findall(groot, 'Type', 'figure');
+thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+closefigs = setdiff(1:length(figHandles),thisFig);
+close(figHandles(closefigs));
+% Close all serial
+fclose(instrfind);
 
 % --- Executes on button press in checkbox_enable_eeg.
 function checkbox_enable_eeg_Callback(hObject, eventdata, handles)
@@ -436,6 +566,9 @@ try
     fopen(teensyLeg);
     % Add to handles
     handles.teensyLeg = teensyLeg;
+     fprintf(['\n-------------------------------',...
+            '\n\n   Neuroleg connected. \n\n',...
+            '-------------------------------\n'])
 catch err
     disp(err.message);
     fprintf(['\n-------------------------------',...
@@ -450,13 +583,19 @@ guidata(hObject, handles);
 % --- Executes on button press in synchbox_checkbox.
 function synchbox_checkbox_Callback(hObject, eventdata, handles)
 % If checked, turn on teensy
-fclose(instrfind);
+if ~isempty(instrfind)
+    fclose(instrfind);
+end
+
 if hObject.Value
     try
         teensySynch = serial('COM34','BaudRate',115200);
         fopen(teensySynch);
         % Add to handles
         handles.teensySynch = teensySynch;
+        fprintf(['\n-------------------------------',...
+            '\n\n   Synchbox connected. \n\n',...
+            '-------------------------------\n'])
     catch err
         disp(err.message);
         fprintf(['\n-------------------------------',...
@@ -493,9 +632,12 @@ end
 % Setup biometrics
 if ~isempty(use_channels)
     try
-        b = biometrics_datalog('usech',use_channels,'chantype',chantype);
+        b = biometrics_datalog('usech',use_channels,'chantype',chantype)
         % Add to handles
         handles.biometrics = b;
+        fprintf(['\n-------------------------------',...
+            '\n\n   Biometrics Initialized. \n\n',...
+            '-------------------------------\n'])
     catch err
         disp(err.message)
     end
