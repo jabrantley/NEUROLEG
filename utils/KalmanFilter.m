@@ -26,6 +26,7 @@ classdef KalmanFilter < handle
         
         % R2 value after performing grid search
         R2_Train
+        R2_GridSearch
         
     end
     properties (SetAccess = public, GetAccess = public)
@@ -293,6 +294,7 @@ classdef KalmanFilter < handle
             observe_orig = self.observation;
             % Initialize array for storing R2 values
             allR2 = zeros(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
+            allR2_ALL = cell(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
             % Create folds if not specified
             if ~isfield(params,'kfold')
                 params.kfold=round(linspace(1,size(self.state,2),3));
@@ -300,6 +302,7 @@ classdef KalmanFilter < handle
             % Get total number of iterations
             totalIterations = (numel(allR2)*(length(params.kfold)-1))+1; % +1 accounts for where counter is in loop
             fprintf('Total number of iterations: %d\n\n',totalIterations)
+            pause(.1);
             wb = waitbar(0,'Training Kalman Filter model...');
             cnt = 1;
             % Separate data into folds
@@ -357,13 +360,14 @@ classdef KalmanFilter < handle
                                     prediction(ff) = KF_Out(1);
                                 end
                                 % Compute R2 value
-                                R2 = KalmanFilter.rsquared(prediction(params.testidx,ord+1:end),test_state(params.testidx,ord+1:end));
+                                R2(ee) = KalmanFilter.rsquared(prediction(params.testidx,ord+1:end),test_state(params.testidx,ord+1:end));
                                 % Update count
                                 cnt = cnt+1;
                                 waitbar(cnt/totalIterations,wb);
                             end
                             % Compute mean r squared
                             allR2(aa,bb,cc,dd)= mean(R2);
+                            allR2_ALL{aa,bb,cc,dd}= R2;
                         end % lambda B
                     end % lambda F
                 end % order
@@ -389,6 +393,7 @@ classdef KalmanFilter < handle
             self.state       = state_orig;
             self.observation = observe_orig;
             self.R2_Train    = max(allR2(:));
+            self.R2_GridSearch = allR2_ALL;
             % Train model using updated params
             self.train();
         end

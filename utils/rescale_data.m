@@ -9,7 +9,11 @@ function result = rescale_data(data,opt,range)
 
 % Set default scaling direction
 if nargin < 2 || isempty(opt)
-    opt = 'rows';
+    if size(data,2) == 1
+        opt = 'cols';
+    else
+        opt = 'rows';
+    end
 end
 
 % Set default range

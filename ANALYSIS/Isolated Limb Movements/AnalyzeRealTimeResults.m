@@ -11,7 +11,7 @@ clear;
 clc;
 
 % Run parallel for
-runParallel = 1;
+runParallel = 0;
 
 % Set drive location
 if strcmpi(getenv('username'),'justi')% WHICHPC == 1
@@ -86,200 +86,203 @@ if runParallel
     end
 end
 
-    % Get channel locations
-    chans2keepIDX = params.setup.chans2keep;
+% Get channel locations
+chans2keepIDX = params.setup.chans2keep;
+
+% Get filt bands and channel locations
+total = 1;
+for bb = 1:length(BANDS)
+    for cc = 1:length(montages)
+        combos{total,1} = BANDS{bb};
+        combos{total,2} = montages{cc};
+        combos{total,4} = randord{cc};
+        if any(bb == [1, 2, length(BANDS)])
+            combos{total,3} = 0;
+        else
+            combos{total,3} = 1;
+        end
+        total = total + 1;
+    end
+end
+total = total - 1;
+clear bb cc
+
+for aa = 1:length(data)
+   load(fullfile(datadir,data{aa}))
+end
+% Initialize for storing R2
+R2_sub = cell(total,1);
+predicted_sub = cell(total,1);
+
+% Get EEG data for channels to keep
+eegdata  = EEG.data(chans2keepIDX,:);
+
+% Loop through each frequency band
+parfor bb = 1:total
+    %for bb = 1:total
     
-    % Get filt bands and channel locations
-    total = 1;
-    for bb = 1:length(BANDS)
-        for cc = 1:
-            combos{total,1} = BANDS{bb};
-            combos{total,2} = montages{cc};
-            combos{total,4} = randord{cc};
-            if any(bb == [1, 2, length(BANDS)])
-                combos{total,3} = 0;
-            else
-                combos{total,3} = 1;
-            end
-            total = total + 1;
+    % Design filters
+    bp_filt = make_ss_filter(filter_order,combos{bb,1},srate,'bandpass');
+    
+    % Filter data
+    filtdata = zeros(size(eegdata));
+    for cc = 1:size(eegdata,1)
+        % filter data - state space approach
+        xnn_bp = zeros(filter_order*2,1);
+        filtdata(cc,:) = use_ss_filter(bp_filt,eegdata(cc,:),xnn_bp);
+    end
+    
+    %         allfilt{bb} = filtdata;
+    
+    % Initialize for storing data for each movement
+    movedata = [];
+    alleeg   = [];
+    allgonio = [];
+    count = 1;
+    for cc = 1:size(movetimes,1)
+        % Get data for each trial
+        %trialdata = filtdata(:,movetimes{cc,1});
+        goniodata = GONIO(cc).data;
+        % Get data for movements
+        window_buffer = 1*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
+        for dd = 1:size(movetimes{cc,2},1)
+            temp_times = movetimes{cc,2}(dd,1)+window_buffer: movetimes{cc,2}(dd,2)+window_buffer;
+            alleeg   = cat(2,alleeg,filtdata(:,temp_times));
+            allgonio = cat(2,allgonio,goniodata(:,temp_times));
+            movedata{count,1} = filtdata(:,temp_times);
+            movedata{count,2} = goniodata(:,temp_times);
+            count = count + 1;
         end
     end
-    total = total - 1;
-    clear bb cc
     
-    % Initialize for storing R2
-    R2_sub = cell(total,1);
-    predicted_sub = cell(total,1);
+    % Train / test split
+    test_trials = 4;
+    train_trials  = size(movedata,1) - test_trials;
     
-    % Get EEG data for channels to keep
-    eegdata  = EEG.data(chans2keepIDX,:);
+    % window for hilbert
+    envwindow = srate;
     
-    % Loop through each frequency band
-    parfor bb = 1:total
-        %for bb = 1:total
+    % Initialize
+    testeeg  = [];
+    testkin  = [];
+    testidx  = [];
+    trainidx = [];
+    traineeg = [];
+    trainkin = [];
+    
+    for dd = 1:size(movedata,1) % for each movement window
+        % Get data for specific channels
+        tempeeg = movedata{dd}(combos{total,2},:);
         
-        % Design filters
-        bp_filt = make_ss_filter(filter_order,combos{bb,1},srate,'bandpass');
+        % If delta then use raw potential, otherwise use envelope
+        if combos{total,3} == 0
+            datavec = tempeeg;
+        else
+            [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
+            datavec = datavec';
+        end % if bb == 1
         
-        % Filter data
-        filtdata = zeros(size(eegdata));
-        for cc = 1:size(eegdata,1)
-            % filter data - state space approach
-            xnn_bp = zeros(filter_order*2,1);
-            filtdata(cc,:) = use_ss_filter(bp_filt,eegdata(cc,:),xnn_bp);
-        end
+        % Split training and testing
+        if dd <= train_trials
+            traineeg = cat(2,traineeg,datavec);
+            trainkin = cat(2,trainkin,movedata{dd,2}(1,:));
+            trainidx = cat(2,trainidx,size(datavec,2));
+        else
+            testeeg = cat(2,testeeg,datavec);
+            testkin = cat(2,testkin,movedata{dd,2}(1,:));
+            testidx = cat(2,testidx,size(datavec,2));
+        end % if dd < ...
         
-        %         allfilt{bb} = filtdata;
-        
-        % Initialize for storing data for each movement
-        movedata = [];
-        alleeg   = [];
-        allgonio = [];
-        count = 1;
-        for cc = 1:size(movetimes,1)
-            % Get data for each trial
-            %trialdata = filtdata(:,movetimes{cc,1});
-            goniodata = GONIO(cc).data;
-            % Get data for movements
-            window_buffer = 1*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
-            for dd = 1:size(movetimes{cc,2},1)
-                temp_times = movetimes{cc,2}(dd,1)+window_buffer: movetimes{cc,2}(dd,2)+window_buffer;
-                alleeg   = cat(2,alleeg,filtdata(:,temp_times));
-                allgonio = cat(2,allgonio,goniodata(:,temp_times));
-                movedata{count,1} = filtdata(:,temp_times);
-                movedata{count,2} = goniodata(:,temp_times);
-                count = count + 1;
-            end
-        end
-        
-        % Train / test split
-        test_trials = 4;
-        train_trials  = size(movedata,1) - test_trials;
-        
-        % window for hilbert
-        envwindow = srate;
-        
-        % Initialize
-        testeeg  = [];
-        testkin  = [];
-        testidx  = [];
-        trainidx = [];
-        traineeg = [];
-        trainkin = [];
-        
-        for dd = 1:size(movedata,1) % for each movement window
-            % Get data for specific channels
-            tempeeg = movedata{dd}(combos{total,2},:);
-            
-            % If delta then use raw potential, otherwise use envelope
-            if combos{total,3} == 0
-                datavec = tempeeg;
-            else
-                [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
-                datavec = datavec';
-            end % if bb == 1
-            
-            % Split training and testing
-            if dd <= train_trials
-                traineeg = cat(2,traineeg,datavec);
-                trainkin = cat(2,trainkin,movedata{dd,2}(1,:));
-                trainidx = cat(2,trainidx,size(datavec,2));
-            else
-                testeeg = cat(2,testeeg,datavec);
-                testkin = cat(2,testkin,movedata{dd,2}(1,:));
-                testidx = cat(2,testidx,size(datavec,2));
-            end % if dd < ...
-            
-        end % dd = 1:size(movedata,1)
-        
-        
-        % TIMING LOOP HERE
-        tstart = 1;
+    end % dd = 1:size(movedata,1)
+    
+    
+    % TIMING LOOP HERE
+    tstart = 1;
+    tend   = tstart + 1/20 * srate;
+    traineeg_win = []; trainkin_win = [];
+    while tend <= size(trainkin,2)
+        % Get window of mean power/potential and corresponding kin val
+        traineeg_win = [traineeg_win, mean(traineeg(:,tstart:tend),2)];
+        trainkin_win = [trainkin_win, trainkin(:,tend)];
+        % Update start and end
+        tstart = tend + 1;
         tend   = tstart + 1/20 * srate;
-        traineeg_win = []; trainkin_win = [];
-        while tend <= size(trainkin,2)
-            % Get window of mean power/potential and corresponding kin val
-            traineeg_win = [traineeg_win, mean(traineeg(:,tstart:tend),2)];
-            trainkin_win = [trainkin_win, trainkin(:,tend)];
-            % Update start and end
-            tstart = tend + 1;
-            tend   = tstart + 1/20 * srate;
-        end
-        tstart = 1;
+    end
+    tstart = 1;
+    tend   = tstart + 1/20 * srate;
+    testeeg_win = [];  testkin_win = [];
+    while tend <= size(testkin,2)
+        % Get window of mean power/potential and corresponding kin val
+        testeeg_win = [testeeg_win, mean(testeeg(:,tstart:tend),2)];
+        testkin_win = [testkin_win, testkin(:,tend)];
+        % Update start and end
+        tstart = tend + 1;
         tend   = tstart + 1/20 * srate;
-        testeeg_win = [];  testkin_win = [];
-        while tend <= size(testkin,2)
-            % Get window of mean power/potential and corresponding kin val
-            testeeg_win = [testeeg_win, mean(testeeg(:,tstart:tend),2)];
-            testkin_win = [testkin_win, testkin(:,tend)];
-            % Update start and end
-            tstart = tend + 1;
-            tend   = tstart + 1/20 * srate;
-        end
-        
-        trainkin = trainkin_win;
-        traineeg = traineeg_win(combos{total,4},:);
-        testkin  = testkin_win;
-        testeeg  = testeeg_win(combos{total,4},:);
-        
-        
-        % Zscore data
-        trainkin = transpose(zscore(trainkin'));
-        traineeg = transpose(zscore(traineeg'));
-        testeeg  = transpose(zscore(testeeg'));
-        testkin  = transpose(zscore(testkin'));
-        
-        %         ord = 3;
-        %         lagKINtrain = KalmanFilter.lag_data(trainkin,1);
-        %         lagEEGtrain = KalmanFilter.lag_data(traineeg,1);
-        %         lagKINtest = KalmanFilter.lag_data(testkin,1);
-        %         lagEEGtest = KalmanFilter.lag_data(testeeg,1);
-        %         svr = fitrsvm(traineeg',trainkin','KernelFunction','rbf',...
-        %              'Standardize',true,'KernelScale','auto');
-        %          svr = fitrsvm(lagEEGtrain',lagKINtrain','KernelFunction','rbf',...
-        %              'Standardize',true,'KernelScale','auto','KFold',5);
-        %          cvsvr = crossval(svr);
-        
-        %          predicted = predict(svr,testeeg');
-        %
-        %          % Store R2 values
-        %          R2_sub{bb} = KalmanFilter.rsquared(predicted,testkin);
-        %          predicted_sub{bb} = [predicted(:)'; testkin(:)'];
-        
-        % Kalman Filter object
-        KF = KalmanFilter('state',trainkin,'observation',traineeg,...
-            'augmented',1,'method','unscented');
-        % Perform grid search
-        foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
-        KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
-            'lambdaF',KF_LAMBDA,'testidx',1);%,'kfold',foldIdx);
-        
-        % Lag data
-        lagKIN = KalmanFilter.lag_data(testkin,KF.order);
-        lagEEG = KalmanFilter.lag_data(testeeg,KF.lags);
-        
-        % Trim off edges
-        lagKIN_cut = lagKIN(:,KF.lags+1:end);
-        lagEEG_cut = lagEEG(:,KF.lags+1:end);
-        
-        % Predict data
-        predicted = KF.evaluate(lagEEG_cut);
-        
-        % Store R2 values
-        R2_sub{bb} = KF.R2_Train;
-        predicted_sub{bb} = [predicted(1,:); lagKIN_cut(1,:)];
-        
-        
-        % clean up
-        % clear testeeg testkin testidx traineeg trainkin trainidx
-        
-        
-    end % end BANDS{bb}
+    end
+    
+    trainkin = trainkin_win;
+    traineeg = traineeg_win(combos{total,4},:);
+    testkin  = testkin_win;
+    testeeg  = testeeg_win(combos{total,4},:);
+    
+    
+    % Zscore data
+    trainkin = transpose(zscore(trainkin'));
+    traineeg = transpose(zscore(traineeg'));
+    testeeg  = transpose(zscore(testeeg'));
+    testkin  = transpose(zscore(testkin'));
+    
+    %         ord = 3;
+    %         lagKINtrain = KalmanFilter.lag_data(trainkin,1);
+    %         lagEEGtrain = KalmanFilter.lag_data(traineeg,1);
+    %         lagKINtest = KalmanFilter.lag_data(testkin,1);
+    %         lagEEGtest = KalmanFilter.lag_data(testeeg,1);
+    %         svr = fitrsvm(traineeg',trainkin','KernelFunction','rbf',...
+    %              'Standardize',true,'KernelScale','auto');
+    %          svr = fitrsvm(lagEEGtrain',lagKINtrain','KernelFunction','rbf',...
+    %              'Standardize',true,'KernelScale','auto','KFold',5);
+    %          cvsvr = crossval(svr);
+    
+    %          predicted = predict(svr,testeeg');
+    %
+    %          % Store R2 values
+    %          R2_sub{bb} = KalmanFilter.rsquared(predicted,testkin);
+    %          predicted_sub{bb} = [predicted(:)'; testkin(:)'];
+    
+    % Kalman Filter object
+    KF = KalmanFilter('state',trainkin,'observation',traineeg,...
+        'augmented',1,'method','unscented');
+    % Perform grid search
+    foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
+    KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
+        'lambdaF',KF_LAMBDA,'testidx',1);%,'kfold',foldIdx);
+    
+    % Lag data
+    lagKIN = KalmanFilter.lag_data(testkin,KF.order);
+    lagEEG = KalmanFilter.lag_data(testeeg,KF.lags);
+    
+    % Trim off edges
+    lagKIN_cut = lagKIN(:,KF.lags+1:end);
+    lagEEG_cut = lagEEG(:,KF.lags+1:end);
+    
+    % Predict data
+    predicted = KF.evaluate(lagEEG_cut);
     
     % Store R2 values
-    R2_ALL{aa} = R2_sub;
-    PREDICT_ALL{aa} = predicted_sub;
-end
+    R2_sub{bb} = KF.R2_Train;
+    predicted_sub{bb} = [predicted(1,:); lagKIN_cut(1,:)];
+    
+    
+    % clean up
+    % clear testeeg testkin testidx traineeg trainkin trainidx
+    
+    
+end % end BANDS{bb}
+
+% Store R2 values
+R2_ALL{aa} = R2_sub;
+PREDICT_ALL{aa} = predicted_sub;
+
 
 save('allR2_50msWindow_FrontalChans_shuffle.mat','R2_ALL')
 save('allPredict_50msWindow_FrontalChans_shuffle.mat','PREDICT_ALL')

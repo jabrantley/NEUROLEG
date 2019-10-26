@@ -38,8 +38,9 @@ if nargin < 2
 end
 
 % Initialize matrices
-sh    = zeros(size(Yf));           % Filtered data
-wh    = zeros(size(Rf,1),size(Yf,2));               % Weights matrix
+sh    = zeros(size(Yf));              % Filtered data
+zh    = zeros(size(Rf,1),size(Yf,2));
+wh    = zeros(size(Rf,2),size(Yf,2)); % Weights matrix
 
 % SET DEFAULT PARAMETERS
 gamma = 1.15;                      % Controls supression.  1.05:.05:1.50 all ok.  1.15 seems best
@@ -73,7 +74,7 @@ end
 % Check parallel option
 if par
     % Initialize variables for slicing
-    pt = repmat({0.5*eye(3)},1,size(Yf,2));
+    pt = repmat({0.1*eye(3)},1,size(Yf,2));
     
     % Initialize parfor progress bar
 %     parfor_progress(size(Yf,2));
@@ -88,7 +89,7 @@ if par
     end
     
 else
-    pt = 0.5*eye(3);
+    pt = 0.1*eye(3);
 end
 
 % ---------------------- BEGIN H INFINITY FILTER ------------------------ %
@@ -105,8 +106,8 @@ if par
             y = Yf(n,m);
             r = Rf(n,:)';
             % calculate filter gains
-            P = inv(  inv(pt{m}) - (gamma^(-2))*(r*r')  );
-            g = (P*r)/(1+r'*P*r);
+            P = inv(pt{m}) - (gamma^(-2))*(r*r');
+            g  = (P\r)/(1+(r'/P)*r);
             % Identify noise 2
             zh = r'*wh(:,m);
             % Calculate the error, this is also the clean eeg
@@ -127,8 +128,8 @@ else
         % Get sample per channel (eeg+noise2 and noise1)   noise2 is the reflection of noise1 onto that channel
         r  = Rf(n,:)';
         % Calculate filter gains
-        P  = inv(  inv(pt) - (gamma^(-2))*(r*r')  );
-        g  = (P*r)/(1+r'*P*r);
+        P  = inv(pt) - (gamma^(-2))*(r*r');
+        g  = (P\r)/(1+(r'/P)*r);
         for m=1:size(Yf,2)
             y           = Yf(n,m);
             % Identify noise 2

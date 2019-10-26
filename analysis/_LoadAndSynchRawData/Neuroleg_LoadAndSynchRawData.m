@@ -126,7 +126,7 @@ for ii = 1:length(subs)
 
     % Biometrics path
     biometricsdir = fullfile(datadir,subs{ii},'UH','BIOMETRICS','Export'); % define emg path
-
+     
     % Opal path
     opaldir = fullfile(datadir,subs{ii},'UH','OPAL');
 
@@ -190,7 +190,7 @@ for ii = 1:length(subs)
         biometrics.srate = 1000;
 
         % Get EMG triggers: TTL pulse on digital channel
-        biometricsSynch = find(diff([0 biometrics.trigger'])==1);
+        biometricsSynch = find(diff([0 biometrics.trigger])==1);
         biometricsStart = biometricsSynch(1);
         if strcmpi(subs{ii},'TF03') && strcmpi(trialname,'Walk01')
             biometricsStop  = biometricsSynch(3); % TF03, Walk01 had extra trigger
@@ -266,10 +266,10 @@ for ii = 1:length(subs)
 
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %                                                 %
-        %            Downsample data to 200 Hz            %
+        %            Resample data to 1000 Hz             %
         %                                                 %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        new_srate = 200; % Hz
+        new_srate = 1000; % Hz
         % Downsample EEG
         eegDS = transpose(resample(eegtrim',new_srate,EEG.srate));
         % Create new EEG time vector
@@ -396,26 +396,27 @@ end % end ii
 keepvars(vars);
 
 % Create empty structs
-EMG = []; GONIO = []; STIM = []; OPAL = [];
+EMG = []; GONIO = []; ANGLES = []; STIM = []; OPAL = [];
 
 % Loop through each subject, concatenate, and process
-for aa = 3 %1:length(subs)
+for aa = 1:2%length(subs)
     
     % Get variables
     vars = who;
     
     % Create empty EEG struct
     EEGCONCAT             = EEGEMPTY;
-    EEGCONCAT.srate       = 200;
+    EEGCONCAT.srate       = 1000;
     EEGCONCAT.eogdata     = [];
     EEGCONCAT.trialbreaks = [];
     updated_latency       = [];
     
     % Initialize data structures for concatenated data
-    EMGCONCAT   = [];
-    GONIOCONCAT = [];
-    OPALCONCAT  = [];
-    STIMCONCAT  = [];
+    EMGCONCAT    = [];
+    GONIOCONCAT  = [];
+    OPALCONCAT   = [];
+    STIMCONCAT   = [];
+    ANGLESCONCAT = [];
     
     % Get variables
     vars2 = who;
@@ -445,7 +446,6 @@ for aa = 3 %1:length(subs)
         if strcmpi(splitname{2},'T00')
             start_idx = find(strcmpi({EEG.event.type},'Start'));
             stop_idx  = find(strcmpi({EEG.event.type},'Stop'));
-            
         else
             start_idx = find(strcmpi({EEG.event.type},'S  2'));
             stop_idx  = find(strcmpi({EEG.event.type},'S  4'));
@@ -469,12 +469,12 @@ for aa = 3 %1:length(subs)
         end
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        %  Highpass Filter @ 0.3 Hz  %
+        %  Highpass Filter @ 0.1 Hz  %
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         EEG.data = transpose(filterdata('data',EEG.data','srate',EEG.srate,...
-            'highpass',0.3,'highorder',2,'visualize','off'));
+            'highpass',0.1,'highorder',2,'visualize','off'));
         EEG.eogdata = transpose(filterdata('data',EEG.eogdata','srate',EEG.srate,...
-            'highpass',0.3,'highorder',2,'visualize','off'));
+            'highpass',0.1,'highorder',2,'visualize','off'));
         
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         %     H-infinity filter      %
@@ -485,7 +485,7 @@ for aa = 3 %1:length(subs)
         bipolarEOG = [EEG.eogdata(3,:)-EEG.eogdata(4,:);
             EEG.eogdata(1,:)-EEG.eogdata(2,:);
             ones(1,size(EEG.data,2))];
-        hinfdata = hinfinity(EEG.data',bipolarEOG','parallel','on','gamma',1.1);
+        hinfdata = hinfinity(EEG.data',bipolarEOG','parallel','off','gamma',1.1);
         %EEG.prehinf = EEG.data;
         EEG.data = hinfdata';
         
@@ -513,6 +513,23 @@ for aa = 3 %1:length(subs)
         EEGCONCAT.allevents = event_old;
         EEGCONCAT.event = cat(2,EEGCONCAT.event,event_old);
         
+        % Path to angle data extracted from DeepLabCut
+        anglesdir = fullfile(datadir,splitname{1},'UH','ANGLES'); % define emg path
+        % Load dlc angle data
+        anglefile = fullfile(anglesdir,strjoin({splitname{1:2},'UH','videodlcangles.mat'},'-' ));
+        alldlcjoints = {'knee','ankle'};
+        loadAngles = exist(anglefile,'file')==2;
+        if loadAngles
+            load(anglefile);
+            angledata = zeros(size(angs,1),size(EEG.data,2));
+            for numangs = 1:size(angs,1)
+                angledata(numangs,:) = resampledata(angs(numangs,:),size(EEG.data,2),EEG.srate);
+            end
+            ANGLES = struct('data',angledata,'joints',{alldlcjoints},'srate',EEG.srate);
+            savefile(ANGLES,'ANGLES',savedir,strjoin({splitname{1:2},'angles.mat'},'-' ))
+        end
+        
+        
         if ~strcmpi(splitname{2},'T00') % baseline trials not included
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -532,6 +549,15 @@ for aa = 3 %1:length(subs)
             tempGONIO = GONIO.data(:,start:stop);
             GONIO.data = tempGONIO;
             GONIOCONCAT = cat(1,GONIOCONCAT,GONIO);
+            
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %        Find ANGLES         %
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            if loadAngles
+                tempANGLES = ANGLES.data(:,start:stop);
+                ANGLES.data = tempANGLES;
+                ANGLESCONCAT = cat(1,ANGLESCONCAT,ANGLES);
+            end
             
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %          Find OPAL         %
@@ -600,10 +626,11 @@ for aa = 3 %1:length(subs)
     EEGCONCAT.data = double(EEGCONCAT.data);
     
     % save files - if greater than 2GB, using -v7.6 switch
-    savefile( EEGCONCAT,   'EEG',   savedir,[subs{aa} '-ALLTRIALS-eeg.mat'])
-    savefile( EMGCONCAT,   'EMG',   savedir,[subs{aa} '-ALLTRIALS-emg.mat'])
-    savefile( GONIOCONCAT, 'GONIO', savedir,[subs{aa} '-ALLTRIALS-gonio.mat'])
-    savefile( OPALCONCAT,  'OPAL',  savedir,[subs{aa} '-ALLTRIALS-opal.mat'])
-    savefile( STIMCONCAT,  'STIM',  savedir,[subs{aa} '-ALLTRIALS-stim.mat'])
+    savefile( EEGCONCAT,    'EEG',    savedir,[subs{aa} '-ALLTRIALS-eeg.mat'])
+    savefile( EMGCONCAT,    'EMG',    savedir,[subs{aa} '-ALLTRIALS-emg.mat'])
+    savefile( GONIOCONCAT,  'GONIO',  savedir,[subs{aa} '-ALLTRIALS-gonio.mat'])
+    savefile( ANGLESCONCAT, 'ANGLES', savedir,[subs{aa} '-ALLTRIALS-angles.mat'])
+    savefile( OPALCONCAT,   'OPAL',   savedir,[subs{aa} '-ALLTRIALS-opal.mat'])
+    savefile( STIMCONCAT,   'STIM',   savedir,[subs{aa} '-ALLTRIALS-stim.mat'])
     
 end

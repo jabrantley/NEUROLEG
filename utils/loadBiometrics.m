@@ -17,7 +17,8 @@ out.rawdata = temp.data(:,1:end-1);
 % Get trigger channel
 temptrigger = temp.data(:,end);
 % Rescale between [0,1]
-out.trigger = rescale(temptrigger);
+out.trigger = rescale_data(temptrigger);
+out.trigger(find(isnan(out.trigger))) = 0;
 
 try
     out.header  = temp.textdata;

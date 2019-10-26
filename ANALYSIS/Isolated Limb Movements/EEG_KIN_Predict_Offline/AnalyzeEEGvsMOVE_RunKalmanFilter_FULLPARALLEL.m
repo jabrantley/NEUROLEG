@@ -12,7 +12,7 @@ clc;
 
 % Run parallel for
 onCluster   = 0;
-runParallel = 1;
+runParallel = 0;
 
 % Define directory
 thisdir = pwd;
@@ -43,6 +43,7 @@ addpath(genpath(fullfile(parentdir,'NEUROLEG')));
 
 % Get files for each subject
 subjects = {'TF01','TF02','TF03'};
+movement = 'RK';
 
 % Define frequency bands
 lodelta = [.3 1.5];
@@ -129,7 +130,7 @@ for aa = 1:length(subjects)
     end
     [~, LM_IDX] = ismember(intersect(leftMotorIDX,chans2keepIDX),chans2keepIDX);
     % Get chan idx
-    montages = {1:length(chans2keepIDX), LM_IDX};
+    montages = {1:length(chans2keepIDX)};%, LM_IDX};
     
     % Get trial information
     trialbreaks = EEG.trialbreaks;
@@ -138,7 +139,7 @@ for aa = 1:length(subjects)
     for bb = 1:size(STIM,1)
         
         % Get movement times from STIM
-        rk_idx      = find(strcmpi(STIM(bb).states,'RK')); % Get movements of right knee
+        rk_idx      = find(strcmpi(STIM(bb).states,movement)); % Get movements of right knee
         rk_onset    = STIM(bb).initialDelay + STIM(bb).onsets(rk_idx); % seconds
         rk_duration = STIM(bb).Duration(rk_idx); % seconds
         rk_time     = [rk_onset; rk_onset + rk_duration]'; % seconds [onset, offset]
@@ -168,7 +169,7 @@ for aa = 1:length(subjects)
     % Get filt bands and channel locations
     total = 1;
     for bb = 1:length(BANDS)
-        for cc = 1:2
+        for cc = 1:length(montages)
             combos{total,1} = BANDS{bb};
             combos{total,2} = montages{cc};
             combos{total,4} = randord{cc};
@@ -191,8 +192,8 @@ for aa = 1:length(subjects)
     eegdata  = EEG.data(chans2keepIDX,:);
     
     % Loop through each frequency band
-    parfor bb = 1:total
-        %for bb = 1:total
+    %     parfor bb = 1:total
+    for bb = 1:total
         
         % Design filters
         bp_filt = make_ss_filter(filter_order,combos{bb,1},srate,'bandpass');
@@ -217,7 +218,7 @@ for aa = 1:length(subjects)
             %trialdata = filtdata(:,movetimes{cc,1});
             goniodata = GONIO(cc).data;
             % Get data for movements
-            window_buffer = 1*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
+            window_buffer = 2*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
             for dd = 1:size(movetimes{cc,2},1)
                 temp_times = movetimes{cc,2}(dd,1)+window_buffer: movetimes{cc,2}(dd,2)+window_buffer;
                 alleeg   = cat(2,alleeg,filtdata(:,temp_times));
@@ -226,6 +227,13 @@ for aa = 1:length(subjects)
                 movedata{count,2} = goniodata(:,temp_times);
                 count = count + 1;
             end
+        end
+        clear cc dd
+        
+        
+        for dd = 1:size(movedata,1)
+            
+            
         end
         
         % Train / test split
@@ -242,6 +250,9 @@ for aa = 1:length(subjects)
         trainidx = [];
         traineeg = [];
         trainkin = [];
+        alleeg   = [];
+        allkin   = [];
+        allidx   = [];
         
         for dd = 1:size(movedata,1) % for each movement window
             % Get data for specific channels
@@ -254,6 +265,10 @@ for aa = 1:length(subjects)
                 [datavec, ~]= envelope(tempeeg',envwindow,'analytic'); % applies hilbert with specified window size: 1 second
                 datavec = datavec';
             end % if bb == 1
+            
+            alleeg = cat(2,alleeg,datavec);
+            allkin = cat(2,allkin,movedata{dd,2}(1,:));
+            allidx = cat(2,allidx,size(datavec,2));
             
             % Split training and testing
             if dd <= train_trials
@@ -268,43 +283,60 @@ for aa = 1:length(subjects)
             
         end % dd = 1:size(movedata,1)
         
-        
         % TIMING LOOP HERE
         tstart = 1;
-        tend   = tstart + 1/20 * srate;
-        traineeg_win = []; trainkin_win = [];
-        while tend <= size(trainkin,2)
+        tend   = tstart + 1/50 * srate;
+        alleeg_win = []; allkin_win = [];
+        while tend <= size(allkin,2)
             % Get window of mean power/potential and corresponding kin val
-            traineeg_win = [traineeg_win, mean(traineeg(:,tstart:tend),2)];
-            trainkin_win = [trainkin_win, trainkin(:,tend)];
+            alleeg_win = [alleeg_win, mean(alleeg(:,tstart:tend),2)];
+            allkin_win = [allkin_win, allkin(:,tend)];
+            
+            
             % Update start and end
             tstart = tend + 1;
             tend   = tstart + 1/20 * srate;
         end
-        tstart = 1;
-        tend   = tstart + 1/20 * srate;
-        testeeg_win = [];  testkin_win = [];
-        while tend <= size(testkin,2)
-            % Get window of mean power/potential and corresponding kin val
-            testeeg_win = [testeeg_win, mean(testeeg(:,tstart:tend),2)];
-            testkin_win = [testkin_win, testkin(:,tend)];
-            % Update start and end
-            tstart = tend + 1;
-            tend   = tstart + 1/20 * srate;
-        end
-        
-        trainkin = trainkin_win;
-        traineeg = traineeg_win(combos{total,4},:);
-        testkin  = testkin_win;
-        testeeg  = testeeg_win(combos{total,4},:);
-        
-        
-        % Zscore data
-        trainkin = transpose(zscore(trainkin'));
-        traineeg = transpose(zscore(traineeg'));
-        testeeg  = transpose(zscore(testeeg'));
-        testkin  = transpose(zscore(testkin'));
-        
+
+%         
+%         % TIMING LOOP HERE
+%         tstart = 1;
+%         tend   = tstart + 1/50 * srate;
+%         traineeg_win = []; trainkin_win = [];
+%         while tend <= size(trainkin,2)
+%             % Get window of mean power/potential and corresponding kin val
+%             traineeg_win = [traineeg_win, mean(traineeg(:,tstart:tend),2)];
+%             trainkin_win = [trainkin_win, trainkin(:,tend)];
+%             % Update start and end
+%             tstart = tend + 1;
+%             tend   = tstart + 1/20 * srate;
+%         end
+%         tstart = 1;
+%         tend   = tstart + 1/20 * srate;
+%         testeeg_win = [];  testkin_win = [];
+%         while tend <= size(testkin,2)
+%             % Get window of mean power/potential and corresponding kin val
+%             testeeg_win = [testeeg_win, mean(testeeg(:,tstart:tend),2)];
+%             testkin_win = [testkin_win, testkin(:,tend)];
+%             % Update start and end
+%             tstart = tend + 1;
+%             tend   = tstart + 1/20 * srate;
+%         end
+%         
+%         trainkin = trainkin_win;
+%         traineeg = traineeg_win(combos{total,4},:);
+%         testkin  = testkin_win;
+%         testeeg  = testeeg_win(combos{total,4},:);
+%         
+%         % Zscore data
+%         trainkin = transpose(zscore(trainkin'));
+%         traineeg = transpose(zscore(traineeg'));
+%         testeeg  = transpose(zscore(testeeg'));
+%         testkin  = transpose(zscore(testkin'));
+%         
+
+        %%%%%%% OLD STUFF HERE %%%%%%
+        %
         %         ord = 3;
         %         lagKINtrain = KalmanFilter.lag_data(trainkin,1);
         %         lagEEGtrain = KalmanFilter.lag_data(traineeg,1);
@@ -321,12 +353,15 @@ for aa = 1:length(subjects)
         %          % Store R2 values
         %          R2_sub{bb} = KalmanFilter.rsquared(predicted,testkin);
         %          predicted_sub{bb} = [predicted(:)'; testkin(:)'];
+        %
+        %%%%%%% END OLD STUFF %%%%%%
+        
         
         % Kalman Filter object
         KF = KalmanFilter('state',trainkin,'observation',traineeg,...
             'augmented',1,'method','unscented');
         % Perform grid search
-        foldIdx = cumsum([1 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
+        foldIdx = cumsum([0 sum(trainidx(1:6)) sum(trainidx(7:end))-1]);
         KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
             'lambdaF',KF_LAMBDA,'testidx',1);%,'kfold',foldIdx);
         
@@ -357,10 +392,16 @@ for aa = 1:length(subjects)
     PREDICT_ALL{aa} = predicted_sub;
 end
 
-save('allR2_50msWindow_FrontalChans_shuffle.mat','R2_ALL')
-save('allPredict_50msWindow_FrontalChans_shuffle.mat','PREDICT_ALL')
+save(['allR2_' movement '_20msWindow_FrontalChans.mat'],'R2_ALL')
+save(['allPredict_' movement '_50msWindow_FrontalChans.mat'],'PREDICT_ALL')
 
 delete(gcp('nocreate'));
 
-
+% figure; scatter(lagKIN_cut(1,:),predicted(1,:));
+% hold on; plot((-1:.01:1),(lagKIN_cut(1,:)/predicted(1,:))*(-1:.01:1))
+% ax = gca
+% ax.Children
+% ax.Children(1).LineWidth
+% ax.Children(1).LineWidth = 2
+% hold on; scatter(lagKIN_cut(1,:),lagKIN_cut(1,:));
 
