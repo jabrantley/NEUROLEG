@@ -259,7 +259,7 @@ for aa = 3 %1:length(subs)
         R2_sub_all    = cell(total,1);
         predicted_sub = cell(total,1);
         thismove = movements{aaa};
-        parfor bb = 1:total
+        for bb = 1:total
 %         for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);

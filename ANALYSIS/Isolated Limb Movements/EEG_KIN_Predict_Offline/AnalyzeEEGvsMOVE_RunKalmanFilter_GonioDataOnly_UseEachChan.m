@@ -15,7 +15,7 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 0;
+onCluster   = 1;
 runParallel = 1;
 
 % Define directory
@@ -26,7 +26,7 @@ addpath(genpath(fullfile(parentdir)));
 
 % Set data dir
 if onCluster
-    rawdir  = fullfile(parentdir,'TEMPDATA');
+    rawdir  = '/project/contreras-vidal/justin/TEMPDATA/';
 else
     % Define drive
     if strcmpi(getenv('username'),'justi')% WHICHPC == 1
@@ -52,6 +52,7 @@ subs = {'TF01','TF02','TF03'};
 vars = who;
 
 % Kalman filter parameters
+envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
 useAug       = 1;
@@ -109,13 +110,25 @@ BANDS   = {lodelta,delta,theta,alpha,beta,gamma,higamma,full,nodelta,full,nodelt
 
 % Setup parallel pool
 if runParallel
-    poo = gcp('nocreate');
-    if isempty(poo)
-        try
-            parpool(4);
-        catch
-            numCores = feature('numcores');
-            parpool(numCores);
+    if onCluster
+        poo = gcp('nocreate');
+        if isempty(poo)
+            try
+                parpool(60);
+            catch
+                numCores = feature('numcores');
+                parpool(numCores);
+            end
+        end
+    else
+        poo = gcp('nocreate');
+        if isempty(poo)
+            try
+                parpool(4);
+            catch
+                numCores = feature('numcores');
+                parpool(numCores);
+            end
         end
     end
 end
@@ -178,7 +191,7 @@ end
 %                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Loop through each subject
-for aa = 3%1:length(subs)
+for aa = 1:length(subs)
     
     % Get variables
     vars = who;
@@ -284,12 +297,12 @@ for aa = 3%1:length(subs)
                 useenv = 1;
             end
             
-            for cc = 1:length(montages)
+            parfor cc = 1:length(montages)
                 
 %         for bb = 1:total
 %             bb
-%             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
-%             pause(1);
+            disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) ']; Channel ' montages{cc} ])
+            pause(1);
             
             % Get channels of interest
             eegdata = eeg_data(cc,:);
@@ -300,7 +313,8 @@ for aa = 3%1:length(subs)
             for dd = 1:size(eegdata,1)
                 % filter data - not using state space approach but same
                 % results
-                filtdata(dd,:) = filter(b,a,eegdata(dd,:));
+                %filtdata(dd,:) = filter(b,a,eegdata(dd,:));
+                filtdata(dd,:) = filtfilt(b,a,eegdata(dd,:));
             end
             
             
@@ -410,7 +424,7 @@ for aa = 3%1:length(subs)
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_GONIO_EachChan_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
+        filename = [subs{aa} '_KF_RESULTS_GONIO_EachChanBSClean_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
         save(filename,'R2_sub_all','R2_sub_mean','predicted_sub','BANDS','montages');
 
     end % aaa = 1:length(movements)
