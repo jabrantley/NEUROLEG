@@ -299,6 +299,9 @@ for aa = 1:length(subs)
             
             parfor cc = 1:length(montages)
                 
+            %for cc = 1:length(montages)
+                 disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) '; Channel ' montages{cc} ])
+
 %         for bb = 1:total
 %             bb
             disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) ']; Channel ' montages{cc} ])
