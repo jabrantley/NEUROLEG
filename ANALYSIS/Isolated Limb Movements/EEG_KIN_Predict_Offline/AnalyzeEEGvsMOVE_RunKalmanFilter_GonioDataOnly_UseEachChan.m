@@ -285,7 +285,7 @@ for aa = 3%1:length(subs)
             end
             
             for cc = 1:length(montages)
-                
+                 disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) '; Channel ' montages{cc} ])
 %         for bb = 1:total
 %             bb
 %             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);

@@ -16,7 +16,7 @@ clc;
 
 % Run parallel for
 onCluster   = 0;
-runParallel = 1;
+runParallel = 0;
 
 % Define directory
 thisdir = pwd;
@@ -52,6 +52,7 @@ subs = {'TF01','TF02','TF03'};
 vars = who;
 
 % Kalman filter parameters
+envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
 useAug       = 1;
@@ -259,8 +260,8 @@ for aa = 3 %1:length(subs)
         R2_sub_all    = cell(total,1);
         predicted_sub = cell(total,1);
         thismove = movements{aaa};
-        parfor bb = 1:total
-%         for bb = 1:total
+%         parfor bb = 1:total
+        for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
@@ -294,7 +295,7 @@ for aa = 3 %1:length(subs)
             
             
             % Compute envelope for filtdata above delta
-            if combos{total,3} == 1
+            if combos{bb,3} == 1
                 [filtdata, ~] = envelope(filtdata',envwindow,'analytic');
                 filtdata = filtdata';
                 % elseif combos{total,3} == 0;
