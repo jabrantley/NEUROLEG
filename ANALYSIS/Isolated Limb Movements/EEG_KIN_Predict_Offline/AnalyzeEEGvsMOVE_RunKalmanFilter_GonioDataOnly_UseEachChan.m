@@ -52,6 +52,7 @@ subs = {'TF01','TF02','TF03'};
 vars = who;
 
 % Kalman filter parameters
+realtimefilt = 0;
 envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
@@ -197,7 +198,17 @@ for aa = 1:length(subs)
     vars = who;
     
     % Get eeg files for each subject
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
+    if realtimefilt
+        load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
+    else
+        if onCluster
+            load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-BRAINSTORM-eeg.mat'   ]));
+        else
+            load(fullfile(datadir, [subs{aa}, '-ALLTRIALS-BRAINSTORM-eeg.mat'   ]));
+        end
+        
+    end
+    
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
     % Load movement data
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
@@ -215,44 +226,6 @@ for aa = 1:length(subs)
     % Get channel locations
     montages = {EEG.chanlocs.labels};
     
-    % Get filt bands and channel locations
-%     total = 1;
-%     combos = cell(length(BANDS),length(montages));
-%     for bb = 1:length(BANDS)
-%         combos{bb,1} = BANDS{bb};
-%         for cc = 1:length(montages)
-%             combos{cc,2} = cc;
-%             if any(bb == [1, 2, length(BANDS)-1,length(BANDS)]) % any(bb == length(BANDS))
-%                 combos{total,3} = 0;
-%             else
-%                 combos{total,3} = 1;
-%             end
-%             combos{total,4} = montages{cc};%['IC: ' num2str(cc) '; RV: ' num2str(EEG.dipfit.model(cc).rv)];
-%             total = total + 1;
-%         end
-%     end
-%     total = total - 1;
-%     clear bb cc
-
-%     total = 1;
-%     combos = cell(length(BANDS)*length(montages),3);
-%     for bb = 1:length(BANDS)
-%         for cc = 1:length(montages)
-%             combos{total,1} = BANDS{bb};
-%             combos{total,2} = cc;
-%             if any(bb == [1, 2, length(BANDS)-1,length(BANDS)]) % any(bb == length(BANDS))
-%                 combos{total,3} = 0;
-%             else
-%                 combos{total,3} = 1;
-%             end
-%             combos{total,4} = montages{cc};%['IC: ' num2str(cc) '; RV: ' num2str(EEG.dipfit.model(cc).rv)];
-%             total = total + 1;
-%         end
-%     end
-%     total = total - 1;
-%     clear bb cc
-    
-
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %                                    %
     %        BEGIN PARALLEL LOOP         %
@@ -261,11 +234,11 @@ for aa = 1:length(subs)
     eeg_data = EEG.data;
     
     % Common average reference
-    if car_data
+    if realtimefilt && car_data
         meanEEG = repmat(mean(eeg_data,1),size(eeg_data,1),1);
         eeg_data = eeg_data - meanEEG;
     end
-    
+   
     % Slice data
     %eeg_data = mat2cell(eeg_data,ones(size(eeg_data,1),1),size(eeg_data,2));
     
@@ -298,12 +271,9 @@ for aa = 1:length(subs)
             end
             
             parfor cc = 1:length(montages)
-                
             %for cc = 1:length(montages)
                  disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) '; Channel ' montages{cc} ])
-
-%         for bb = 1:total
-%             bb
+                 
             disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) ']; Channel ' montages{cc} ])
             pause(1);
             
@@ -316,8 +286,11 @@ for aa = 1:length(subs)
             for dd = 1:size(eegdata,1)
                 % filter data - not using state space approach but same
                 % results
-                %filtdata(dd,:) = filter(b,a,eegdata(dd,:));
-                filtdata(dd,:) = filtfilt(b,a,eegdata(dd,:));
+                if realtimefilt
+                    filtdata(dd,:) = filter(b,a,eegdata(dd,:));
+                else
+                    filtdata(dd,:) = filtfilt(b,a,eegdata(dd,:));
+                end
             end
             
             
