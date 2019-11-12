@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                         %
-%          ANALYZE EEG VS ISOLATED LIMB MOVEMENTS IN CHANEL SPACE         %
+%          ANALYZE EEG VS ISOLATED LIMB MOVEMENTS USING COMPONENTS        %
 %                                                                         %
 %               SEGMENT MOVEMENT WINDOW USING PHASE SHIFT                 %
 %                                                                         %
@@ -16,7 +16,7 @@ clc;
 
 % Run parallel for
 onCluster   = 0;
-runParallel = 1;
+runParallel = 0;
 
 % Define directory
 thisdir = pwd;
@@ -39,7 +39,7 @@ else
     
     % Define directories
     datadir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_PROCESS_SYNCHRONIZED_EEG_FMRI_DATA');
-    % rawdir   = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
+    rawdir   = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
     % movedir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_PROCESS_SYNCHRONIZED_EEG_FMRI_DATA','MOVEMENT_WINDOW');
     % basepath = fullfile(drive,'Dropbox','Research','Analysis','MATLAB FUNCTIONS');
 end
@@ -54,7 +54,7 @@ end
 % addpath(genpath(fullfile(basepath,'Brainstorm','brainstorm3','toolbox')));
 % addpath(genpath(fullfile(basepath,'Custom MATLAB Functions')));
 % addpath(genpath(fullfile(basepath,'shoeeg')));
-% 
+
 % % Clean up
 clearvars -except drive datadir rawdir savedir basepath EEG movedir parentdir ...
     onCluster runParallel
@@ -66,8 +66,6 @@ subs = {'TF01','TF02','TF03'};
 vars = who;
 
 % Kalman filter parameters
-zscore_data  = 1;
-car_data     = 1;
 useAug       = 1;
 useUKF       = 1;
 filter_order = 2; % bandpass filter
@@ -81,7 +79,7 @@ KF_LAMBDA    = logspace(-2,2,5);
 srate          = 1000;
 numCycles      = 6;   % number of cycles
 move_freq      = .5; % speed of moving dot in hz
-window_buffer  = 2*srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
+window_buffer  = 1*srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
 trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
 
 % Params for computing feature
@@ -93,6 +91,7 @@ timevec  = 0:1/srate:trial_duration; % time vector
 sinwave  = cos(move_freq*2*pi*timevec + pi); % create sinwave
 fullwave = [-1.*ones(1,window_buffer) sinwave -1.*ones(1,window_buffer)];
 fullwave = rescale(fullwave);
+dfullwave = rescale([0 diff(fullwave)]);
 fulltime = 0:1/srate:(trial_duration+2*window_buffer/srate);
 
 % Define frequency bands
@@ -105,16 +104,8 @@ beta    = [15 30];
 gamma   = [30 55];
 higamma = [65 90];
 full    = [.3 50];
-BANDS   = {lodelta,delta,theta,alpha,beta,gamma,higamma,full,full}; % full is used twice so one is env(full) and other is not
-
-% Channels to keep for analysis NOTE: FT10 is in FCz location
-chans2keep = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
-    'C1','C3'};
-% chans2keepExpanded = {'FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
-%   'C1','C3','CP3','CP1','CPz','CP2','CP4'};
-% leftMotor  = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','Cz',...
-%     'C1','C3'};
-channel_configs = {chans2keep};
+%BANDS   = {lodelta,delta,theta,alpha,beta,gamma,higamma,full,full}; % full is used twice so one is env(full) and other is not
+BANDS   = {delta}; % full is used twice so one is env(full) and other is not
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                    %
@@ -229,7 +220,7 @@ for aa = 1:length(subs)
     vars = who;
     
     % Get eeg files for each subject
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
+    load(fullfile(datadir, [subs{aa}, '-ALLTRIALS-DIPFIT-eeg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-emg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
     % Load movement data
@@ -239,7 +230,8 @@ for aa = 1:length(subs)
     % Get trial information
     trialbreaks = EEG.trialbreaks;
     stimpattern = cell(size(STIM,1),1);
-    movements = {'RK','RA','LK','LA'};
+    %movements = {'RK','RA','LK','LA'};
+    movements = {'RK','LK'};
     movetimes = cell(length(movements),2);
     
     % Loop through each movement
@@ -273,13 +265,13 @@ end
 %                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Loop through each subject
-for aa = 3%1:length(subs)
+for aa = 1:length(subs)
     
     % Get variables
     vars = who;
     
     % Get eeg files for each subject
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
+    load(fullfile(datadir, [subs{aa}, '-ALLTRIALS-DIPFIT-eeg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-emg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
     % Load movement data
@@ -293,27 +285,17 @@ for aa = 3%1:length(subs)
     % Get trial information
     trialbreaks = EEG.trialbreaks;
     stimpattern = cell(size(STIM,1),1);
-    movements = {'RK','RA','LK','LA'};
+    %movements = {'RK','RA','LK','LA'};
+    movements = {'RK','LK'};
     movetimes = all_movetimes{aa};
-    
-    % Get channel locations
-    eegchannels = {EEG.chanlocs.labels};
-    montages    = [];
-    for bb = 1:length(channel_configs)
-        chans2keepIDX = zeros(size(channel_configs{bb}));
-        for cc = 1:length(channel_configs{bb})
-            chans2keepIDX(cc) = find(strcmpi(channel_configs{bb}(cc),eegchannels));
-        end
-        montages = cat(2,{chans2keepIDX});%{1:length(chans2keepIDX)};%, LM_IDX};
-    end
     
     % Get filt bands and channel locations
     total = 1;
-    combos = cell(length(BANDS)*length(montages),3);
+    combos = cell(length(BANDS)*size(EEG.icaweights,1),3);
     for bb = 1:length(BANDS)
-        for cc = 1:length(montages)
+        for cc = 1:size(EEG.icaweights,1)
             combos{total,1} = BANDS{bb};
-            combos{total,2} = montages{cc};
+            combos{total,2} = cc;
             if any(bb == [1, 2, length(BANDS)])
                 combos{total,3} = 0;
             else
@@ -330,39 +312,43 @@ for aa = 3%1:length(subs)
     %        BEGIN PARALLEL LOOP         %
     %                                    %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    eeg_data = EEG.data;
     
-    % Common average reference
-    if car_data
-        meanEEG = repmat(mean(eeg_data,1),size(eeg_data,1),1);
-        eeg_data = eeg_data - meanEEG;
-    end
+    % Compute ICA activations
+    icaact = EEG.icaweights*EEG.icasphere*EEG.data;
     
+    % Slice data to reduce overhead in parallel loop
+%     for zz = 1:size(EEG.icaweights,1)
+%         eval(['IC' num2str(zz) ' = EEG.icaact(' num2str(zz) ',:);'])
+%     end
+            
     % Initialize for storing R2
     R2_MEAN     = cell(length(movements),1);
     R2_ALL      = cell(length(movements),1);
     PREDICT_ALL = cell(length(movements),1);
     
+    srate = EEG.srate;
+    
     % Loop through each movement
-    for aaa = 3:length(movements)% 1:length(movements)
+    for aaa = 1:length(movements)% 1:length(movements)
+        
         
         % Initialize for storing R2
         R2_sub_mean   = cell(total,1);
         R2_sub_all    = cell(total,1);
         predicted_sub = cell(total,1);
         thismove = movements{aaa};
-        parfor bb = 1:total
+        for bb = 1:total
 %         for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
             
             % Design filters
-            bp_filt = make_ss_filter(filter_order,combos{bb,1},EEG.srate,'bandpass');
+            bp_filt = make_ss_filter(filter_order,combos{bb,1},srate,'bandpass');
             %lp_filt = make_ss_filter(filter_order,combos{bb,1},EEG.srate,'lowpass');
             
             % Get channels of interest
-            eegdata = eeg_data(combos{bb,2},:);
+            eegdata = icaact(combos{bb,2},:);
             
             % Filter data
             filtdata = zeros(size(eegdata));
@@ -397,7 +383,7 @@ for aa = 3%1:length(subs)
                     move_win  = movetimes{aaa}{cc,2}(dd,:);
                     % Get start time and stop time
                     t1 = move_win(1)-window_buffer;
-                    t2 = round(move_win(1)+(trial_duration*EEG.srate)- 1/EEG.srate + window_buffer);
+                    t2 = round(move_win(1)+(trial_duration*srate)- 1/srate + window_buffer);
                     % Shift time according to computed phase lag
                     temp_time = (t1:t2) + round(abs(mean(lag2{aa})));
                     % Get data
@@ -409,15 +395,14 @@ for aa = 3%1:length(subs)
                     while tend <= size(tempeeg,2)
                         % Get window of mean power/potential and corresponding kin val
                         alleeg_win = [alleeg_win, mean(tempeeg(:,tstart:tend),2)];
+                        %wavedat    = [mean(fullwave(:,tstart:tend),2); mean(dfullwave(:,tstart:tend),2)];
+                        %allkin_win = [allkin_win, wavedat];
                         allkin_win = [allkin_win, mean(fullwave(:,tstart:tend),2)];
                         % Update start and end
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
                     end
-                    if zscore_data
-                        alleeg_win = transpose(zscore(alleeg_win'));
-                        allkin_win = transpose(zscore(allkin_win'));
-                    end
+                    
                     % Save to folds array
                     ALLFOLDS{1,count} = alleeg_win;
                     ALLFOLDS{2,count} = allkin_win;
@@ -475,7 +460,8 @@ for aa = 3%1:length(subs)
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
+%         filename = [subs{aa} '_KF_RESULTS_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_ICA_VEL_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
+        filename = [subs{aa} '_KF_RESULTS_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_ICA_DELTA_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
         save(filename,'R2_sub_all','R2_sub_mean','predicted_sub');
         
     end % aaa = 1:length(movements)

@@ -20,6 +20,12 @@ elseif strcmpi(computer,'MACI64') % macbook
     drive = '/Volumes/STORAGE/';
 end
 
+% Define directory
+thisdir = pwd;
+idcs = strfind(pwd,filesep);
+parentdir = thisdir(1:idcs(end-2));
+addpath(genpath(fullfile(parentdir)));
+
 % Define directories
 datadir  = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_PROCESS_SYNCHRONIZED_EEG_FMRI_DATA');
 rawdir   = fullfile(drive,'Dropbox','Research','Data','UH-NEUROLEG','_RAW_SYNCHRONIZED_EEG_FMRI_DATA');
@@ -96,19 +102,19 @@ for aa = 1:length(subs)
             
             %         if loadAng
             %             % Angle data
-%             try
-%                 movedata =  ANGLES(bb).data(aaa,:);
-%                 %         else
-%                 % Get gonio data
-%             catch err
-%                 disp(err.message)
-%                 try
-                    movedata = GONIO(bb).data(aaa,:);
-%                 catch err2
-%                     disp(err2.message)
-%                     continue
-%                 end
-%             end
+            %             try
+            %                 movedata =  ANGLES(bb).data(aaa,:);
+            %                 %         else
+            %                 % Get gonio data
+            %             catch err
+            %                 disp(err.message)
+            %                 try
+            movedata = GONIO(bb).data(aaa,:);
+            %                 catch err2
+            %                     disp(err2.message)
+            %                     continue
+            %                 end
+            %             end
             %         end
             % Get EMG data
             %         emgdata   = EMG(bb).data(3,:);
@@ -170,7 +176,8 @@ for aa = 1:length(subs)
     vars = who;
     
     % Get eeg files for each subject
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
+    load(fullfile(datadir, [subs{aa}, '-ALLTRIALS-BRAINSTORM-eeg.mat'   ]));
+    %load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-BRAINSTORM-eeg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-emg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
     % Load movement data
@@ -182,7 +189,17 @@ for aa = 1:length(subs)
     movetimes = cell(size(STIM,1),2);
     stimpattern = cell(size(STIM,1),1);
     movements = {'RK','RA','LK','LA'};
-   
+    
+    % Get baseline data
+    resttimes = find(EEG.trialbreaks==0);
+    eegdata =  EEG.data(:,resttimes);
+    savefile(eegdata  , 'EEG'  , movedir,[subs{aa} '-T00-eeg.mat'  ]);
+    
+    clear eegdata
+    eegdata   = [];
+    emgdata   = [];
+    goniodata = [];
+    
     for aaa = 1:length(movements)
         limb = movements{aaa};
         
@@ -207,28 +224,41 @@ for aa = 1:length(subs)
                 usegon   = 0;
                 disp(err.message)
             end
-            muscledata = EMG(bb).data;s
+            muscledata = EMG(bb).data;
             
             % Create movement
             stimtime        = ones(1,length(find(EEG.trialbreaks==bb)));
             numCycles       = 6;   % number of cycles
-            move_fresq       = .5; % speed of moving dot in hz
+            move_freq       = .5; % speed of moving dot in hz
             stimpattern{bb} = cell(size(rk_onset)); % for storing prescribed pattern
             window_buffer   = 2*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
+            
             for cc = 1:length(rk_onset)
                 tstart    = rk_samples(cc,1)-window_buffer;
-                tstop     = rk_samples(cc,1)+(12*EEG.srate)- 1/EEG.srate + window_buffer;
-                temp_time = (tstart:tstop) + mean(lag2{aa});
-                eegdata   = EEG.data(:,temp_time);
-                emgdata   = muscledata(:,temp_time);
-                savefile(eegdata  , 'EEG'  , movedir,[subs{aa} '-T0' num2str(bb) '-' movements{aaa} num2str(cc) '-eeg.mat'  ]); 
-                savefile(emgdata  , 'GONIO', movedir,[subs{aa} '-T0' num2str(bb) '-' movements{aaa} num2str(cc) '-emg.mat'  ]); 
+                tstop     = round(rk_samples(cc,1)+(12*EEG.srate)- 1/EEG.srate + window_buffer);
+                temp_time = (tstart:tstop) + round(abs(mean(lag2{aa})));
+                % Get data
+                eegtemp   = EEG.data(:,temp_time);
+                emgtemp   = muscledata(:,temp_time);
+                % Concatenate
+                eegdata   = cat(3,eegdata,eegtemp);
+                emgdata   = cat(3,emgdata,emgtemp);
+                % Save data
+                savefile(eegtemp  , 'EEG'  , movedir,[subs{aa} '-T0' num2str(bb) '-' movements{aaa} num2str(cc) '-eeg.mat'  ]); 
+                savefile(emgtemp  , 'EMG', movedir,[subs{aa} '-T0' num2str(bb) '-' movements{aaa} num2str(cc) '-emg.mat'  ]); 
+                % Get gonio data if exist
                 if usegon
-                    goniodata = movedata(:,temp_time);
-                    savefile(goniodata, 'EMG'  , movedir,[subs{aa} '-T0' num2str(bb) '-' movements{aaa} num2str(cc) '-gonio.mat']); 
+                    goniotemp = movedata(:,temp_time);
+                    goniodata = cat(3,goniodata,goniotemp);
+                    savefile(goniotemp, 'GONIO'  , movedir,[subs{aa} '-T0' num2str(bb) '-' movements{aaa} num2str(cc) '-gonio.mat']); 
                 end
             end % cc = 1:length(rk_onset)
         end % bb = 1:size(STIM,1)
+        savefile(eegdata  , 'EEG' , movedir, [subs{aa} '-' movements{aaa} '-eeg.mat'  ]);
+        savefile(emgdata  , 'EMG' , movedir, [subs{aa} '-' movements{aaa} '-emg.mat'  ]);
+        if usegon
+            savefile(goniodata, 'GONIO'  , movedir,[subs{aa} '-' movements{aaa} '-gonio.mat']);
+        end
     end
 end
 

@@ -80,25 +80,25 @@ for aa = 1%2:length(subs)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %            CAR             %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%     % Add channel of zeros for ref - proper rank
-%     EEG.nbchan = EEG.nbchan+1;
-%     EEG.data(end+1,:) = zeros(1, EEG.pnts);
-%     EEG.chanlocs(1,EEG.nbchan).labels = 'initialReference';
-%     EEG = pop_reref(EEG, []);
-%     EEG.refchan = EEG.data(end,:); % save ref channels
-%     EEG = pop_select( EEG,'nochannel',{'initialReference'});
-%     EEGCAR = EEG; EEG.data = double(EEG.data);
-%     EEG.process = [EEG.process, 'CAR'];
-    
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    %   HP FILT @ 2 Hz FOR ICA   %
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Higher HP filt band to improve ICA decomposition. Weights will be
-    % applied to post ASR data after completing cleaning.
-    EEG.preICAeeg = EEG.data;
-    EEG.data = transpose(filterdata('data',EEG.data','srate',EEG.srate,...
-            'highpass',2,'highorder',2,'visualize','off'));
+    % Add channel of zeros for ref - proper rank
+    EEG.nbchan = EEG.nbchan+1;
+    EEG.data(end+1,:) = zeros(1, EEG.pnts);
+    EEG.chanlocs(1,EEG.nbchan).labels = 'initialReference';
+    EEG = pop_reref(EEG, []);
+    EEG.refchan = EEG.data(end,:); % save ref channels
+    EEG = pop_select( EEG,'nochannel',{'initialReference'});
+    EEGCAR = EEG; EEG.data = double(EEG.data);
+    EEG.process = [EEG.process, 'CAR'];
      
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     %   HP FILT @ 2 Hz FOR ICA   %
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     % Higher HP filt band to improve ICA decomposition. Weights will be
+%     % applied to post ASR data after completing cleaning.
+%     EEG.preICAeeg = EEG.data;
+%     EEG.data = transpose(filterdata('data',EEG.data','srate',EEG.srate,...
+%             'highpass',2,'highorder',2,'visualize','off'));
+%      
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %            ICA             %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,7 +122,9 @@ for aa = 1%2:length(subs)
     EEG = dipfit_obj_bci.postEEG;
     
     % FINAL STEP - SAVE DATA
-    savefile(EEG,'EEG',savedir,[subs{aa} '-ALLTRIALSNOCAR-eeg.mat'])
+    %savefile(EEG,'EEG',savedir,[subs{aa} '-ALLTRIALSNOCAR-eeg.mat'])
+    %savefile(EEG,'EEG',savedir,[subs{aa} '-ALLTRIALS-eeg.mat'])
+    savefile(EEG,'EEG',savedir,[subs{aa} '-ALLTRIALSNOFILT-eeg.mat'])
     keepvars(vars);
     vars = who;
     
