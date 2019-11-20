@@ -61,9 +61,9 @@ useUKF       = 1;
 filter_order = 2; % bandpass filter
 use_velocity = 1;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
-KF_ORDER     = 3;%[3,5,10];
-KF_LAGS      = 3;%[3,5,10];
-KF_LAMBDA    = 1;%logspace(-2,2,5);
+KF_ORDER     = [3,5,10];
+KF_LAGS      = [3,5,10];
+KF_LAMBDA    = logspace(-2,2,5);
 
 % Define movement pattern parameters
 srate          = 1000;
@@ -152,7 +152,6 @@ for aa = 1:length(subs)
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
     % Load movement data
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-angles.mat']));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
     
     % Get trial information
@@ -367,8 +366,8 @@ for aa = 1:length(subs)
         R2_sub_all    = cell(total,1);
         predicted_sub = cell(total,1);
         thismove = movements{aaa};
-        parfor bb = 1:total
-%         for bb = 3:total
+%         parfor bb = 1:total
+        for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
