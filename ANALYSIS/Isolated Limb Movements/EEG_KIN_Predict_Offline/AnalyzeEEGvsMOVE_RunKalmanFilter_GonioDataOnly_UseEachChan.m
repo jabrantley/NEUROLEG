@@ -192,7 +192,7 @@ end
 %                                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Loop through each subject
-for aa = 1:length(subs)
+for aa = 2:length(subs)
     
     % Get variables
     vars = who;

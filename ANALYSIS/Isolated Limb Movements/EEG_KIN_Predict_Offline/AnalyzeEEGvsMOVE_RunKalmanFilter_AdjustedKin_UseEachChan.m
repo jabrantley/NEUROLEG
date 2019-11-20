@@ -15,7 +15,7 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 0;
+onCluster   = 1;
 runParallel = 1;
 
 % Define directory
@@ -153,7 +153,7 @@ for aa = 1:length(subs)
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
     % Load movement data
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-angles.mat']));
+%     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-angles.mat']));
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
     
     % Get trial information
@@ -350,8 +350,8 @@ for aa = 1:length(subs)
                 useenv = 1;
             end
             
-            %parfor cc = 1:length(montages)
-            for cc = 1:length(montages)
+            parfor cc = 1:length(montages)
+            %for cc = 1:length(montages)
                  
             disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) ']; Channel ' montages{cc} ])
             pause(1);

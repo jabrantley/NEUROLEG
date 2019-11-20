@@ -15,7 +15,7 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 0;
+onCluster   = 1;
 runParallel = 1;
 
 % Define directory
@@ -26,7 +26,7 @@ addpath(genpath(fullfile(parentdir)));
 
 % Set data dir
 if onCluster
-    rawdir  = fullfile(parentdir,'TEMPDATA');
+    rawdir  = fullfile('/project/contreras-vidal/justin/TEMPDATA/');
 else
     % Define drive
     if strcmpi(getenv('username'),'justi')% WHICHPC == 1
