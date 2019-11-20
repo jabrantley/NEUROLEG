@@ -118,7 +118,7 @@ classdef KalmanFilter < handle
             % Initialize matrices
             self.Xt  = zeros(d,1);
             self.Xtp = zeros(d,1);
-            self.Pt  = eye(d);
+            self.Pt  = self.Q; %eye(d);
         end % end train
         
         % Predict using trained Kalman Filter model
@@ -145,7 +145,8 @@ classdef KalmanFilter < handle
                 % Initialize unscented data matrix
                 sigmapoints = zeros(d, 2*d+1);
                 % Perform unscented transform
-                sqrtP = sqrtm(self.Ptp);
+                
+                sqrtP = real(sqrtm(self.Ptp));
                 sigmapoints(:,         1) = self.Xtp;
                 sigmapoints(:,   2:  d+1) = repmat(sigmapoints(:,1), 1, d) + sqrt(d+1)*sqrtP;
                 sigmapoints(:, d+2:2*d+1) = repmat(sigmapoints(:,1), 1, d) - sqrt(d+1)*sqrtP;
