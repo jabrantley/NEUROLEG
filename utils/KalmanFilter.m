@@ -24,7 +24,9 @@ classdef KalmanFilter < handle
         sigma       % Standard deviation of data
         standardize % Standardize data
         
-        % R2 value after performing grid search
+        % Pearsons correlation (R1) and R2 value after performing grid search
+        R1_Train
+        R1_GridSearch
         R2_Train
         R2_GridSearch
         
@@ -293,6 +295,8 @@ classdef KalmanFilter < handle
             state_orig   = self.state;
             observe_orig = self.observation;
             % Initialize array for storing R2 values
+            allR1 = zeros(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
+            allR1_ALL = cell(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
             allR2 = zeros(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
             allR2_ALL = cell(length(params.lags),length(params.order),length(params.lambdaF),length(params.lambdaB));
             % Create folds if not specified
@@ -328,6 +332,7 @@ classdef KalmanFilter < handle
                             lamB = params.lambdaB(dd);
                             % Loop through each fold
                             R2 = zeros(1,length(params.kfold)-1);
+                            R1 = zeros(1,length(params.kfold)-1);
                             for ee = 1:length(params.kfold)-1 % k folds
                                 % Get test data
                                 test_state   = state_folds{ee};
@@ -361,11 +366,14 @@ classdef KalmanFilter < handle
                                 end
                                 % Compute R2 value
                                 R2(ee) = KalmanFilter.rsquared(prediction(params.testidx,ord+1:end),test_state(params.testidx,ord+1:end));
+                                R1(ee) = KalmanFilter.PearsonCorr(prediction(params.testidx,ord+1:end),test_state(params.testidx,ord+1:end));
                                 % Update count
                                 cnt = cnt+1;
                                 waitbar(cnt/totalIterations,wb);
                             end
                             % Compute mean r squared
+                            allR1(aa,bb,cc,dd)= mean(R1);
+                            allR1_ALL{aa,bb,cc,dd}= R1;
                             allR2(aa,bb,cc,dd)= mean(R2);
                             allR2_ALL{aa,bb,cc,dd}= R2;
                         end % lambda B
@@ -392,6 +400,8 @@ classdef KalmanFilter < handle
             self.lambdaB     = params.lambdaB(idx4(1));
             self.state       = state_orig;
             self.observation = observe_orig;
+            self.R1_Train    = max(allR1(:));
+            self.R1_GridSearch = allR1_ALL;
             self.R2_Train    = max(allR2(:));
             self.R2_GridSearch = allR2_ALL;
             % Train model using updated params
@@ -401,6 +411,27 @@ classdef KalmanFilter < handle
     
     % Static methods
     methods (Static)
+        function r = PearsonCorr(x,y)
+            % Calculate the Pearson correlation coefficient between vectors x and y
+            x = x(:);
+            y = y(:);
+            % Get size of data
+            [n,~] = size(x);
+            [m,~] = size(y);
+            % Compute r value
+            if n == m
+                mu_x = mean(x);
+                mu_y = mean(y);
+                % Get num
+                num = (x - mu_x)' * (y - mu_y);
+                % Get denom
+                denom = sqrt(sum((x - mu_x).^2)) * sqrt(sum((y - mu_y).^2));
+                % Compute r-value
+                r = num/denom;
+            else
+                error('X and Y must be the same length.')
+            end
+        end
         % Compute R Squared value
         function R2 = rsquared(predicted,actual)
             R2 = zeros(size(actual,1),1);

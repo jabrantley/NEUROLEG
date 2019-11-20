@@ -61,27 +61,27 @@ useUKF       = 1;
 filter_order = 2; % bandpass filter
 use_velocity = 1;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
-KF_ORDER     = [3,5,10];
-KF_LAGS      = [3,5,10];
-KF_LAMBDA    = logspace(-2,2,5);
+KF_ORDER     = 3;%[3,5,10];
+KF_LAGS      = 3;%[3,5,10];
+KF_LAMBDA    = 1;%logspace(-2,2,5);
 
 % Define movement pattern parameters
 srate          = 1000;
-% numCycles      = 6;   % number of cycles
-% move_freq      = .5; % speed of moving dot in hz
+numCycles      = 6;   % number of cycles
+move_freq      = .5; % speed of moving dot in hz
 window_buffer  = 3; % 1 second shift TO ACCOUNT FOR ONSET ERROR
-% trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
+trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
 
 % Params for computing feature
 update_rate = 1/50; % sampling time
 window_overlap = 0; % % overlap 0 to 0.99
 
-% % Create movement pattern vector
-% timevec  = 0:1/srate:trial_duration; % time vector
-% sinwave  = cos(move_freq*2*pi*timevec + pi); % create sinwave
-% fullwave = [-1.*ones(1,window_buffer) sinwave -1.*ones(1,window_buffer)];
-% fullwave = rescale(fullwave);
-% fulltime = 0:1/srate:(trial_duration+2*window_buffer/srate);
+% Create movement pattern vector
+timevec  = 0:1/srate:trial_duration; % time vector
+sinwave  = cos(move_freq*2*pi*timevec + pi); % create sinwave
+fullwave = [-1.*ones(1,window_buffer) sinwave -1.*ones(1,window_buffer)];
+fullwave = rescale(fullwave);
+fulltime = 0:1/srate:(trial_duration+2*window_buffer/srate);
 
 % Define frequency bands
 lodelta = [.3 1.5];
@@ -113,7 +113,7 @@ if runParallel
         poo = gcp('nocreate');
         if isempty(poo)
             try
-                parpool(60);
+                parpool(11);
             catch
                 numCores = feature('numcores');
                 parpool(numCores);
@@ -129,6 +129,89 @@ if runParallel
                 parpool(numCores);
             end
         end
+    end
+end
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                    %
+%              COMPUTE LAG           %
+%                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+lag1 = cell(1,length(subs));
+lag2 = cell(1,length(subs));
+
+% Loop through each subject, concatenate, and process
+for aa = 1:length(subs)
+    
+    % Get variables
+    vars = who;
+    
+    % Get eeg files for each subject
+    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
+    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
+    % Load movement data
+    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-angles.mat']));
+    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
+    
+    % Get trial information
+    trialbreaks = EEG.trialbreaks;
+    movetimes = cell(size(STIM,1),2);
+    stimpattern = cell(size(STIM,1),1);
+    movements = {'RK'};
+    
+    for aaa = 1%:length(movements) - only estimate lag for RK
+        limb = movements{aaa};
+        
+        for bb = 1:size(STIM,1)
+            
+            % Get movement times from STIM
+            rk_idx      = find(strcmpi(STIM(bb).states,limb)); % Get movements of right knee
+            rk_onset    = STIM(bb).initialDelay + STIM(bb).onsets(rk_idx); % seconds
+            rk_duration = STIM(bb).Duration(rk_idx); % seconds
+            rk_time     = [rk_onset; rk_onset + rk_duration]'; % seconds [onset, offset]
+            rk_samples  = floor(rk_time .* EEG.srate); % sample points
+            
+            % Store movement times
+            movetimes{bb,1} = find(EEG.trialbreaks==bb);
+            movetimes{bb,2} = rk_samples;
+            
+            % Get movement data
+            movedata = GONIO(bb).data(aaa,:);
+            
+            % Create movement
+            stimtime = ones(1,length(find(EEG.trialbreaks==bb)));
+            stimpattern{bb} = cell(size(rk_onset)); % for storing prescribed pattern
+            win_buff = 3*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
+            for cc = 1:length(rk_onset)
+                % Create movement pattern vector
+                timevec_temp = 0:1/EEG.srate:rk_duration(cc); % time vector
+                sinwave_temp = cos(move_freq*2*pi*timevec_temp); % create sinwave
+                dsinwave_temp = diff([0 sinwave_temp]); % velocity of wave
+                stimpattern{bb}{cc} = [sinwave_temp; dsinwave_temp];
+                
+                % Store stim time
+                stimtime(rk_samples(cc,1):rk_samples(cc,2)) = sinwave_temp;
+                
+                % Run xcorr for this window - add buffer to account for full
+                % movement
+                temp_time = rk_samples(cc,1)-win_buff:rk_samples(cc,2)+win_buff;
+                [xcvalue,xclag] = xcorr(zscore(stimtime(temp_time)),zscore(movedata(temp_time)));
+                %             [xcvalue,xclag] = xcorr(zscore(goniodata(temp_time)),zscore(stimtime(temp_time)));
+                [~,maxIDX]      = max(xcvalue);
+                IDXshift        = xclag(maxIDX);
+                lag1{aaa,aa}    = [lag1{aaa,aa},IDXshift]; clear IDXshift
+            end % cc = 1:length(rk_onset)
+            
+            % Run xcorr for full trial
+            % [xcvalue,xclag] = xcorr(zscore(abs(stimtime-1)),zscore(filtdata2));
+            [xcvalue,xclag] = xcorr(zscore(stimtime),zscore(movedata));
+            [~,maxIDX]      = max(xcvalue);
+            IDXshift        = xclag(maxIDX);
+            lag2{aaa,aa}    = [lag2{aaa,aa}, IDXshift]; clear IDXshift
+            
+        end % bb = 1:size(STIM,1)
     end
 end
 
@@ -154,7 +237,7 @@ for aa = 1:length(subs)
     % Get trial information
     trialbreaks = EEG.trialbreaks;
     stimpattern = cell(size(STIM,1),1);
-    movements = {'RK'};
+    movements = {'RK','RA','LK','LA','BH'};
     movetimes = cell(length(movements),2);
     
     % Loop through each movement
@@ -218,7 +301,7 @@ for aa = 1:length(subs)
     % Get trial information
     trialbreaks = EEG.trialbreaks;
     stimpattern = cell(size(STIM,1),1);
-    movements = {'RK'};
+    movements = {'RK','RA','LK','LA','BH'};
     movetimes = all_movetimes{aa};
     
     % Get channel locations
@@ -285,7 +368,7 @@ for aa = 1:length(subs)
         predicted_sub = cell(total,1);
         thismove = movements{aaa};
         parfor bb = 1:total
-        %for bb = 1:total
+%         for bb = 3:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
@@ -344,12 +427,14 @@ for aa = 1:length(subs)
                 for dd = 1:size(movetimes{aaa}{cc,2},1)
                     % Get movement window
                     move_win  = movetimes{aaa}{cc,2}(dd,:);
-                    % Get time
-                    temp_time =  move_win(1):move_win(2);
+                    t1 = move_win(1)-window_buffer;
+                    t2 = round(move_win(1)+(trial_duration*EEG.srate)- 1/EEG.srate + window_buffer);
+                    % Shift time according to computed phase lag
+                    temp_time = (t1:t2) + round(abs(mean(lag2{aa})));
                     % Get data
                     tempeeg = trialdata(:,temp_time);
                     % Get gonio data, zscore, normalize
-                    fullwave = trialgonio(1,temp_time);
+                    % fullwave = trialgonio(1,temp_time);
                     % Compute features (e.g., get values in window)
                     tstart = 1;
                     tend   = tstart + window_size; %window_shift;
@@ -425,10 +510,11 @@ for aa = 1:length(subs)
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
+        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
         save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','combos');
 
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
     %save(filename,'R2_ALL','R2_MEAN','PREDICT_ALL');
 end % aa = 1:length(subs)
+

@@ -113,7 +113,7 @@ if runParallel
         poo = gcp('nocreate');
         if isempty(poo)
             try
-                parpool(60);
+                parpool(11);
             catch
                 numCores = feature('numcores');
                 parpool(numCores);
@@ -285,7 +285,7 @@ for aa = 1:length(subs)
         predicted_sub = cell(total,1);
         thismove = movements{aaa};
         parfor bb = 1:total
-        %for bb = 1:total
+        %for bb = 3:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
@@ -432,3 +432,4 @@ for aa = 1:length(subs)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
     %save(filename,'R2_ALL','R2_MEAN','PREDICT_ALL');
 end % aa = 1:length(subs)
+
