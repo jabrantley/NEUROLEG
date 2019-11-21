@@ -26,7 +26,7 @@ addpath(genpath(fullfile(parentdir)));
 
 % Set data dir
 if onCluster
-    rawdir  = fullfile('/project/contreras-vidal/justin/TEMPDATA/');
+    rawdir  = '/project/contreras-vidal/justin/TEMPDATA/';
 else
     % Define drive
     if strcmpi(getenv('username'),'justi')% WHICHPC == 1
@@ -52,7 +52,7 @@ subs = {'TF01','TF02','TF03'};
 vars = who;
 
 % Kalman filter parameters
-realtimefilt = 0;
+realtimefilt = 1;
 envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
@@ -67,21 +67,21 @@ KF_LAMBDA    = logspace(-2,2,5);
 
 % Define movement pattern parameters
 srate          = 1000;
-numCycles      = 6;   % number of cycles
-move_freq      = .5; % speed of moving dot in hz
+% numCycles      = 6;   % number of cycles
+% move_freq      = .5; % speed of moving dot in hz
 window_buffer  = 3; % 1 second shift TO ACCOUNT FOR ONSET ERROR
-trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
+% trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
 
 % Params for computing feature
-update_rate = 1/25; % sampling time
+update_rate = 1/50; % sampling time
 window_overlap = 0; % % overlap 0 to 0.99
 
-% Create movement pattern vector
-timevec  = 0:1/srate:trial_duration; % time vector
-sinwave  = cos(move_freq*2*pi*timevec + pi); % create sinwave
-fullwave = [-1.*ones(1,window_buffer) sinwave -1.*ones(1,window_buffer)];
-fullwave = rescale(fullwave);
-fulltime = 0:1/srate:(trial_duration+2*window_buffer/srate);
+% % Create movement pattern vector
+% timevec  = 0:1/srate:trial_duration; % time vector
+% sinwave  = cos(move_freq*2*pi*timevec + pi); % create sinwave
+% fullwave = [-1.*ones(1,window_buffer) sinwave -1.*ones(1,window_buffer)];
+% fullwave = rescale(fullwave);
+% fulltime = 0:1/srate:(trial_duration+2*window_buffer/srate);
 
 % Define frequency bands
 lodelta = [.3 1.5];
@@ -97,9 +97,11 @@ nodelta = [4 50];
 BANDS   = {lodelta,delta,theta,alpha,beta,gamma,higamma,full,nodelta,full,nodelta}; % full is used twice so one is env(full) and other is not
 
 % Channels to keep for analysis NOTE: FT10 is in FCz location
-chans2keep = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
-    'C1','C3','CP3','CP1','CPz','CP2','CP4'};
-channel_configs = {chans2keep};
+% chans2keep = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...
+%     'C1','C3','CP3','CP1','CPz','CP2','CP4'};
+% % leftMotor  = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','Cz',...
+% %     'C1','C3'};
+% channel_configs = {chans2keep};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                    %
@@ -113,7 +115,7 @@ if runParallel
         poo = gcp('nocreate');
         if isempty(poo)
             try
-                parpool(11);
+                parpool(60);
             catch
                 numCores = feature('numcores');
                 parpool(numCores);
@@ -129,88 +131,6 @@ if runParallel
                 parpool(numCores);
             end
         end
-    end
-end
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                    %
-%              COMPUTE LAG           %
-%                                    %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-lag1 = cell(1,length(subs));
-lag2 = cell(1,length(subs));
-
-% Loop through each subject, concatenate, and process
-for aa = 1:length(subs)
-    
-    % Get variables
-    vars = who;
-    
-    % Get eeg files for each subject
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-eeg.mat'   ]));
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
-    % Load movement data
-    load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
-    
-    % Get trial information
-    trialbreaks = EEG.trialbreaks;
-    movetimes = cell(size(STIM,1),2);
-    stimpattern = cell(size(STIM,1),1);
-    movements = {'RK'};
-    
-    for aaa = 1%:length(movements) - only estimate lag for RK
-        limb = movements{aaa};
-        
-        for bb = 1:size(STIM,1)
-            
-            % Get movement times from STIM
-            rk_idx      = find(strcmpi(STIM(bb).states,limb)); % Get movements of right knee
-            rk_onset    = STIM(bb).initialDelay + STIM(bb).onsets(rk_idx); % seconds
-            rk_duration = STIM(bb).Duration(rk_idx); % seconds
-            rk_time     = [rk_onset; rk_onset + rk_duration]'; % seconds [onset, offset]
-            rk_samples  = floor(rk_time .* EEG.srate); % sample points
-            
-            % Store movement times
-            movetimes{bb,1} = find(EEG.trialbreaks==bb);
-            movetimes{bb,2} = rk_samples;
-            
-            % Get movement data
-            movedata = GONIO(bb).data(aaa,:);
-            
-            % Create movement
-            stimtime = ones(1,length(find(EEG.trialbreaks==bb)));
-            stimpattern{bb} = cell(size(rk_onset)); % for storing prescribed pattern
-            win_buff = 3*EEG.srate; % 1 second shift TO ACCOUNT FOR ONSET ERROR
-            for cc = 1:length(rk_onset)
-                % Create movement pattern vector
-                timevec_temp = 0:1/EEG.srate:rk_duration(cc); % time vector
-                sinwave_temp = cos(move_freq*2*pi*timevec_temp); % create sinwave
-                dsinwave_temp = diff([0 sinwave_temp]); % velocity of wave
-                stimpattern{bb}{cc} = [sinwave_temp; dsinwave_temp];
-                
-                % Store stim time
-                stimtime(rk_samples(cc,1):rk_samples(cc,2)) = sinwave_temp;
-                
-                % Run xcorr for this window - add buffer to account for full
-                % movement
-                temp_time = rk_samples(cc,1)-win_buff:rk_samples(cc,2)+win_buff;
-                [xcvalue,xclag] = xcorr(zscore(stimtime(temp_time)),zscore(movedata(temp_time)));
-                %             [xcvalue,xclag] = xcorr(zscore(goniodata(temp_time)),zscore(stimtime(temp_time)));
-                [~,maxIDX]      = max(xcvalue);
-                IDXshift        = xclag(maxIDX);
-                lag1{aaa,aa}    = [lag1{aaa,aa},IDXshift]; clear IDXshift
-            end % cc = 1:length(rk_onset)
-            
-            % Run xcorr for full trial
-            % [xcvalue,xclag] = xcorr(zscore(abs(stimtime-1)),zscore(filtdata2));
-            [xcvalue,xclag] = xcorr(zscore(stimtime),zscore(movedata));
-            [~,maxIDX]      = max(xcvalue);
-            IDXshift        = xclag(maxIDX);
-            lag2{aaa,aa}    = [lag2{aaa,aa}, IDXshift]; clear IDXshift
-            
-        end % bb = 1:size(STIM,1)
     end
 end
 
@@ -236,7 +156,7 @@ for aa = 1:length(subs)
     % Get trial information
     trialbreaks = EEG.trialbreaks;
     stimpattern = cell(size(STIM,1),1);
-    movements = {'RK','RA','LK','LA','BH'};
+    movements = {'RK'};
     movetimes = cell(length(movements),2);
     
     % Loop through each movement
@@ -289,8 +209,8 @@ for aa = 1:length(subs)
         
     end
     
-    % Load movement data
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
+    % Load movement data
     load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
     
     % Set feature window parameters
@@ -300,38 +220,11 @@ for aa = 1:length(subs)
     % Get trial information
     trialbreaks = EEG.trialbreaks;
     stimpattern = cell(size(STIM,1),1);
-    movements = {'RK','RA','LK','LA','BH'};
+    movements = {'RK'};
     movetimes = all_movetimes{aa};
     
     % Get channel locations
-    eegchannels = {EEG.chanlocs.labels};
-    montages    = [];
-    for bb = 1:length(channel_configs)
-        chans2keepIDX = zeros(size(channel_configs{bb}));
-        for cc = 1:length(channel_configs{bb})
-            chans2keepIDX(cc) = find(strcmpi(channel_configs{bb}(cc),eegchannels));
-        end
-        montages = cat(2,{chans2keepIDX});%{1:length(chans2keepIDX)};%, LM_IDX};
-    end
-    
-    % Get filt bands and channel locations
-    total = 1;
-    combos = cell(length(BANDS)*length(montages),3);
-    for bb = 1:length(BANDS)
-        for cc = 1:length(montages)
-            combos{total,1} = BANDS{bb};
-            combos{total,2} = montages{cc};
-            if any(bb == [1, 2, length(BANDS)-1,length(BANDS)]) % any(bb == length(BANDS))
-                combos{total,3} = 0;
-            else
-                combos{total,3} = 1;
-            end
-            %combos{total,4} = ['IC: ' num2str(cc) '; RV: ' num2str(EEG.dipfit.model(cc).rv)];
-            total = total + 1;
-        end
-    end
-    total = total - 1;
-    clear bb cc
+    montages = {EEG.chanlocs.labels};
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %                                    %
@@ -341,17 +234,15 @@ for aa = 1:length(subs)
     eeg_data = EEG.data;
     
     % Common average reference
-    if car_data
+    if realtimefilt && car_data
         meanEEG = repmat(mean(eeg_data,1),size(eeg_data,1),1);
         eeg_data = eeg_data - meanEEG;
     end
-    
-    % Slice 
-    
+   
+    % Slice data
+    %eeg_data = mat2cell(eeg_data,ones(size(eeg_data,1),1),size(eeg_data,2));
     
     % Initialize for storing R2
-    R1_MEAN     = cell(length(movements),1);
-    R1_ALL      = cell(length(movements),1);
     R2_MEAN     = cell(length(movements),1);
     R2_ALL      = cell(length(movements),1);
     PREDICT_ALL = cell(length(movements),1);
@@ -360,49 +251,51 @@ for aa = 1:length(subs)
     for aaa = 1:length(movements)% 1:length(movements)
         
         % Initialize for storing R2
-        R1_sub_mean   = cell(total,1);
-        R1_sub_all    = cell(total,1);
-        R2_sub_mean   = cell(total,1);
-        R2_sub_all    = cell(total,1);
-        predicted_sub = cell(total,1);
-        thismove = movements{aaa};
-        parfor bb = 1:total
-%         for bb = 1:total
-            bb
-            disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
+        R2_sub_mean   = cell(length(BANDS),length(montages));
+        %R2_sub_mean   = cell(total,1);
+        R2_sub_all    = cell(length(BANDS),length(montages)); % cell(total,1);
+        predicted_sub = cell(length(BANDS),length(montages)); % cell(total,1);
+        thismove = movetimes{aaa};% movements{aaa};
+        %parfor bb = 1:total
+             % Get filt bands and channel locations
+        
+        total = 1;
+        for bb = 1:length(BANDS)
+            % Get filter band
+            thisband = BANDS{bb};
+            % Use envelope if > delta or full band (except last two)
+            if any(bb == [1, 2, length(BANDS)-1,length(BANDS)])
+                useenv = 0;
+            else
+                useenv = 1;
+            end
+            
+            parfor cc = 1:length(montages)
+            %for cc = 1:length(montages)
+                 disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) '; Channel ' montages{cc} ])
+                 
+            disp(['Filt band: [' num2str(thisband(1)) ', ' num2str(thisband(2)) ']; Channel ' montages{cc} ])
             pause(1);
             
             % Get channels of interest
-            eegdata = eeg_data(combos{bb,2},:);
-             
-            % VERY SLOW - USE FILTER FUNCTION FOR OFFLINE
-%             % Design filters
-%             bp_filt = make_ss_filter(filter_order,combos{bb,1},EEG.srate,'bandpass');
-%             
-%             % Filter data
-%             filtdata = zeros(size(eegdata));
-%             for cc = 1:size(eegdata,1)
-%                 % filter data - state space approach
-%                 xnn_bp = zeros(filter_order*2,1);
-%                 filtdata(cc,:) = use_ss_filter(bp_filt,eegdata(cc,:),xnn_bp);
-%             end
+            eegdata = eeg_data(cc,:);
             
             % Faster than SS approach but yields same results
-            [b,a] = butter(2,combos{bb,1}/(srate/2),'bandpass');
+            [b,a] = butter(2,thisband/(srate/2),'bandpass');
             filtdata = zeros(size(eegdata));
-            for cc = 1:size(eegdata,1)
+            for dd = 1:size(eegdata,1)
                 % filter data - not using state space approach but same
-                % results 
+                % results
                 if realtimefilt
-                    filtdata(cc,:) = filter(b,a,eegdata(cc,:));
+                    filtdata(dd,:) = filter(b,a,eegdata(dd,:));
                 else
-                    filtdata(cc,:) = filtfilt(b,a,eegdata(cc,:));
+                    filtdata(dd,:) = filtfilt(b,a,eegdata(dd,:));
                 end
             end
             
             
             % Compute envelope for filtdata above delta
-            if combos{bb,3} == 1
+            if useenv == 1
                 [filtdata, ~] = envelope(filtdata',envwindow,'analytic');
                 filtdata = filtdata';
                 % elseif combos{total,3} == 0;
@@ -419,21 +312,19 @@ for aa = 1:length(subs)
             %ALLFOLDS = cell(2,size(movetimes,1)*size(movetimes{1,2},1));
             ALLFOLDS = [];
             % Loop through each trial
-            for cc = 1:size(movetimes{aaa},1)
-                trialdata = filtdata(:,movetimes{aaa}{cc,1});
-                trialgonio = zscore(GONIO(cc).data(1,:));
+            for dd = 1:size(thismove,1)
+                trialdata = filtdata(:,thismove{dd,1});
+                trialgonio = zscore(GONIO(dd).data(1,:));
                 trialgonio = abs(trialgonio-max(trialgonio));
-                for dd = 1:size(movetimes{aaa}{cc,2},1)
+                for ee = 1:size(thismove{dd,2},1)
                     % Get movement window
-                    move_win  = movetimes{aaa}{cc,2}(dd,:);
-                    t1 = move_win(1)-window_buffer;
-                    t2 = round(move_win(1)+(trial_duration*EEG.srate)- 1/EEG.srate + window_buffer);
-                    % Shift time according to computed phase lag
-                    temp_time = (t1:t2) + round(abs(mean(lag2{aa})));
+                    move_win  = thismove{dd,2}(ee,:);
+                    % Get time
+                    temp_time =  move_win(1):move_win(2);
                     % Get data
                     tempeeg = trialdata(:,temp_time);
                     % Get gonio data, zscore, normalize
-                    % fullwave = trialgonio(1,temp_time);
+                    fullwave = trialgonio(1,temp_time);
                     % Compute features (e.g., get values in window)
                     tstart = 1;
                     tend   = tstart + window_size; %window_shift;
@@ -497,23 +388,22 @@ for aa = 1:length(subs)
             predicted = KF.evaluate(lagEEG_cut);
             
             % Store R2 values
-            R1_sub_mean{bb} = KF.R1_Train;
-            R1_sub_all{bb} = KF.R1_GridSearch;
-            R2_sub_mean{bb} = KF.R2_Train;
-            R2_sub_all{bb} = KF.R2_GridSearch;
-            predicted_sub{bb,1} = [predicted(1,:); lagKIN_cut(1,:)];
+            R2_sub_mean{bb,cc} = KF.R2_Train;
+            R2_sub_all{bb,cc} = KF.R2_GridSearch;
+            predicted_sub{bb,cc} = [predicted(1,:); lagKIN_cut(1,:)];
             %predicted_sub{bb,2} = KalmanFilter.rsquared(predicted(1,:), lagKIN_cut(1,:));
+            
+            end
             
         end % bb = 1:total
         % Store results for each movement
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
-        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','combos');
+        filename = [subs{aa} '_KF_RESULTS_GONIO_EachChanRTClean_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
+        save(filename,'R2_sub_all','R2_sub_mean','predicted_sub','BANDS','montages');
 
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
     %save(filename,'R2_ALL','R2_MEAN','PREDICT_ALL');
 end % aa = 1:length(subs)
-

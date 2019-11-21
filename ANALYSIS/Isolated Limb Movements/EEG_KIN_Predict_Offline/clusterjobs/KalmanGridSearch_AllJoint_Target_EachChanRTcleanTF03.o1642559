@@ -1,0 +1,8427 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Starting parallel pool (parpool) using the 'local' profile ...
+connected to 60 workers.
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P3
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Filt band: [0.3, 1.5]; Channel FC6
+Filt band: [0.3, 1.5]; Channel T7
+Filt band: [0.3, 1.5]; Channel C3
+Filt band: [0.3, 1.5]; Channel Cz
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Filt band: [0.3, 1.5]; Channel Cz
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP1
+Filt band: [0.3, 1.5]; Channel CP6
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Cz
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Filt band: [0.3, 1.5]; Channel CP5
+Filt band: [0.3, 1.5]; Channel CP1
+Filt band: [0.3, 1.5]; Channel CP6
+Filt band: [0.3, 1.5]; Channel P7
+Filt band: [0.3, 1.5]; Channel Pz
+Filt band: [0.3, 1.5]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P8
+Filt band: [0.3, 1.5]; Channel CP2
+Filt band: [0.3, 1.5]; Channel O2
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Filt band: [0.3, 1.5]; Channel Fp2
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Cz
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C4
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+[Warning: A worker aborted during execution of the parfor loop. The parfor loop
+will now run again on the remaining workers.] 
+[> In parallel_function (line 605)] 
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Filt band: [0.3, 1.5]; Channel FC2
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Filt band: [0.3, 1.5]; Channel Cz
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Filt band: [0.3, 1.5]; Channel CP5
+Filt band: [0.3, 1.5]; Channel CP1
+Filt band: [0.3, 1.5]; Channel P7
+Filt band: [0.3, 1.5]; Channel CP6
+Filt band: [0.3, 1.5]; Channel T7
+Filt band: [0.3, 1.5]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P3
+Filt band: [0.3, 1.5]; Channel O2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F1
+Filt band: [0.3, 4]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C1
+Filt band: [0.3, 4]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT7
+Filt band: [0.3, 4]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC6
+Filt band: [0.3, 4]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO4
+Filt band: [0.3, 4]; Channel PO3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel POz
+Filt band: [0.3, 4]; Channel CP3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp1
+Filt band: [4, 8]; Channel Fp2
+Filt band: [4, 8]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F3
+Filt band: [4, 8]; Channel Fz
+Filt band: [4, 8]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Cz
+Filt band: [4, 8]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P4
+Filt band: [4, 8]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O2
+Filt band: [4, 8]; Channel AF3
+Filt band: [4, 8]; Channel AF8
+Filt band: [4, 8]; Channel F1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP5
+Filt band: [4, 8]; Channel P7
+Filt band: [4, 8]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Pz
+Filt band: [4, 8]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Oz
+Filt band: [4, 8]; Channel F5
+Filt band: [4, 8]; Channel FC6
+Filt band: [4, 8]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C4
+Filt band: [8, 13]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF7
+Filt band: [8, 13]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Pz
+Filt band: [8, 13]; Channel AF4
+Filt band: [8, 13]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC1
+Filt band: [8, 13]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P6
+Filt band: [8, 13]; Channel PO8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP8
+Filt band: [8, 13]; Channel PO3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P7
+Filt band: [15, 30]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC1
+Filt band: [15, 30]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP5
+Filt band: [15, 30]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF7
+Filt band: [15, 30]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F8
+Filt band: [15, 30]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F2
+Filt band: [15, 30]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO4
+Filt band: [15, 30]; Channel TP7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Pz
+Filt band: [30, 55]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C5
+Filt band: [30, 55]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT10
+Filt band: [30, 55]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC1
+Filt band: [30, 55]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP4
+Filt band: [30, 55]; Channel PO8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel POz
+Filt band: [30, 55]; Channel TP8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC3
+Filt band: [30, 55]; Channel PO7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF8
+Filt band: [65, 90]; Channel F1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P8
+Filt band: [65, 90]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT10
+Filt band: [65, 90]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP7
+Filt band: [65, 90]; Channel PO8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC3
+Filt band: [65, 90]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P5
+Filt band: [65, 90]; Channel C6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Filt band: [0.3, 50]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Filt band: [0.3, 50]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT8
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP2
+Filt band: [0.3, 50]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Filt band: [0.3, 50]; Channel CPz
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF4
+Filt band: [4, 50]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT7
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Filt band: [4, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC1
+Filt band: [4, 50]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF4
+Filt band: [0.3, 50]; Channel FT8
+Filt band: [0.3, 50]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT10
+Filt band: [0.3, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC1
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Pz
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP5
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT10
+Filt band: [4, 50]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F2
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Filt band: [0.3, 1.5]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP2
+Filt band: [0.3, 1.5]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Filt band: [0.3, 1.5]; Channel F5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO8
+Filt band: [0.3, 1.5]; Channel CP3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP8
+Filt band: [0.3, 1.5]; Channel P5
+Filt band: [0.3, 1.5]; Channel CPz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP7
+Filt band: [0.3, 1.5]; Channel FT9
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F1
+Filt band: [0.3, 4]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Pz
+Filt band: [0.3, 4]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF4
+Filt band: [0.3, 4]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT8
+Filt band: [0.3, 4]; Channel P7
+Filt band: [0.3, 4]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C1
+Filt band: [0.3, 4]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF7
+Filt band: [0.3, 4]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F2
+Filt band: [0.3, 4]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT9
+Filt band: [0.3, 4]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO7
+Filt band: [0.3, 4]; Channel TP8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel POz
+Filt band: [0.3, 4]; Channel C2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC6
+Filt band: [4, 8]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Oz
+Filt band: [4, 8]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C1
+Filt band: [4, 8]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP5
+Filt band: [4, 8]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P8
+Filt band: [4, 8]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO4
+Filt band: [4, 8]; Channel TP8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF8
+Filt band: [8, 13]; Channel F1
+Filt band: [8, 13]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C4
+Filt band: [8, 13]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT10
+Filt band: [8, 13]; Channel F8
+Filt band: [8, 13]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P7
+Filt band: [8, 13]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC6
+Filt band: [8, 13]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF8
+Filt band: [15, 30]; Channel F1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C3
+Filt band: [15, 30]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Oz
+Filt band: [15, 30]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC4
+Filt band: [15, 30]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P8
+Filt band: [15, 30]; Channel AF4
+Filt band: [15, 30]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F5
+Filt band: [15, 30]; Channel FC6
+Filt band: [15, 30]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT9
+Filt band: [15, 30]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C6
+Filt band: [15, 30]; Channel POz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF8
+Filt band: [30, 55]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP2
+Filt band: [30, 55]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT10
+Filt band: [30, 55]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C1
+Filt band: [30, 55]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F5
+Filt band: [30, 55]; Channel FC6
+Filt band: [30, 55]; Channel P7
+Filt band: [30, 55]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F2
+Filt band: [30, 55]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P5
+Filt band: [30, 55]; Channel C2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF8
+Filt band: [65, 90]; Channel F1
+Filt band: [65, 90]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF7
+Filt band: [65, 90]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P8
+Filt band: [65, 90]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Oz
+Filt band: [65, 90]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F8
+Filt band: [65, 90]; Channel P7
+Filt band: [65, 90]; Channel C5
+Filt band: [65, 90]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC6
+Filt band: [65, 90]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP3
+Filt band: [65, 90]; Channel FT9
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P6
+Filt band: [65, 90]; Channel P5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F8
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP5
+Filt band: [0.3, 50]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF7
+Filt band: [0.3, 50]; Channel C1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Filt band: [0.3, 50]; Channel C5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF4
+Filt band: [0.3, 50]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C6
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Filt band: [4, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F8
+Filt band: [4, 50]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Filt band: [4, 50]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Filt band: [4, 50]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F2
+Filt band: [4, 50]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT9
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP2
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C1
+Filt band: [0.3, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP5
+Filt band: [0.3, 50]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C1
+Filt band: [4, 50]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT7
+Filt band: [4, 50]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F8
+Filt band: [4, 50]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Filt band: [4, 50]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F2
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F1
+Filt band: [0.3, 1.5]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP2
+Filt band: [0.3, 1.5]; Channel AF7
+Filt band: [0.3, 1.5]; Channel FC4
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Pz
+Filt band: [0.3, 1.5]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC6
+Filt band: [0.3, 1.5]; Channel AF4
+Filt band: [0.3, 1.5]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Oz
+Filt band: [0.3, 1.5]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC3
+Filt band: [0.3, 1.5]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO4
+Filt band: [0.3, 1.5]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F1
+Filt band: [0.3, 4]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF7
+Filt band: [0.3, 4]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P8
+Filt band: [0.3, 4]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP5
+Filt band: [0.3, 4]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F1
+Filt band: [4, 8]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF7
+Filt band: [4, 8]; Channel C5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Oz
+Filt band: [4, 8]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP5
+Filt band: [4, 8]; Channel C1
+Filt band: [4, 8]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F5
+Filt band: [4, 8]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel TP7
+Filt band: [4, 8]; Channel TP8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P1
+Filt band: [4, 8]; Channel POz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CPz
+Filt band: [4, 8]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF8
+Filt band: [8, 13]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT10
+Filt band: [8, 13]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF4
+Filt band: [8, 13]; Channel C1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Pz
+Filt band: [8, 13]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP2
+Filt band: [8, 13]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F5
+Filt band: [8, 13]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP3
+Filt band: [8, 13]; Channel CPz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP8
+Filt band: [8, 13]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P6
+Filt band: [8, 13]; Channel C6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F1
+Filt band: [15, 30]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP5
+Filt band: [15, 30]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C3
+Filt band: [15, 30]; Channel P8
+Filt band: [15, 30]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F8
+Filt band: [15, 30]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C5
+Filt band: [15, 30]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P1
+Filt band: [15, 30]; Channel C2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CPz
+Filt band: [15, 30]; Channel FC3
+Filt band: [15, 30]; Channel P2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP8
+Filt band: [15, 30]; Channel PO4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF8
+Filt band: [30, 55]; Channel F1
+Filt band: [30, 55]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC6
+Filt band: [30, 55]; Channel FT7
+Filt band: [30, 55]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Oz
+Filt band: [30, 55]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F2
+Filt band: [30, 55]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F8
+Filt band: [30, 55]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP2
+Filt band: [30, 55]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC1
+Filt band: [30, 55]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT9
+Filt band: [30, 55]; Channel PO8
+Filt band: [30, 55]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO7
+Filt band: [30, 55]; Channel CP3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F1
+Filt band: [65, 90]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC6
+Filt band: [65, 90]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Oz
+Filt band: [65, 90]; Channel FC4
+Filt band: [65, 90]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P7
+Filt band: [65, 90]; Channel Pz
+Filt band: [65, 90]; Channel F5
+Filt band: [65, 90]; Channel C5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT10
+Filt band: [65, 90]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF7
+Filt band: [65, 90]; Channel C1
+Filt band: [65, 90]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO7
+Filt band: [65, 90]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C2
+Filt band: [65, 90]; Channel PO4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Filt band: [0.3, 50]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT10
+Filt band: [0.3, 50]; Channel C1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Filt band: [0.3, 50]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Filt band: [0.3, 50]; Channel AF4
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Filt band: [0.3, 50]; Channel P6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC4
+Filt band: [4, 50]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Filt band: [4, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Filt band: [4, 50]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP2
+Filt band: [4, 50]; Channel C5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F8
+Filt band: [0.3, 50]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Filt band: [0.3, 50]; Channel FT8
+Filt band: [0.3, 50]; Channel AF7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT10
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC1
+Filt band: [0.3, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP5
+Filt band: [4, 50]; Channel F8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT8
+Filt band: [4, 50]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C4
+Filt band: [4, 50]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Filt band: [4, 50]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP4
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF7
+Filt band: [0.3, 1.5]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P7
+Filt band: [0.3, 1.5]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel AF4
+Filt band: [0.3, 1.5]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F2
+Filt band: [0.3, 1.5]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C1
+Filt band: [0.3, 1.5]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP4
+Filt band: [0.3, 1.5]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel CP3
+Filt band: [0.3, 1.5]; Channel FT9
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel C6
+Filt band: [0.3, 1.5]; Channel POz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 1.5]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C1
+Filt band: [0.3, 4]; Channel Oz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel Pz
+Filt band: [0.3, 4]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C4
+Filt band: [0.3, 4]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 4]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F1
+Filt band: [4, 8]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C3
+Filt band: [4, 8]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC4
+Filt band: [4, 8]; Channel C1
+Filt band: [4, 8]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P7
+Filt band: [4, 8]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P1
+Filt band: [4, 8]; Channel PO8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel CPz
+Filt band: [4, 8]; Channel P2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C2
+Filt band: [4, 8]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel POz
+Filt band: [4, 8]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel PO4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 8]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F1
+Filt band: [8, 13]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP5
+Filt band: [8, 13]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT7
+Filt band: [8, 13]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel AF7
+Filt band: [8, 13]; Channel F8
+Filt band: [8, 13]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Pz
+Filt band: [8, 13]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC1
+Filt band: [8, 13]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel Oz
+Filt band: [8, 13]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [8, 13]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF8
+Filt band: [15, 30]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP2
+Filt band: [15, 30]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel AF7
+Filt band: [15, 30]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC4
+Filt band: [15, 30]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F2
+Filt band: [15, 30]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO8
+Filt band: [15, 30]; Channel CPz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel FC3
+Filt band: [15, 30]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel PO4
+Filt band: [15, 30]; Channel P5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [15, 30]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF8
+Filt band: [30, 55]; Channel F1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP2
+Filt band: [30, 55]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP5
+Filt band: [30, 55]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF7
+Filt band: [30, 55]; Channel F2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P7
+Filt band: [30, 55]; Channel Pz
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P2
+Filt band: [30, 55]; Channel TP8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel FT9
+Filt band: [30, 55]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO7
+Filt band: [30, 55]; Channel C2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P1
+Filt band: [30, 55]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [30, 55]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F1
+Filt band: [65, 90]; Channel F6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C4
+Filt band: [65, 90]; Channel C1
+Filt band: [65, 90]; Channel C5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT10
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P7
+Filt band: [65, 90]; Channel C3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FC1
+Filt band: [65, 90]; Channel CP2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP4
+Filt band: [65, 90]; Channel FC3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [65, 90]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Filt band: [0.3, 50]; Channel P8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP5
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF7
+Filt band: [0.3, 50]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC1
+Filt band: [0.3, 50]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT9
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT10
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP5
+Filt band: [4, 50]; Channel FC4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Pz
+Filt band: [4, 50]; Channel CP2
+Filt band: [4, 50]; Channel P7
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Pz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP2
+Filt band: [0.3, 50]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C3
+Filt band: [0.3, 50]; Channel FC4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P8
+Filt band: [0.3, 50]; Channel FT10
+Filt band: [0.3, 50]; Channel CP5
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C1
+Filt band: [0.3, 50]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P7
+Filt band: [0.3, 50]; Channel AF4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F2
+Filt band: [0.3, 50]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P1
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P2
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P6
+Filt band: [0.3, 50]; Channel CP3
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel FC3
+Filt band: [0.3, 50]; Channel FT9
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel CP4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel PO3
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [0.3, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fp2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Fz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Cz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel T8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel O2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F1
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP2
+Filt band: [4, 50]; Channel C1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Pz
+Filt band: [4, 50]; Channel FT8
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC4
+Filt band: [4, 50]; Channel P8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FC6
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C5
+Filt band: [4, 50]; Channel FT10
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel AF4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P7
+Filt band: [4, 50]; Channel FC1
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel Oz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel F5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP8
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CP3
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel CPz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel FT9
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C2
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel TP7
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P1
+Filt band: [4, 50]; Channel CP4
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO3
+Filt band: [4, 50]; Channel FC3
+Filt band: [4, 50]; Channel P2
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO4
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P5
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel C6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel P6
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel POz
+Total number of iterations: 3376
+
+Filt band: [4, 50]; Channel PO8
+Total number of iterations: 3376
+
+>> slurmstepd: error: Detected 4227 oom-kill event(s) in step 1642559.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.
