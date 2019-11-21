@@ -283,6 +283,8 @@ for aa = 1:length(subs)
         R2_sub_mean   = cell(total,1);
         R2_sub_all    = cell(total,1);
         predicted_sub = cell(total,1);
+        predicted_subV = cell(total,1);
+
         thismove = movements{aaa};
         parfor bb = 1:total
         %for bb = 3:total
@@ -341,6 +343,8 @@ for aa = 1:length(subs)
                 trialdata = filtdata(:,movetimes{aaa}{cc,1});
                 trialgonio = zscore(GONIO(cc).data(1,:));
                 trialgonio = abs(trialgonio-max(trialgonio));
+                dtrialgonio = diff([trialgonio(1) trialgonio]);
+                
                 for dd = 1:size(movetimes{aaa}{cc,2},1)
                     % Get movement window
                     move_win  = movetimes{aaa}{cc,2}(dd,:);
@@ -350,6 +354,7 @@ for aa = 1:length(subs)
                     tempeeg = trialdata(:,temp_time);
                     % Get gonio data, zscore, normalize
                     fullwave = trialgonio(1,temp_time);
+                    dfullwave = dtrialgonio(1,temp_time);
                     % Compute features (e.g., get values in window)
                     tstart = 1;
                     tend   = tstart + window_size; %window_shift;
@@ -357,7 +362,7 @@ for aa = 1:length(subs)
                     while tend <= size(tempeeg,2)
                         % Get window of mean power/potential and corresponding kin val
                         alleeg_win = [alleeg_win, mean(tempeeg(:,tstart:tend),2)];
-                        allkin_win = [allkin_win, mean(fullwave(:,tstart:tend),2)]; % USING GONIO HERE INSTEAD
+                        allkin_win = [allkin_win, mean(fullwave(:,tstart:tend),2); mean(dfullwave(:,tstart:tend),2)]; % USING GONIO HERE INSTEAD
                         % Update start and end
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
@@ -418,6 +423,7 @@ for aa = 1:length(subs)
             R2_sub_mean{bb} = KF.R2_Train;
             R2_sub_all{bb} = KF.R2_GridSearch;
             predicted_sub{bb,1} = [predicted(1,:); lagKIN_cut(1,:)];
+            predicted_subV{bb,1} = [predicted(1+KF.order,:); lagKIN_cut(1+1+KF.order,:)];
             %predicted_sub{bb,2} = KalmanFilter.rsquared(predicted(1,:), lagKIN_cut(1,:));
             
         end % bb = 1:total
@@ -425,8 +431,8 @@ for aa = 1:length(subs)
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
-        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','combos');
+        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_VEL' num2str(use_velocity) '.mat'];
+        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos');
 
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];

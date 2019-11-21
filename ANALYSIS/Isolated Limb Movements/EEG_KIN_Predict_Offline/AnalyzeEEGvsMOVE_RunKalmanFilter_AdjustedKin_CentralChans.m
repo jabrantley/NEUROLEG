@@ -15,7 +15,7 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 0;
+onCluster   = 1;
 runParallel = 1;
 
 % Define directory
@@ -73,7 +73,7 @@ window_buffer  = 3; % 1 second shift TO ACCOUNT FOR ONSET ERROR
 trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
 
 % Params for computing feature
-update_rate = 1/25; % sampling time
+update_rate = 1/50; % sampling time
 window_overlap = 0; % % overlap 0 to 0.99
 
 % Create movement pattern vector
