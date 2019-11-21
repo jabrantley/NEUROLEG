@@ -287,7 +287,7 @@ for aa = 1:length(subs)
 
         thismove = movements{aaa};
         parfor bb = 1:total
-%         for bb = 1:total
+        %for bb = 3:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
@@ -362,7 +362,7 @@ for aa = 1:length(subs)
                     while tend <= size(tempeeg,2)
                         % Get window of mean power/potential and corresponding kin val
                         alleeg_win = [alleeg_win, mean(tempeeg(:,tstart:tend),2)];
-                        allkin_win = cat(2,allkin_win, [mean(fullwave(:,tstart:tend),2); mean(dfullwave(:,tstart:tend),2)]); % USING GONIO HERE INSTEAD
+                        allkin_win = [allkin_win, mean(fullwave(:,tstart:tend),2); mean(dfullwave(:,tstart:tend),2)]; % USING GONIO HERE INSTEAD
                         % Update start and end
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
@@ -431,7 +431,7 @@ for aa = 1:length(subs)
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
+        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_VEL' num2str(use_velocity) '.mat'];
         save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos');
 
     end % aaa = 1:length(movements)
