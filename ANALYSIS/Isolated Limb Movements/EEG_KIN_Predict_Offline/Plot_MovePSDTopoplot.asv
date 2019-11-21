@@ -106,7 +106,7 @@ for aa = 1:length(allpsd)
     load([drive ':\Dropbox\Research\Data\UH-NEUROLEG\_RAW_SYNCHRONIZED_EEG_FMRI_DATA\TF0' num2str(aa) '-chanlocs.mat']);
     
     ff = figure('color','w','units','inches','position',[5 2 6.5 6.5]);
-    ax = tight_subplot(size(allpsd{aa},1),length(BANDS),[.001 .001],[.01 .1],[.075 .1]);
+    ax = tight_subplot(size(allpsd{aa},1),length(BANDS),[.01 .01],[.05 .1],[.05 .1]);
     % Each movement
     axnum = reshape(1:length(allpsd{aa})*length(BANDS),length(allpsd{aa}),length(BANDS));
     axnum = axnum';
@@ -121,7 +121,7 @@ for aa = 1:length(allpsd)
         % Each band
         for cc = 1:length(BANDS)
             axes(ax(axnum(cnt)));
-            topoplot(allpsd{aa}{bb}(:,cc),allchanlocs,'electrodes','on','numcontour',0);
+            topoplot(allpsd{aa}{bb}(:,cc),chanlocs,'electrodes','off');
             ax(axnum(cnt)).CLim = [-limvals(cc,:,aa) limvals(cc,:,aa)];
             
             if cnt <= length(allpsd{aa})
@@ -140,7 +140,7 @@ for aa = 1:length(allpsd)
         end
     end
     colormap(clr);
-    axcbar = tight_subplot(length(BANDS),1,[.01 .05],[.015 .1],[.915 .01]);
+    axcbar = tight_subplot(length(BANDS),1,[.01 .01],[.01 .1],[.915 .01]);
     for bb = 1:length(axcbar)
         axes(axcbar(bb));
         axcbar(bb).CLim = [-limvals(bb,:,aa) limvals(bb,:,aa)];
@@ -148,31 +148,24 @@ for aa = 1:length(allpsd)
         axcbar(bb).YColor = 'w';
         cc = colorbar;
         cc.Location = 'west';
-        cc.Label.String = '(dB)'
-        cc.Label.Rotation = 0;
-        cc.Label.VerticalAlignment = 'middle';
-        cc.Label.Position(1) = 5;
-        cc.Label.FontWeight = 'b';
-%         cc.Position(2) = .05;
-%         cc.Position(4) = .1;
         cc.Limits = [-limvals(bb,:,aa) limvals(bb,:,aa)];
         axcbar(bb)
     end
     ff.Color = 'w';
-    axtop = tight_subplot(1,2,[.05 .1],[.95 .01],[.275 .135])
-    axes(axtop(1));
-    txt1 = text(.55,.25,'Intact Limb','FontWeight','b','HorizontalAlignment','center');
-    txt1.Position(1) = .525;
-    %l1 = line([txt1.Position(1) txt1.Position(1)+txt1.Position(2)],[.15 .15])
-    axtop(1).XColor = 'w';
-    axtop(1).YColor = 'w';
-    
-    axes(axtop(2));
-    txt2 = text(.5,.25,'Phantom Limb','FontWeight','b','HorizontalAlignment','center');
-    txt2.Position(1) = .5;
-    axtop(2).XColor = 'w';
-    axtop(2).YColor = 'w';
-eval(['export_fig Topoplot_AllBands_Sub' num2str(aa) 'Basenorm' num2str(basenorm) '_handnorm' num2str(handnorm) '.png -r150 -png'])
+%     axtop = tight_subplot(1,2,[.05 .1],[.95 .01],[.255 .135])
+%     axes(axtop(1));
+%     txt1 = text(.55,.25,'Intact Limb','FontWeight','b','HorizontalAlignment','center');
+%     txt1.Position(1) = .525;
+%     %l1 = line([txt1.Position(1) txt1.Position(1)+txt1.Position(2)],[.15 .15])
+% %     axtop(1).XColor = 'w';
+% %     axtop(1).YColor = 'w';
+%     
+%     axes(axtop(2));
+%     txt2 = text(.55,.25,'Phantom Limb','FontWeight','b','HorizontalAlignment','center');
+%     txt2.Position(1) = .5;
+%     axtop(2).XColor = 'w';
+%     axtop(2).YColor = 'w';
+eval(['export_fig Topoplot_AllBands_Sub' num2str(aa) '.png -r300 -png'])
 end
 
 
