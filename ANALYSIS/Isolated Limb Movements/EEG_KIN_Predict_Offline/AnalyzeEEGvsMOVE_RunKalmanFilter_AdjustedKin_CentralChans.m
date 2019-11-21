@@ -15,7 +15,7 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 1;
+onCluster   = 0;
 runParallel = 1;
 
 % Define directory
@@ -94,7 +94,7 @@ gamma   = [30 55];
 higamma = [65 90];
 full    = [.3 50];
 nodelta = [4 50];
-BANDS   = {lodelta,delta,theta,alpha,beta,gamma,higamma,full,nodelta,full,nodelta}; % full is used twice so one is env(full) and other is not
+BANDS   = {delta,theta,alpha,beta,gamma,higamma,full,nodelta,full,nodelta}; % full is used twice so one is env(full) and other is not
 
 % Channels to keep for analysis NOTE: FT10 is in FCz location
 chans2keep = {'F4','F2','Fz','F1','F3','FC3','FC1','FT10','FC2','FC4','C4','C2','Cz',...

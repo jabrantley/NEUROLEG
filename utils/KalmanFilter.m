@@ -118,7 +118,7 @@ classdef KalmanFilter < handle
             % Initialize matrices
             self.Xt  = zeros(d,1);
             self.Xtp = zeros(d,1);
-            self.Pt  = self.Q; %eye(d);
+            self.Pt  = eye(d);
         end % end train
         
         % Predict using trained Kalman Filter model
