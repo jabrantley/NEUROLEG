@@ -145,8 +145,12 @@ classdef KalmanFilter < handle
                 % Initialize unscented data matrix
                 sigmapoints = zeros(d, 2*d+1);
                 % Perform unscented transform
-                
                 sqrtP = real(sqrtm(self.Ptp));
+                [~,warnID] = lastwarn;
+                if ~isempty(warnID) && strcmpi(warnID,'MATLAB:sqrtm:SingularMatrix')
+                    lastwarn('');
+                    sqrtP = real(sqrtm(self.Ptp+.01.*randn(size(self.Ptp))));
+                end
                 sigmapoints(:,         1) = self.Xtp;
                 sigmapoints(:,   2:  d+1) = repmat(sigmapoints(:,1), 1, d) + sqrt(d+1)*sqrtP;
                 sigmapoints(:, d+2:2*d+1) = repmat(sigmapoints(:,1), 1, d) - sqrt(d+1)*sqrtP;
