@@ -22,7 +22,7 @@ temp = reshape(1:7*3,3,7)';
 axord = temp(:);
 cnt = 1;
 for aa = 1:3
-    load(fullfile(datadir,[subjects{aa} '_KF_RESULTS_MOTORCHAN_GONIO_RK_WIN25_Z1_CAR1_AUG1_UKF1.mat']))
+    load(fullfile(datadir,[subjects{aa} '_KF_RESULTS_MOTORCHAN_GONIO_RK_WIN25_Z1_CAR1_AUG1_UKF1_V1.mat']))
     
     x = predicted_sub;
     y = combos;
@@ -63,7 +63,7 @@ for aa = 1:3
     end
 end
 
- export_fig AllSub_UKF_Gonio.png -r300 -png
+%  export_fig AllSub_UKF_Gonio.png -r300 -png
 %%
 
 ff = figure('color','w','units','inches','position',[6 2 6.5 6.5]);
@@ -109,4 +109,4 @@ for aa = 1:3
     end
 end
 
- export_fig AllSub_KF_Gonio.png -r300 -png
+%  export_fig AllSub_KF_Gonio.png -r300 -png

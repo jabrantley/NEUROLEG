@@ -61,8 +61,8 @@ useUKF       = 1;
 filter_order = 2; % bandpass filter
 use_velocity = 1;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
-KF_ORDER     = [3,5,10];
-KF_LAGS      = [3,5,10];
+KF_ORDER     = [1,3,6,10];
+KF_LAGS      = [1,3,6,10];
 KF_LAMBDA    = logspace(-2,2,5);
 
 % Define movement pattern parameters
@@ -369,7 +369,8 @@ for aa = 1:length(subs)
         predicted_sub = cell(total,1);
         predicted_subV = cell(total,1);
         kf_sub        = cell(total,1);
-       
+        meanstd_sub   = cell(total,1);
+        
         thismove = movements{aaa};
         parfor bb = 1:total
 %         for bb = 1:total
@@ -446,7 +447,7 @@ for aa = 1:length(subs)
                     while tend <= size(tempeeg,2)
                         % Get window of mean power/potential and corresponding kin val
                         alleeg_win = [alleeg_win, mean(tempeeg(:,tstart:tend),2)];
-                        allkin_win = cat(2,allkin_win, [mean(fullwave(:,tstart:tend),2); mean(dfullwave(:,tstart:tend),2)]); % USING GONIO HERE INSTEAD
+                        allkin_win = cat(2,allkin_win, mean(fullwave(:,tstart:tend),2)); % USING GONIO HERE INSTEAD
                         % Update start and end
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
@@ -468,30 +469,59 @@ for aa = 1:length(subs)
             %        TRAIN KALMAN FILTER         %
             %                                    %
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            % Get train data
-            traineeg = ALLFOLDS(1,1:end-1);
-            trainkin = ALLFOLDS(2,1:end-1);
+            traineeg = cat(2,ALLFOLDS{1,1:end-1});
+            trainkin = cat(2,ALLFOLDS{2,1:end-1});
             % Get test data
-            testeeg  = ALLFOLDS(1,end);
-            testkin  = ALLFOLDS(2,end);
+            testeeg  = cat(2,ALLFOLDS{1,end});
+            testkin  = cat(2,ALLFOLDS{2,end});
             % Get size of each fold
-            foldIDX = cumsum([1 cellfun(@(x) size(x,2),traineeg)]);
+            foldIDX = cumsum([1 cellfun(@(x) size(x,2),ALLFOLDS(1,1:end-1))]);
             % Determine kalman filter type
             if useUKF
                 kf_method = 'unscented';
             else
                 kf_method = 'normal';
             end
+            % Add d(trainkin)/dt
+            if use_velocity
+            trainkinfull = cat(1,trainkin,diff([trainkin(1) trainkin]));
+            testkinfull = cat(1,testkin,diff([testkin(1) testkin]));
+            else
+                trainkinfull = trainkin;
+                testkinfull  = testkin;
+            end
+                
+            % Smooth data to remove peaks
+            trainkinfull(1,:) = smooth(trainkinfull(1,:),20);
+            testkinfull(1,:)  = smooth(testkinfull(1,:),20);
+            
+            if use_velocity
+                trainkinfull(2,:) = smooth(trainkinfull(2,:),20);
+                testkinfull(2,:)  = smooth(testkinfull(2,:),20);
+            end
+            
+            % Get mean and std of data
+            meantrain = mean(trainkinfull,2);
+            stdtrain  = std(trainkinfull,[],2);
+            meantest = mean(testkinfull,2);
+            stdtest  = std(testkinfull,[],2);
+            allmeanstd = {[meantrain stdtrain]; [meantest stdtest]};
+            
+            if zscore_data
+                    trainkinfull = transpose(zscore(trainkinfull'));
+                    testkinfull = transpose(zscore(testkinfull'));
+            end
+                    
             % Kalman Filter object
-            KF = KalmanFilter('state',cat(2,trainkin{:}),'observation',cat(2,traineeg{:}),...
+            KF = KalmanFilter('state',trainkinfull,'observation',traineeg,...
                 'augmented',useAug,'method',kf_method);
             % Perform grid search
             KF.grid_search('order',KF_ORDER,'lags',KF_LAGS,'lambdaB',KF_LAMBDA,...
                 'lambdaF',KF_LAMBDA,'testidx',1,'kfold',foldIDX);
             
             % Lag data
-            lagKIN = KalmanFilter.lag_data(cat(2,testkin{:}),KF.order);
-            lagEEG = KalmanFilter.lag_data(cat(2,testeeg{:}),KF.lags);
+            lagKIN = KalmanFilter.lag_data(testkinfull,KF.order);
+            lagEEG = KalmanFilter.lag_data(testeeg,KF.lags);
             
             % Trim off edges
             maxlag = max([KF.lags,KF.order]);
@@ -510,14 +540,14 @@ for aa = 1:length(subs)
             predicted_subV{bb,1} = [predicted(1+KF.order,:); lagKIN_cut(1+1+KF.order,:)];
             %predicted_sub{bb,2} = KalmanFilter.rsquared(predicted(1,:), lagKIN_cut(1,:));
             kf_sub{bb,1} = [KF.order,KF.lags,KF.lambdaF,KF.lambdaB];
-            
+            meanstd_sub{bb,1} = allmeanstd;
         end % bb = 1:total
         % Store results for each movement
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
         filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
-        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub');
+        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub','meanstd_sub');
 
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
