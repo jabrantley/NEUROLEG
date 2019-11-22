@@ -81,6 +81,7 @@ timevec  = 0:1/srate:trial_duration; % time vector
 sinwave  = cos(move_freq*2*pi*timevec + pi); % create sinwave
 fullwave = [-1.*ones(1,window_buffer) sinwave -1.*ones(1,window_buffer)];
 fullwave = rescale(fullwave);
+dfullwave= diff([fullwave(1) fullwave]);
 fulltime = 0:1/srate:(trial_duration+2*window_buffer/srate);
 
 % Define frequency bands
@@ -355,6 +356,7 @@ for aa = 1:length(subs)
     R2_MEAN     = cell(length(movements),1);
     R2_ALL      = cell(length(movements),1);
     PREDICT_ALL = cell(length(movements),1);
+    KF_ALL      = cell(length(movements),1);
     
     % Loop through each movement
     for aaa = 1:length(movements)% 1:length(movements)
@@ -365,6 +367,9 @@ for aa = 1:length(subs)
         R2_sub_mean   = cell(total,1);
         R2_sub_all    = cell(total,1);
         predicted_sub = cell(total,1);
+        predicted_subV = cell(total,1);
+        kf_sub        = cell(total,1);
+       
         thismove = movements{aaa};
         parfor bb = 1:total
 %         for bb = 1:total
@@ -441,7 +446,7 @@ for aa = 1:length(subs)
                     while tend <= size(tempeeg,2)
                         % Get window of mean power/potential and corresponding kin val
                         alleeg_win = [alleeg_win, mean(tempeeg(:,tstart:tend),2)];
-                        allkin_win = [allkin_win, mean(fullwave(:,tstart:tend),2)]; % USING GONIO HERE INSTEAD
+                        allkin_win = cat(2,allkin_win, [mean(fullwave(:,tstart:tend),2); mean(dfullwave(:,tstart:tend),2)]); % USING GONIO HERE INSTEAD
                         % Update start and end
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
@@ -502,15 +507,17 @@ for aa = 1:length(subs)
             R2_sub_mean{bb} = KF.R2_Train;
             R2_sub_all{bb} = KF.R2_GridSearch;
             predicted_sub{bb,1} = [predicted(1,:); lagKIN_cut(1,:)];
+            predicted_subV{bb,1} = [predicted(1+KF.order,:); lagKIN_cut(1+1+KF.order,:)];
             %predicted_sub{bb,2} = KalmanFilter.rsquared(predicted(1,:), lagKIN_cut(1,:));
+            kf_sub{bb,1} = [KF.order,KF.lags,KF.lambdaF,KF.lambdaB];
             
         end % bb = 1:total
         % Store results for each movement
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
-        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','combos');
+        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
+        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub');
 
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
