@@ -13,7 +13,8 @@ for gp=1:4
     for person=1:length(loc)
         % load the data
         cfg = [];
-        cfg.dataset = STUDY.datasetinfo(locationsF(loc(person))).filename;
+        %test = pop_loadset(fullfile('D:\Dropbox\Research\Data\UH-NEUROLEG\PROCESS INFOMAX\SET CONCATENATED TRIALS FOR EACH SUBJECT','AB_UH_01-ALLTRIALS-eeg.set'))
+        cfg.dataset = fullfile('D:\Dropbox\Research\Data\UH-NEUROLEG\PROCESS INFOMAX\SET CONCATENATED TRIALS FOR EACH SUBJECT','AB_UH_01-ALLTRIALS-eeg.set');
         [data] = ft_preprocessing(cfg)
 
         % segment the first minute of data
