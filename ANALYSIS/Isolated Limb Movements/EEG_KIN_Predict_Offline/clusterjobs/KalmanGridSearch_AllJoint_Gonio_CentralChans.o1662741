@@ -1,0 +1,41 @@
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2018 The MathWorks, Inc.
+                   R2018b (9.5.0.944444) 64-bit (glnxa64)
+                              August 28, 2018
+
+ 
+To get started, type doc.
+For product information, visit www.mathworks.com.
+ 
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Starting parallel pool (parpool) using the 'local' profile ...
+connected to 11 workers.
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> 
+bb =
+
+     1
+
+RK Joint; Iteration: 1/10
+Total number of iterations: 6001
+
+
+bb =
+
+     2
+
+RK Joint; Iteration: 2/10
+Total number of iterations: 6001
+
+IdleTimeout has been reached.
+Parallel pool using the 'local' profile is shutting down.
+
+bb =
+
+     3
+
+RK Joint; Iteration: 3/10
+Total number of iterations: 6001
+
+{Index in position 1 exceeds array bounds (must not exceed 2).
+} 
+>> >> 

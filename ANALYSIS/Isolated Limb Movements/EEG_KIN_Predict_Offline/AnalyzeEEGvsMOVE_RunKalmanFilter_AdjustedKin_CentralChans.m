@@ -56,13 +56,13 @@ realtimefilt = 0;
 envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
-useAug       = 1;
-useUKF       = 1;
+useAug       = 0;
+useUKF       = 0;
 filter_order = 2; % bandpass filter
 use_velocity = 1;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
-KF_ORDER     = [1,3,6,10];
-KF_LAGS      = [1,3,6,10];
+KF_ORDER     = 1;%[1,3,6,10];
+KF_LAGS      = [1,2:2:10];%3,6,10];
 KF_LAMBDA    = logspace(-2,2,5);
 
 % Define movement pattern parameters
@@ -347,7 +347,7 @@ for aa = 1:length(subs)
         eeg_data = eeg_data - meanEEG;
     end
     
-    % Slice 
+    % Slice
     
     
     % Initialize for storing R2
@@ -373,32 +373,32 @@ for aa = 1:length(subs)
         
         thismove = movements{aaa};
         parfor bb = 1:total
-%         for bb = 1:total
+            %         for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
             
             % Get channels of interest
             eegdata = eeg_data(combos{bb,2},:);
-             
+            
             % VERY SLOW - USE FILTER FUNCTION FOR OFFLINE
-%             % Design filters
-%             bp_filt = make_ss_filter(filter_order,combos{bb,1},EEG.srate,'bandpass');
-%             
-%             % Filter data
-%             filtdata = zeros(size(eegdata));
-%             for cc = 1:size(eegdata,1)
-%                 % filter data - state space approach
-%                 xnn_bp = zeros(filter_order*2,1);
-%                 filtdata(cc,:) = use_ss_filter(bp_filt,eegdata(cc,:),xnn_bp);
-%             end
+            %             % Design filters
+            %             bp_filt = make_ss_filter(filter_order,combos{bb,1},EEG.srate,'bandpass');
+            %
+            %             % Filter data
+            %             filtdata = zeros(size(eegdata));
+            %             for cc = 1:size(eegdata,1)
+            %                 % filter data - state space approach
+            %                 xnn_bp = zeros(filter_order*2,1);
+            %                 filtdata(cc,:) = use_ss_filter(bp_filt,eegdata(cc,:),xnn_bp);
+            %             end
             
             % Faster than SS approach but yields same results
             [b,a] = butter(2,combos{bb,1}/(srate/2),'bandpass');
             filtdata = zeros(size(eegdata));
             for cc = 1:size(eegdata,1)
                 % filter data - not using state space approach but same
-                % results 
+                % results
                 if realtimefilt
                     filtdata(cc,:) = filter(b,a,eegdata(cc,:));
                 else
@@ -484,13 +484,13 @@ for aa = 1:length(subs)
             end
             % Add d(trainkin)/dt
             if use_velocity
-            trainkinfull = cat(1,trainkin,diff([trainkin(1) trainkin]));
-            testkinfull = cat(1,testkin,diff([testkin(1) testkin]));
+                trainkinfull = cat(1,trainkin,diff([trainkin(1) trainkin]));
+                testkinfull = cat(1,testkin,diff([testkin(1) testkin]));
             else
                 trainkinfull = trainkin;
                 testkinfull  = testkin;
             end
-                
+            
             % Smooth data to remove peaks
             trainkinfull(1,:) = smooth(trainkinfull(1,:),20);
             testkinfull(1,:)  = smooth(testkinfull(1,:),20);
@@ -508,10 +508,10 @@ for aa = 1:length(subs)
             allmeanstd = {[meantrain stdtrain]; [meantest stdtest]};
             
             if zscore_data
-                    trainkinfull = transpose(zscore(trainkinfull'));
-                    testkinfull = transpose(zscore(testkinfull'));
+                trainkinfull = transpose(zscore(trainkinfull'));
+                testkinfull = transpose(zscore(testkinfull'));
             end
-                    
+            
             % Kalman Filter object
             KF = KalmanFilter('state',trainkinfull,'observation',traineeg,...
                 'augmented',useAug,'method',kf_method);
@@ -537,7 +537,9 @@ for aa = 1:length(subs)
             R2_sub_mean{bb} = KF.R2_Train;
             R2_sub_all{bb} = KF.R2_GridSearch;
             predicted_sub{bb,1} = [predicted(1,:); lagKIN_cut(1,:)];
-            predicted_subV{bb,1} = [predicted(1+KF.order,:); lagKIN_cut(1+1+KF.order,:)];
+            if use_velocity
+                predicted_subV{bb,1} = [predicted(1+KF.order,:); lagKIN_cut(1+KF.order,:)];
+            end
             %predicted_sub{bb,2} = KalmanFilter.rsquared(predicted(1,:), lagKIN_cut(1,:));
             kf_sub{bb,1} = [KF.order,KF.lags,KF.lambdaF,KF.lambdaB];
             meanstd_sub{bb,1} = allmeanstd;
@@ -548,7 +550,7 @@ for aa = 1:length(subs)
         %PREDICT_ALL{aaa} = predicted_sub;
         filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
         save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub','meanstd_sub');
-
+        
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
     %save(filename,'R2_ALL','R2_MEAN','PREDICT_ALL');

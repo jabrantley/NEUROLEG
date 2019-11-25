@@ -90,3 +90,84 @@ Total number of iterations: 3376
 RK Joint; Iteration: 8/10
 Total number of iterations: 3376
 
+
+ans =
+
+     1
+
+RA Joint; Iteration: 1/10
+Total number of iterations: 3376
+
+
+ans =
+
+     2
+
+RA Joint; Iteration: 2/10
+Total number of iterations: 3376
+
+
+ans =
+
+     3
+
+
+ans =
+
+     4
+
+
+ans =
+
+     5
+
+
+ans =
+
+     6
+
+
+ans =
+
+     7
+
+
+ans =
+
+     8
+
+
+ans =
+
+     9
+
+RA Joint; Iteration: 3/10
+Total number of iterations: 3376
+
+
+ans =
+
+    10
+
+RA Joint; Iteration: 4/10
+Total number of iterations: 3376
+
+RA Joint; Iteration: 5/10
+Total number of iterations: 3376
+
+RA Joint; Iteration: 9/10
+Total number of iterations: 3376
+
+RA Joint; Iteration: 6/10
+Total number of iterations: 3376
+
+RA Joint; Iteration: 10/10
+Total number of iterations: 3376
+
+RA Joint; Iteration: 7/10
+Total number of iterations: 3376
+
+RA Joint; Iteration: 8/10
+Total number of iterations: 3376
+
+slurmstepd: error: *** JOB 1662653 ON compute-2-13 CANCELLED AT 2019-11-21T23:13:25 ***
