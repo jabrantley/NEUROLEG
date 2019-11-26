@@ -44,7 +44,7 @@ subs = {'TF01','TF02','TF03'};
 %        WHICH PROCESSES?          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 makesetdata = 0;
-computeclusterstats = 1;
+computeclusterstats = 0;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -320,9 +320,9 @@ end % if computeclusterstats
 
 
 % Get subject specific data
-fix_or_rest = 'fix';
-allpsd = sub_fix_minus_move;
-% allpsd = sub_rest_minus_move;
+fix_or_rest = 'rest';
+%allpsd = sub_fix_minus_move;
+allpsd = sub_rest_minus_move;
 movements = {'RK','RA','LK','LA','BH','FIX'};
 thisdir = cd;
 % Loop through each subject
@@ -343,8 +343,8 @@ for aa = 1:length(subs)
     
     
     % Create figure
-    %ff = figure('color','w','units','inches','position',[5 2 6.5 6.5]);
-    %ax = tight_subplot(size(allpsd{aa},1),length(BANDS),[.001 .001],[.01 .1],[.075 .1]);
+    ftopo = figure('color','w','units','inches','position',[5 2 6.5 6.5]);
+    axtopo= tight_subplot(size(allpsd{aa},1),length(BANDS),[.001 .001],[.01 .1],[.075 .1]);
     
     % Each movement
     axnum = reshape(1:length(allpsd{aa})*length(BANDS),length(allpsd{aa}),length(BANDS));
@@ -402,15 +402,17 @@ for aa = 1:length(subs)
                 disp(err.message)
                 %cfg.markercolor        = channel marker color (default = [0 0 0] (black))
                 cfgtopo.markersize         = 0.1;
-                
-                
-                
                 cfgtopo.highlight = {'on'};
                 cfgtopo.highlightsymbol = {[]};
                 cfgtopo.highlightsize = {[8]};
                 cfgtopo.highlightfontsize = {[8]};
                 cfgtopo.highlightcolor = {[0 0 0]};
+                pause(1);
+                figure;
                 ft_topoplotTFR(cfgtopo, stat);
+                drawnow;
+                pause(1);
+                
             end
             
             ft_hastoolbox('brewermap', 1);         % ensure this toolbox is on the path
@@ -453,18 +455,18 @@ for aa = 1:length(subs)
                 cnt1 = cnt1 + 1;
             end
             
-            if cc ~= 1
-                ax.Title.Visible = 'off';
-            end
-            
-            if ~strcmpi(movements{bb},'BH')
-                ax.YLabel.Visible = 'off';
-            end
-            
-            if ~strcmpi(movements{bb},'LA')
-                cb.Visible = 'off';
-            end
-            
+%             if cc ~= 1
+%                 ax.Title.Visible = 'off';
+%             end
+%             
+%             if ~strcmpi(movements{bb},'BH')
+%                 ax.YLabel.Visible = 'off';
+%             end
+%             
+%             if ~strcmpi(movements{bb},'LA')
+%                 cb.Visible = 'off';
+%             end
+%             
             
             pause(1);
             cd('ALL_TOPOPLOTS_FIELDTRIPSTATS');
