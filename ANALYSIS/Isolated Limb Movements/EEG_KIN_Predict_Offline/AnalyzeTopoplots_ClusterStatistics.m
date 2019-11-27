@@ -243,13 +243,16 @@ if computeclusterstats
     
     sub_fix_minus_move  = cell(length(subs),1);
     sub_rest_minus_move = cell(length(subs),1);
+    sub_hand_minus_move = cell(length(subs),1);
     for aa = 1:length(subs)
         % Initialize variables
         move_fix = cell(length(movements)-1,length(BANDS));
         move_rest = cell(length(movements)-1,length(BANDS));
+        move_hand = cell(length(movements)-1,length(BANDS));
         % Get data for testing
         fixdat  = all_psd{aa,end};
         restdat = rest_psd{aa};
+        handdat = all_psd{aa,end-1};
         % Loop through each movement
         for bb = 1:length(movements)-1
             % Get movement condition
@@ -277,10 +280,12 @@ if computeclusterstats
                 cfg.neighbours       = neighbours;  % the neighbours specify for each sensor with           which other sensors it can form clusters
                 cfg.frequency        = foi;
                 cfg.avgoverfreq      = 'yes';
-                cfg.design           = cat(2,ones(1,size(movedat.powspctrm,1)),2.*ones(1,size(restdat.powspctrm,1)));
+                cfg.design           = cat(2,ones(1,size(restdat.powspctrm,1)),2.*ones(1,size(movedat.powspctrm,1)));
+                %cfg.design           = cat(2,ones(1,size(movedat.powspctrm,1)),2.*ones(1,size(restdat.powspctrm,1)));
                 cfg.ivar             = 1; % "condition" is the independent variable
                 % Compute stats
-                stat = ft_freqstatistics(cfg,movedat,restdat); % Compare independent conditions (not A-B)
+                stat = ft_freqstatistics(cfg,restdat,movedat); % Compare independent conditions (not A-B)
+                %stat = ft_freqstatistics(cfg,movedat,restdat); % Compare independent conditions (not A-B)
                 move_rest{bb,cc} = stat;
                 
                 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,18 +306,75 @@ if computeclusterstats
                 cfg.neighbours       = neighbours;  % the neighbours specify for each sensor with           which other sensors it can form clusters
                 cfg.frequency        = foi;
                 cfg.avgoverfreq      = 'yes';
-                cfg.design           = cat(2,ones(1,size(movedat.powspctrm,1)),2.*ones(1,size(fixdat.powspctrm,1)));
+                cfg.design           = cat(2,ones(1,size(fixdat.powspctrm,1)),2.*ones(1,size(movedat.powspctrm,1)));
+                %cfg.design           = cat(2,ones(1,size(movedat.powspctrm,1)),2.*ones(1,size(fixdat.powspctrm,1)));
                 cfg.ivar             = 1; % "condition" is the independent variable
                 % Compute stats
-                stat = ft_freqstatistics(cfg,movedat,fixdat); % Compare independent conditions (not A-B)
+                stat = ft_freqstatistics(cfg,fixdat,movedat); % Compare independent conditions (not A-B)
+                %stat = ft_freqstatistics(cfg,movedat,fixdat); % Compare independent conditions (not A-B)
                 move_fix{bb,cc} = stat;
+                
+                
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %     COMPARE TO REST     %
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%
+                % Generate configuration for stats
+                cfg = [];
+                cfg.avgoverfreq      = 'yes';
+                cfg.method           = 'montecarlo';       % use the Monte Carlo Method to calculate the significance probability
+                cfg.statistic        = 'ft_statfun_indepsamplesT'; % use the independent samples T-statistic as a measure to
+                cfg.correctm         = 'cluster';
+                cfg.clusterstatistic = 'maxsum'; % test statistic that will be evaluated under the
+                cfg.numrandomization = 2000;      % number of draws from the permutation distribution
+                cfg.alpha            = 0.05;
+                cfg_neighb           = [];
+                cfg_neighb.method    = 'triangulation';
+                neighbours           = ft_prepare_neighbours(cfg_neighb, all_psd{1,1});
+                cfg.neighbours       = neighbours;  % the neighbours specify for each sensor with           which other sensors it can form clusters
+                cfg.frequency        = foi;
+                cfg.avgoverfreq      = 'yes';
+                cfg.design           = cat(2,ones(1,size(restdat.powspctrm,1)),2.*ones(1,size(movedat.powspctrm,1)));
+                %cfg.design           = cat(2,ones(1,size(movedat.powspctrm,1)),2.*ones(1,size(restdat.powspctrm,1)));
+                cfg.ivar             = 1; % "condition" is the independent variable
+                % Compute stats
+                stat = ft_freqstatistics(cfg,restdat,movedat); % Compare independent conditions (not A-B)
+                %stat = ft_freqstatistics(cfg,movedat,restdat); % Compare independent conditions (not A-B)
+                move_rest{bb,cc} = stat;
+                
+                %%%%%%%%%%%%%%%%%%%%%%%%%%
+                %    COMPARE TO HAND     %
+                %%%%%%%%%%%%%%%%%%%%%%%%%%
+                % Generate configuration for stats
+                cfg = [];
+                cfg.avgoverfreq      = 'yes';
+                cfg.method           = 'montecarlo';       % use the Monte Carlo Method to calculate the significance probability
+                cfg.statistic        = 'ft_statfun_indepsamplesT'; % use the independent samples T-statistic as a measure to
+                cfg.correctm         = 'cluster';
+                cfg.clusterstatistic = 'maxsum'; % test statistic that will be evaluated under the
+                cfg.numrandomization = 2000;      % number of draws from the permutation distribution
+                cfg.alpha            = 0.05;
+                cfg_neighb           = [];
+                cfg_neighb.method    = 'triangulation';
+                neighbours           = ft_prepare_neighbours(cfg_neighb, all_psd{1,1});
+                cfg.neighbours       = neighbours;  % the neighbours specify for each sensor with           which other sensors it can form clusters
+                cfg.frequency        = foi;
+                cfg.avgoverfreq      = 'yes';
+                cfg.design           = cat(2,ones(1,size(handdat.powspctrm,1)),2.*ones(1,size(movedat.powspctrm,1)));
+                %cfg.design           = cat(2,ones(1,size(movedat.powspctrm,1)),2.*ones(1,size(fixdat.powspctrm,1)));
+                cfg.ivar             = 1; % "condition" is the independent variable
+                % Compute stats
+                stat = ft_freqstatistics(cfg,handdat,movedat); % Compare independent conditions (not A-B)
+                %stat = ft_freqstatistics(cfg,movedat,fixdat); % Compare independent conditions (not A-B)
+                move_hand{bb,cc} = stat;
             end
         end
         sub_fix_minus_move{aa}  = move_fix;
         sub_rest_minus_move{aa} = move_rest;
+        sub_hand_minus_move{aa} = move_hand;
     end
+    save('TopoplotStats_Fieldtrip_MovevsRest.mat','sub_fix_minus_move','sub_rest_minus_move','sub_hand_minus_move');
 else
-    load('TopoplotStats_Fieldtrip_MovevsRest.mat','sub_fix_minus_move','sub_rest_minus_move');
+    load('TopoplotStats_Fieldtrip_MovevsRest.mat','sub_fix_minus_move','sub_rest_minus_move','sub_hand_minus_move');
 end % if computeclusterstats
 
 
@@ -320,10 +382,12 @@ end % if computeclusterstats
 
 
 % Get subject specific data
-fix_or_rest = 'rest';
-%allpsd = sub_fix_minus_move;
-allpsd = sub_rest_minus_move;
+fix_or_rest = 'hand';
+% allpsd = sub_fix_minus_move;
+%allpsd = sub_rest_minus_move;
+allpsd = sub_hand_minus_move;
 movements = {'RK','RA','LK','LA','BH','FIX'};
+move_order = [5,1,2,3,4];
 thisdir = cd;
 % Loop through each subject
 for aa = 1:length(subs)
@@ -341,142 +405,345 @@ for aa = 1:length(subs)
         end
     end
     
-    
-    % Create figure
-    ftopo = figure('color','w','units','inches','position',[5 2 6.5 6.5]);
-    axtopo= tight_subplot(size(allpsd{aa},1),length(BANDS),[.001 .001],[.01 .1],[.075 .1]);
-    
-    % Each movement
-    axnum = reshape(1:length(allpsd{aa})*length(BANDS),length(allpsd{aa}),length(BANDS));
-    axnum = axnum';
-    axnum = axnum(:);
-    cnt = 1;
-    cnt1 = 1;
-    cnt2 = 1;
-    ylabels = {'\delta','\theta','\alpha','\beta','\gamma_{low}','\gamma_{high}'};
-    xtitles = {'Knee','Ankle','Knee','Ankle','Both Hands'};
-    
-    % Loop through each movement
-    for bb = 1:length(movements)-1
-        % Loop through each band
-        for cc = 1:length(BANDS)
-            % Get stat
-            stat = allpsd{aa}{bb,cc};
-            
-            % Get axis
-            %             axes(ax(axnum(cnt)));
-            
-            % Set configuration for fieldtrip topoplot
-            cfgtopo = [];
-            cfgtopo.parameter = 'stat';
-            cfg.marker = 'no';
-            cfgtemp = [];
-            cfgtemp.elec = stat.elec; cfgtemp.rotate = 90;
-            cfgtopo.layout = ft_prepare_layout(cfgtemp, stat);
-            cfgtopo.showcallinfo = 'no';
-            cfgtopo.feedback = 'no';
-            cfgtopo.xlim = [stat.freq stat.freq];
-            
-            cfgtopo.comment ='no';
-            %             cfgtopo.comment = []; %strcat('freq: ', num2str(stat.freq), ' Hz');
-            %             cfgtopo.commentpos = 'title';
-            cfgtopo.alpha  = 0.05;
-            cfgtopo.subplotsize=[1 1];
-            cfgtopo.rotate=90;
-            cfgtopo.gridscale = 300;
-            cfgtopo.style = 'both';
-            %cfgtopo.contournum = 10;
-            try
-                
-                cfgtopo.highlight = {'on'};
-                cfgtopo.highlightsymbol = {'*'};
-                cfgtopo.highlightsize = {10};
-                cfgtopo.highlightfontsize = {10};
-                cfgtopo.highlightcolor = {[0 0 0]};
+    if ~strcmpi(fix_or_rest,'hand')
+        % Create figure
+        ftopo = figure('color','w','units','inches','position',[5 2 6.5 6.5]);
+        axtopo= tight_subplot(length(BANDS),size(allpsd{aa},1),[.025 .025],[.01 .1],[.075 .1]);
+        
+        % Each movement
+        axnum = reshape(1:size(allpsd{aa},1)*length(BANDS),size(allpsd{aa},1),length(BANDS));
+        axnum = axnum';
+        %axnum = fliplr(axnum);
+        axnum = axnum(:);
+        cnt = 1;
+        cnt1 = 1;
+        cnt2 = 1;
+        ylabels = {'\delta','\theta','\alpha','\beta','\gamma_{low}','\gamma_{high}'};
+        xtitles = {'Both Hands','Knee','Ankle','Knee','Ankle'};
+        xpos = [-.85 -.85 -.85 -.85 -1.15 -1.15];
+        % Loop through each movement
+        for bb = 1:length(movements)-1
+            % Loop through each band
+            for cc = 1:length(BANDS)
+                % Get stat
+                stat = allpsd{aa}{move_order(bb),cc};
+                stat.stat = -1.*stat.stat;
+                % Set configuration for fieldtrip topoplot
+                cfgtopo = [];
+                cfgtopo.parameter = 'stat';
+                cfg.marker = 'no';
+                cfgtemp = [];
+                cfgtemp.elec = stat.elec; cfgtemp.rotate = 90;
+                cfgtopo.layout = ft_prepare_layout(cfgtemp, stat);
+                cfgtopo.showcallinfo = 'no';
+                cfgtopo.feedback = 'no';
                 cfgtopo.xlim = [stat.freq stat.freq];
-                cfgtopo.highlightchannel = [];
-                cfgtopo.comment ='no';
-                cfgtopo.highlightsizeseries  = 5.*ones(1,5);
-                ft_clusterplot(cfgtopo, stat); % plot the significant channels on topoplot
-            catch err
-                disp(err.message)
-                %cfg.markercolor        = channel marker color (default = [0 0 0] (black))
-                cfgtopo.markersize         = 0.1;
-                cfgtopo.highlight = {'on'};
-                cfgtopo.highlightsymbol = {[]};
-                cfgtopo.highlightsize = {[8]};
-                cfgtopo.highlightfontsize = {[8]};
-                cfgtopo.highlightcolor = {[0 0 0]};
-                pause(1);
-                figure;
-                ft_topoplotTFR(cfgtopo, stat);
-                drawnow;
-                pause(1);
                 
+                cfgtopo.comment ='no';
+                %             cfgtopo.comment = []; %strcat('freq: ', num2str(stat.freq), ' Hz');
+                %             cfgtopo.commentpos = 'title';
+                cfgtopo.alpha  = 0.05;
+                cfgtopo.subplotsize=[1 1];
+                cfgtopo.rotate=90;
+                cfgtopo.gridscale = 300;
+                cfgtopo.style = 'straight'; %'both' for contours
+                cfgtopo.linewidth = 1;
+                cfgtopo.contournum = 6;
+                if any(stat.mask)
+                    cfgtopo.highlight = {'on'};
+                    cfgtopo.highlightsymbol = {'*'};
+                    cfgtopo.highlightsize = {1};
+                    cfgtopo.highlightfontsize = {1};
+                    cfgtopo.highlightcolor = {[0 0 0]};
+                    cfgtopo.xlim = [stat.freq stat.freq];
+                    cfgtopo.highlightchannel = [];
+                    cfgtopo.comment ='no';
+                    cfgtopo.highlightsizeseries  = 2.*ones(1,5);
+                    ft_clusterplot(cfgtopo, stat); % plot the significant channels on topoplot
+                else
+                    cfgtopo.markersize         = 0.1;
+                    cfgtopo.highlight = {'off'};
+                    figure;
+                    ft_topoplotTFR(cfgtopo, stat);
+                    drawnow;
+                    pause(1);
+                    
+                end
+                
+                ft_hastoolbox('brewermap', 1);         % ensure this toolbox is on the path
+                maxval = ceil(max([abs(min(max_min_vals{cc}(:))),abs(max(max_min_vals{cc}(:)))]));
+                cb = colorbar('Limits',[-maxval,maxval]);
+                colormap(flipud(brewermap(100,'RdBu')));
+                cb.Label.String = '(dB)';
+                cb.Label.Rotation = 0;
+                cb.Label.VerticalAlignment = 'middle';
+                cb.Label.HorizontalAlignment = 'left';
+                cb.FontWeight = 'b';
+                cb.FontSize = 8;
+                
+                axtemp = gca;
+                axtemp.CLim = [-maxval maxval];
+                axtemp.YLabel.String = ylabels{cc};
+                axtemp.YLabel.FontSize = 16;
+                axtemp.YLabel.Visible = 'on';
+                axtemp.YLabel.Rotation = 0;
+                axtemp.YLabel.FontWeight = 'bold';
+                
+                figtemp = gcf;
+                figtemp.Color = 'w';
+                figtemp.Units = 'inches';
+                figtemp.Position(3) = 3;
+                figtemp.Position(4) = 3;
+                
+                axtemp.Title.String = xtitles{bb};
+                axtemp.Title.FontSize = 12;
+                axtemp.Title.Position(2) =.85;
+                
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %                                                             %
+                %   NOTE: I CHANGED LINES 215, 234 in ft_plot_lay to reduce   %
+                %         thickness of head                                   %
+                %                                                             %
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                axes(axtopo(axnum(cnt)));
+                copyobj(axtemp.Children,axtopo(axnum(cnt)))
+                axis square
+                clr = flipud(brewermap(100,'RdBu'));
+                colormap(clr);
+                axtopo(axnum(cnt)).CLim = [-maxval maxval];
+                axtopo(axnum(cnt)).XColor = 'w';
+                axtopo(axnum(cnt)).YColor = 'w';
+                
+                if cnt <= length(BANDS)
+                    tt = text(xpos(cnt1),0,ylabels{cnt1});
+                    tt.FontWeight = 'b';
+                    tt.FontSize = 12;
+                    cnt1 = cnt1 + 1;
+                end
+                
+                if any(cnt == [1:length(BANDS):numel(axnum)])
+                    thisval = find(cnt == [1:length(BANDS):numel(axnum)]);
+                    title(xtitles(thisval));
+                    axtopo(axnum(cnt)).Title.Position(2) = .75;
+                    
+                end
+                delete(figtemp);
+                cnt = cnt+1;
             end
-            
-            ft_hastoolbox('brewermap', 1);         % ensure this toolbox is on the path
-            maxval = ceil(max([abs(min(max_min_vals{cc}(:))),abs(max(max_min_vals{cc}(:)))]));
-            cb = colorbar('Limits',[-maxval,maxval]);
-            colormap(flipud(brewermap(100,'RdBu')));
-            cb.Label.String = '(dB)';
-            cb.Label.Rotation = 0;
-            cb.Label.VerticalAlignment = 'middle';
-            cb.Label.HorizontalAlignment = 'left';
-            cb.FontWeight = 'b';
-            cb.FontSize = 8;
-
-            ax = gca;
-            ax.CLim = [-maxval maxval];
-            ax.YLabel.String = ylabels{cc};
-            ax.YLabel.FontSize = 16;
-            ax.YLabel.Visible = 'on';
-            ax.YLabel.Rotation = 0;
-            ax.YLabel.FontWeight = 'bold';
-            
-            ff = gcf;
-            ff.Color = 'w';
-            ff.Units = 'inches';
-            ff.Position(3) = 3;
-            ff.Position(4) = 3;
-            
-            ax.Title.String = xtitles{bb};
-            ax.Title.FontSize = 12;
-            ax.Title.Position(2) =.85;
-            
-            flname = [subs{aa} '_' fix_or_rest '_' movements{bb} '_' BANDNAMES{cc} '.svg']
-            flname2 = [subs{aa} '_' fix_or_rest '_' movements{bb} '_' BANDNAMES{cc} '.png']
-           
-            if cnt <= length(allpsd{aa})
-                %tt = text(xpos(cnt1),0,ylabels{cnt1});
-                %tt.FontWeight = 'b';
-                %tt.Interpreter = 'latex';
-                %ylabel(ylabels{cnt1});
-                cnt1 = cnt1 + 1;
-            end
-            
-%             if cc ~= 1
-%                 ax.Title.Visible = 'off';
-%             end
-%             
-%             if ~strcmpi(movements{bb},'BH')
-%                 ax.YLabel.Visible = 'off';
-%             end
-%             
-%             if ~strcmpi(movements{bb},'LA')
-%                 cb.Visible = 'off';
-%             end
-%             
-            
-            pause(1);
-            cd('ALL_TOPOPLOTS_FIELDTRIPSTATS');
-            eval(['export_fig ' flname2  ' -r300 -png'])
-            %plot2svg(flname);
-            cd(thisdir);
-            close;
-            cnt = cnt+1;
         end
+        
+        
+        axcbar = tight_subplot(length(BANDS),1,[.01 .05],[.015 .1],[.915 .01]);
+        for dd = 1:length(axcbar)
+            maxval = ceil(max([abs(min(max_min_vals{dd}(:))),abs(max(max_min_vals{dd}(:)))]));
+            axes(axcbar(dd));
+            axcbar(dd).CLim = [-maxval maxval];
+            axcbar(dd).XColor = 'w';
+            axcbar(dd).YColor = 'w';
+            cc = colorbar;
+            cc.Location = 'west';
+            cc.Label.String = '(dB)'
+            cc.Label.Rotation = 0;
+            cc.Label.VerticalAlignment = 'middle';
+            cc.Label.Position(1) = 5;
+            cc.Label.FontWeight = 'b';
+            %         cc.Position(2) = .05;
+            %         cc.Position(4) = .1;
+            cc.Limits = [-maxval maxval];
+            axcbar(bb)
+        end
+        
+        
+        ftopo.Color = 'w';
+        axtop = tight_subplot(1,2,[.05 .1],[.95 .01],[.275 .135]);
+        axes(axtop(1));
+        txt1 = text(.55,.5,'Intact Limb','FontWeight','b','HorizontalAlignment','center');
+        txt1.Position(1) = .525;
+        %l1 = line([txt1.Position(1) txt1.Position(1)+txt1.Position(2)],[.15 .15])
+        axtop(1).XColor = 'w';
+        axtop(1).YColor = 'w';
+        
+        axes(axtop(2));
+        txt2 = text(.5,.5,'Phantom Limb','FontWeight','b','HorizontalAlignment','center');
+        txt2.Position(1) = .5;
+        axtop(2).XColor = 'w';
+        axtop(2).YColor = 'w';
+        
+    else
+        
+        % Create figure
+        ftopo = figure('color','w','units','inches','position',[5 2 5.5 6.5]);
+        axtopo= tight_subplot(length(BANDS),size(allpsd{aa},1)-1,[.025 .025],[.01 .1],[.075 .1]);
+        
+        % Each movement
+        axnum = reshape(1:((size(allpsd{aa},1)-1)*length(BANDS)),size(allpsd{aa},1)-1,length(BANDS));
+        axnum = axnum';
+%         axnum = fliplr(axnum);
+        axnum = axnum(:);
+        cnt = 1;
+        cnt1 = 1;
+        cnt2 = 1;
+        ylabels = {'\delta','\theta','\alpha','\beta','\gamma_{low}','\gamma_{high}'};
+        xtitles = {'Knee','Ankle','Knee','Ankle'};
+        xpos = [-.85 -.85 -.85 -.85 -1.15 -1.15];
+        % Loop through each movement
+        for bb = 2:length(movements)-1
+            % Loop through each band
+            for cc = 1:length(BANDS)
+                % Get stat
+                stat = allpsd{aa}{move_order(bb),cc};
+                stat.stat = -1.*stat.stat;
+                % Set configuration for fieldtrip topoplot
+                cfgtopo = [];
+                cfgtopo.parameter = 'stat';
+                cfg.marker = 'no';
+                cfgtemp = [];
+                cfgtemp.elec = stat.elec; cfgtemp.rotate = 90;
+                cfgtopo.layout = ft_prepare_layout(cfgtemp, stat);
+                cfgtopo.showcallinfo = 'no';
+                cfgtopo.feedback = 'no';
+                cfgtopo.xlim = [stat.freq stat.freq];
+                
+                cfgtopo.comment ='no';
+                %             cfgtopo.comment = []; %strcat('freq: ', num2str(stat.freq), ' Hz');
+                %             cfgtopo.commentpos = 'title';
+                cfgtopo.alpha  = 0.05;
+                cfgtopo.subplotsize=[1 1];
+                cfgtopo.rotate=90;
+                cfgtopo.gridscale = 300;
+                cfgtopo.style = 'straight'; %'both' for contours
+                cfgtopo.linewidth = 1;
+                cfgtopo.contournum = 6;
+                if any(stat.mask)
+                    cfgtopo.highlight = {'on'};
+                    cfgtopo.highlightsymbol = {'*'};
+                    cfgtopo.highlightsize = {1};
+                    cfgtopo.highlightfontsize = {1};
+                    cfgtopo.highlightcolor = {[0 0 0]};
+                    cfgtopo.xlim = [stat.freq stat.freq];
+                    cfgtopo.highlightchannel = [];
+                    cfgtopo.comment ='no';
+                    cfgtopo.highlightsizeseries  = 2.*ones(1,5);
+                    ft_clusterplot(cfgtopo, stat); % plot the significant channels on topoplot
+                else
+                    cfgtopo.markersize         = 0.1;
+                    cfgtopo.highlight = {'off'};
+                    figure;
+                    ft_topoplotTFR(cfgtopo, stat);
+                    drawnow;
+                    pause(1);
+                    
+                end
+                
+                ft_hastoolbox('brewermap', 1);         % ensure this toolbox is on the path
+                maxval = ceil(max([abs(min(max_min_vals{cc}(:))),abs(max(max_min_vals{cc}(:)))]));
+                cb = colorbar('Limits',[-maxval,maxval]);
+                colormap(flipud(brewermap(100,'RdBu')));
+                cb.Label.String = '(dB)';
+                cb.Label.Rotation = 0;
+                cb.Label.VerticalAlignment = 'middle';
+                cb.Label.HorizontalAlignment = 'left';
+                cb.FontWeight = 'b';
+                cb.FontSize = 8;
+                
+                axtemp = gca;
+                axtemp.CLim = [-maxval maxval];
+                axtemp.YLabel.String = ylabels{cc};
+                axtemp.YLabel.FontSize = 16;
+                axtemp.YLabel.Visible = 'on';
+                axtemp.YLabel.Rotation = 0;
+                axtemp.YLabel.FontWeight = 'bold';
+                
+                figtemp = gcf;
+                figtemp.Color = 'w';
+                figtemp.Units = 'inches';
+                figtemp.Position(3) = 3;
+                figtemp.Position(4) = 3;
+                
+                axtemp.Title.String = xtitles{bb-1};
+                axtemp.Title.FontSize = 12;
+                axtemp.Title.Position(2) =.85;
+                
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %                                                             %
+                %   NOTE: I CHANGED LINES 215, 234 in ft_plot_lay to reduce   %
+                %         thickness of head                                   %
+                %                                                             %
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                axes(axtopo(axnum(cnt)));
+                copyobj(axtemp.Children,axtopo(axnum(cnt)))
+                axis square
+                clr = flipud(brewermap(100,'RdBu'));
+                colormap(clr);
+                axtopo(axnum(cnt)).CLim = [-maxval maxval];
+                axtopo(axnum(cnt)).XColor = 'w';
+                axtopo(axnum(cnt)).YColor = 'w';
+                
+                if cnt <= length(BANDS)
+                    tt = text(xpos(cnt1),0,ylabels{cnt1});
+                    tt.FontWeight = 'b';
+                    tt.FontSize = 12;
+                    cnt1 = cnt1 + 1;
+                end
+                
+                if any(cnt == [1:length(BANDS):numel(axnum)])
+                    thisval = find(cnt == [1:length(BANDS):numel(axnum)]);
+                    title(xtitles(thisval));
+                    axtopo(axnum(cnt)).Title.Position(2) = .75;
+                    
+                end
+                delete(figtemp);
+                cnt = cnt+1;
+            end
+        end
+        
+        axcbar = tight_subplot(length(BANDS),1,[.01 .05],[.015 .1],[.915 .01]);
+        for dd = 1:length(axcbar)
+            maxval = ceil(max([abs(min(max_min_vals{dd}(:))),abs(max(max_min_vals{dd}(:)))]));
+            axes(axcbar(dd));
+            axcbar(dd).CLim = [-maxval maxval];
+            axcbar(dd).XColor = 'w';
+            axcbar(dd).YColor = 'w';
+            cc = colorbar;
+            cc.Location = 'west';
+            cc.Label.String = '(dB)'
+            cc.Label.Rotation = 0;
+            cc.Label.VerticalAlignment = 'middle';
+            cc.Label.Position(1) = 5;
+            cc.Label.FontWeight = 'b';
+            %         cc.Position(2) = .05;
+            %         cc.Position(4) = .1;
+            cc.Limits = [-maxval maxval];
+            axcbar(bb)
+        end
+        
+        
+        ftopo.Color = 'w';
+        %axtop = tight_subplot(1,2,[.05 .1],[.95 .01],[.275 .135]);
+        axtop = tight_subplot(1,2,[.025 .025],[.96 .01],[.075 .1]);
+        axes(axtop(1));
+        txt1 = text(.55,.5,'Intact Limb','FontWeight','b','HorizontalAlignment','center');
+        txt1.Position(1) = .525;
+        %l1 = line([txt1.Position(1) txt1.Position(1)+txt1.Position(2)],[.15 .15])
+        axtop(1).XColor = 'w';
+        axtop(1).YColor = 'w';
+        
+        axes(axtop(2));
+        txt2 = text(.5,.5,'Phantom Limb','FontWeight','b','HorizontalAlignment','center');
+        txt2.Position(1) = .5;
+        axtop(2).XColor = 'w';
+        axtop(2).YColor = 'w';
+        
     end
+    
+    %pause(1);
+    cd('ALL_TOPOPLOTS_FIELDTRIPSTATS');
+    flname = [subs{aa} '_' 'move-' fix_or_rest '.png'];
+    eval(['export_fig ' flname  ' -r300 -png'])
+    cd(thisdir);
+    close;
+    
+    
 end
 
 

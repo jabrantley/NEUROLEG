@@ -148,6 +148,7 @@ classdef KalmanFilter < handle
                 sqrtP = real(sqrtm(self.Ptp));
                 [~,warnID] = lastwarn;
                 if ~isempty(warnID) && strcmpi(warnID,'MATLAB:sqrtm:SingularMatrix')
+                    disp(warnID);
                     lastwarn('');
                     sqrtP = real(sqrtm(self.Ptp+.01.*randn(size(self.Ptp))));
                 end
