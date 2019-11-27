@@ -369,7 +369,8 @@ for aa = 1:length(subs)
         predicted_sub = cell(total,1);
         predicted_subV = cell(total,1);
         kf_sub        = cell(total,1);
-        meanstd_sub   = cell(total,1);
+        meanstd_sub_eeg= cell(total,1);
+        meanstd_sub_kin= cell(total,1);
         
         thismove = movements{aaa};
         parfor bb = 1:total
@@ -452,10 +453,10 @@ for aa = 1:length(subs)
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
                     end
-                    if zscore_data
-                        alleeg_win = transpose(zscore(alleeg_win'));
+%                     if zscore_data
+%                         alleeg_win = transpose(zscore(alleeg_win'));
                         %allkin_win = transpose(zscore(allkin_win'));
-                    end
+%                     end
                     % Save to folds array
                     ALLFOLDS{1,count} = alleeg_win;
                     ALLFOLDS{2,count} = allkin_win;
@@ -501,15 +502,23 @@ for aa = 1:length(subs)
             end
             
             % Get mean and std of data
-            meantrain = mean(trainkinfull,2);
-            stdtrain  = std(trainkinfull,[],2);
-            meantest = mean(testkinfull,2);
-            stdtest  = std(testkinfull,[],2);
-            allmeanstd = {[meantrain stdtrain]; [meantest stdtest]};
+            meantrainkin = mean(trainkinfull,2);
+            stdtrainkin  = std(trainkinfull,[],2);
+            meantestkin = mean(testkinfull,2);
+            stdtestkin  = std(testkinfull,[],2);
+            meantraineeg = mean(traineeg,2);
+            stdtraineeg  = std(traineeg,[],2);
+            meantesteeg = mean(testeeg,2);
+            stdtesteeg  = std(testeeg,[],2);
+            allmeanstdkin = {[meantrainkin stdtrainkin]; [meantestkin stdtestkin]};
+            allmeanstdeeg = {[meantraineeg stdtraineeg]; [meantesteeg stdtesteeg]};
             
             if zscore_data
                 trainkinfull = transpose(zscore(trainkinfull'));
                 testkinfull = transpose(zscore(testkinfull'));
+                
+                traineeg = rescale_data(traineeg,'all');
+                testeeg = rescale_data(testeeg,'all');
             end
             
             % Kalman Filter object
@@ -542,14 +551,15 @@ for aa = 1:length(subs)
             end
             %predicted_sub{bb,2} = KalmanFilter.rsquared(predicted(1,:), lagKIN_cut(1,:));
             kf_sub{bb,1} = [KF.order,KF.lags,KF.lambdaF,KF.lambdaB];
-            meanstd_sub{bb,1} = allmeanstd;
+            meanstd_sub_eeg{bb,1} = allmeanstdeeg;
+            meanstd_sub_kin{bb,1} = allmeanstdkin;
         end % bb = 1:total
         % Store results for each movement
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
         filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
-        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub','meanstd_sub');
+        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub','meanstd_sub','kf_sub');
         
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];
