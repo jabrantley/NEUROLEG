@@ -15,8 +15,8 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 0;
-runParallel = 0;
+onCluster   = 1;
+runParallel = 1;
 
 % Define directory
 thisdir = pwd;
@@ -288,8 +288,8 @@ for aa = 1:length(subs)
         meanstd_sub   = cell(total,1);
         
         thismove = movements{aaa};
-        %                 parfor bb = 1:total
-        for bb = 1:total
+        parfor bb = 1:total
+        %for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);

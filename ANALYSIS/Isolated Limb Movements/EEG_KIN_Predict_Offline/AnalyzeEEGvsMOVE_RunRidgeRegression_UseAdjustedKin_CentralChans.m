@@ -73,7 +73,7 @@ window_buffer  = 3; % 1 second shift TO ACCOUNT FOR ONSET ERROR
 trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
 
 % Params for computing feature
-update_rate = 1/50; % sampling time
+update_rate = 1/25; % sampling time
 window_overlap = 0; % % overlap 0 to 0.99
 
 % Create movement pattern vector
@@ -469,14 +469,15 @@ for aa = 1:length(subs)
             %        TRAIN KALMAN FILTER         %
             %                                    %
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            traineeg = cat(2,ALLFOLDS{1,1:end-1});
+              % Get train/test EEG
+            traineeg = ALLFOLDS(1,1:end-1);
+            testeeg  = ALLFOLDS{1,end};
+            % Get train data
             trainkin = cat(2,ALLFOLDS{2,1:end-1});
             % Get test data
-            testeeg  = cat(2,ALLFOLDS{1,end});
             testkin  = cat(2,ALLFOLDS{2,end});
             % Get size of each fold
             foldIDX = cumsum([1 cellfun(@(x) size(x,2),ALLFOLDS(1,1:end-1))]);
-           foldIDX = cumsum([1 cellfun(@(x) size(x,2),ALLFOLDS(1,1:end-1))]);
             % Add d(trainkin)/dt
             if use_velocity
                 trainkinfull = cat(1,trainkin,diff([trainkin(1) trainkin]));

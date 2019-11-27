@@ -57,7 +57,7 @@ envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
 useAug       = 0;
-useUKF       = 0;
+useUKF       = 1;
 filter_order = 2; % bandpass filter
 use_velocity = 1;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
@@ -73,7 +73,7 @@ window_buffer  = 3; % 1 second shift TO ACCOUNT FOR ONSET ERROR
 trial_duration = 12; % instead of using exp dur from STIM, fix length for consistency
 
 % Params for computing feature
-update_rate = 1/50; % sampling time
+update_rate = 1/25; %
 window_overlap = 0; % % overlap 0 to 0.99
 
 % Create movement pattern vector
