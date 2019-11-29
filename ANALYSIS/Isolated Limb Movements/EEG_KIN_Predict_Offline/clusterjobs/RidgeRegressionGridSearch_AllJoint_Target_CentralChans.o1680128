@@ -77,14 +77,14 @@ ans =
 
 RK Joint; Iteration: 1/10
 RK Joint; Iteration: 2/10
-RK Joint; Iteration: 5/10
 RK Joint; Iteration: 3/10
-RK Joint; Iteration: 6/10
 RK Joint; Iteration: 4/10
-RK Joint; Iteration: 10/10
-RK Joint; Iteration: 7/10
-RK Joint; Iteration: 8/10
 RK Joint; Iteration: 9/10
+RK Joint; Iteration: 5/10
+RK Joint; Iteration: 6/10
+RK Joint; Iteration: 10/10
+RK Joint; Iteration: 8/10
+RK Joint; Iteration: 7/10
 
 ans =
 
@@ -137,14 +137,14 @@ ans =
 
 RA Joint; Iteration: 1/10
 RA Joint; Iteration: 2/10
-RA Joint; Iteration: 5/10
-RA Joint; Iteration: 3/10
-RA Joint; Iteration: 7/10
-RA Joint; Iteration: 6/10
 RA Joint; Iteration: 4/10
+RA Joint; Iteration: 3/10
+RA Joint; Iteration: 6/10
+RA Joint; Iteration: 5/10
 RA Joint; Iteration: 9/10
-RA Joint; Iteration: 8/10
 RA Joint; Iteration: 10/10
+RA Joint; Iteration: 8/10
+RA Joint; Iteration: 7/10
 
 ans =
 
@@ -195,15 +195,15 @@ ans =
 
     10
 
-LK Joint; Iteration: 2/10
 LK Joint; Iteration: 1/10
+LK Joint; Iteration: 2/10
+LK Joint; Iteration: 3/10
+LK Joint; Iteration: 4/10
 LK Joint; Iteration: 5/10
 LK Joint; Iteration: 9/10
-LK Joint; Iteration: 3/10
 LK Joint; Iteration: 6/10
-LK Joint; Iteration: 4/10
-LK Joint; Iteration: 7/10
 LK Joint; Iteration: 10/10
+LK Joint; Iteration: 7/10
 LK Joint; Iteration: 8/10
 
 ans =
@@ -255,15 +255,15 @@ ans =
 
     10
 
-LA Joint; Iteration: 2/10
 LA Joint; Iteration: 1/10
+LA Joint; Iteration: 2/10
+LA Joint; Iteration: 3/10
 LA Joint; Iteration: 4/10
 LA Joint; Iteration: 5/10
-LA Joint; Iteration: 9/10
-LA Joint; Iteration: 3/10
 LA Joint; Iteration: 6/10
-LA Joint; Iteration: 7/10
+LA Joint; Iteration: 9/10
 LA Joint; Iteration: 10/10
+LA Joint; Iteration: 7/10
 LA Joint; Iteration: 8/10
 
 ans =
@@ -315,15 +315,15 @@ ans =
 
     10
 
-BH Joint; Iteration: 2/10
 BH Joint; Iteration: 1/10
+BH Joint; Iteration: 2/10
+BH Joint; Iteration: 3/10
+BH Joint; Iteration: 4/10
 BH Joint; Iteration: 9/10
 BH Joint; Iteration: 5/10
-BH Joint; Iteration: 4/10
 BH Joint; Iteration: 6/10
 BH Joint; Iteration: 10/10
 BH Joint; Iteration: 7/10
-BH Joint; Iteration: 3/10
 BH Joint; Iteration: 8/10
 
 ans =
@@ -378,12 +378,12 @@ ans =
 RK Joint; Iteration: 1/10
 RK Joint; Iteration: 2/10
 RK Joint; Iteration: 3/10
-RK Joint; Iteration: 5/10
 RK Joint; Iteration: 4/10
-RK Joint; Iteration: 7/10
-RK Joint; Iteration: 6/10
 RK Joint; Iteration: 9/10
+RK Joint; Iteration: 6/10
+RK Joint; Iteration: 5/10
 RK Joint; Iteration: 10/10
+RK Joint; Iteration: 7/10
 RK Joint; Iteration: 8/10
 
 ans =
@@ -437,14 +437,14 @@ ans =
 
 RA Joint; Iteration: 1/10
 RA Joint; Iteration: 2/10
-RA Joint; Iteration: 4/10
 RA Joint; Iteration: 3/10
-RA Joint; Iteration: 5/10
-RA Joint; Iteration: 7/10
-RA Joint; Iteration: 9/10
+RA Joint; Iteration: 4/10
 RA Joint; Iteration: 6/10
+RA Joint; Iteration: 9/10
+RA Joint; Iteration: 5/10
 RA Joint; Iteration: 10/10
 RA Joint; Iteration: 8/10
+RA Joint; Iteration: 7/10
 
 ans =
 
@@ -495,16 +495,16 @@ ans =
 
     10
 
-LK Joint; Iteration: 2/10
 LK Joint; Iteration: 1/10
+LK Joint; Iteration: 2/10
 LK Joint; Iteration: 3/10
 LK Joint; Iteration: 4/10
-LK Joint; Iteration: 5/10
-LK Joint; Iteration: 7/10
 LK Joint; Iteration: 6/10
-LK Joint; Iteration: 10/10
 LK Joint; Iteration: 9/10
+LK Joint; Iteration: 10/10
+LK Joint; Iteration: 5/10
 LK Joint; Iteration: 8/10
+LK Joint; Iteration: 7/10
 
 ans =
 
@@ -558,13 +558,13 @@ ans =
 LA Joint; Iteration: 1/10
 LA Joint; Iteration: 2/10
 LA Joint; Iteration: 3/10
-LA Joint; Iteration: 5/10
 LA Joint; Iteration: 4/10
-LA Joint; Iteration: 7/10
-LA Joint; Iteration: 6/10
-LA Joint; Iteration: 8/10
 LA Joint; Iteration: 9/10
+LA Joint; Iteration: 6/10
+LA Joint; Iteration: 5/10
+LA Joint; Iteration: 7/10
 LA Joint; Iteration: 10/10
+LA Joint; Iteration: 8/10
 
 ans =
 
@@ -617,14 +617,14 @@ ans =
 
 BH Joint; Iteration: 1/10
 BH Joint; Iteration: 2/10
-BH Joint; Iteration: 4/10
 BH Joint; Iteration: 3/10
-BH Joint; Iteration: 5/10
-BH Joint; Iteration: 7/10
-BH Joint; Iteration: 6/10
+BH Joint; Iteration: 4/10
 BH Joint; Iteration: 9/10
+BH Joint; Iteration: 6/10
+BH Joint; Iteration: 5/10
 BH Joint; Iteration: 10/10
 BH Joint; Iteration: 8/10
+BH Joint; Iteration: 7/10
 
 ans =
 
@@ -677,13 +677,13 @@ ans =
 
 RK Joint; Iteration: 1/10
 RK Joint; Iteration: 2/10
+RK Joint; Iteration: 3/10
 RK Joint; Iteration: 4/10
 RK Joint; Iteration: 5/10
-RK Joint; Iteration: 3/10
-RK Joint; Iteration: 7/10
-RK Joint; Iteration: 6/10
 RK Joint; Iteration: 9/10
+RK Joint; Iteration: 6/10
 RK Joint; Iteration: 10/10
+RK Joint; Iteration: 7/10
 RK Joint; Iteration: 8/10
 
 ans =
@@ -737,14 +737,14 @@ ans =
 
 RA Joint; Iteration: 1/10
 RA Joint; Iteration: 2/10
+RA Joint; Iteration: 3/10
 RA Joint; Iteration: 4/10
 RA Joint; Iteration: 5/10
-RA Joint; Iteration: 3/10
-RA Joint; Iteration: 7/10
 RA Joint; Iteration: 6/10
 RA Joint; Iteration: 9/10
 RA Joint; Iteration: 10/10
 RA Joint; Iteration: 8/10
+RA Joint; Iteration: 7/10
 
 ans =
 
@@ -797,13 +797,13 @@ ans =
 
 LK Joint; Iteration: 1/10
 LK Joint; Iteration: 2/10
-LK Joint; Iteration: 5/10
-LK Joint; Iteration: 4/10
-LK Joint; Iteration: 7/10
 LK Joint; Iteration: 3/10
+LK Joint; Iteration: 4/10
+LK Joint; Iteration: 5/10
 LK Joint; Iteration: 6/10
 LK Joint; Iteration: 9/10
 LK Joint; Iteration: 10/10
+LK Joint; Iteration: 7/10
 LK Joint; Iteration: 8/10
 
 ans =
@@ -860,11 +860,11 @@ LA Joint; Iteration: 2/10
 LA Joint; Iteration: 3/10
 LA Joint; Iteration: 4/10
 LA Joint; Iteration: 5/10
-LA Joint; Iteration: 7/10
-LA Joint; Iteration: 6/10
 LA Joint; Iteration: 9/10
+LA Joint; Iteration: 6/10
 LA Joint; Iteration: 10/10
 LA Joint; Iteration: 8/10
+LA Joint; Iteration: 7/10
 
 ans =
 
@@ -918,11 +918,11 @@ ans =
 BH Joint; Iteration: 1/10
 BH Joint; Iteration: 2/10
 BH Joint; Iteration: 3/10
-BH Joint; Iteration: 5/10
-BH Joint; Iteration: 7/10
 BH Joint; Iteration: 4/10
-BH Joint; Iteration: 6/10
+BH Joint; Iteration: 5/10
 BH Joint; Iteration: 9/10
+BH Joint; Iteration: 6/10
 BH Joint; Iteration: 10/10
+BH Joint; Iteration: 7/10
 BH Joint; Iteration: 8/10
 >> >> 

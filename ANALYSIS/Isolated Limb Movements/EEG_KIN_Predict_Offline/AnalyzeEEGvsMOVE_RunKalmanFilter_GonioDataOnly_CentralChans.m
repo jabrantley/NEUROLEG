@@ -478,7 +478,7 @@ for aa = 1:length(subs)
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
         %PREDICT_ALL{aaa} = predicted_sub;
-        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '_WITHGAIN.mat'];
+        filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_GONIO_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
         save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub','meanstd_sub_kin','meanstd_sub_eeg','kf_sub');
         
     end % aaa = 1:length(movements)

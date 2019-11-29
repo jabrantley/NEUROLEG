@@ -10,86 +10,21 @@ For product information, visit www.mathworks.com.
  
 >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> Starting parallel pool (parpool) using the 'local' profile ...
 connected to 11 workers.
->> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> 
-ans =
-
-     1
-
-
-ans =
-
-     2
-
-
-ans =
-
-     3
-
-
-ans =
-
-     4
-
-
-ans =
-
-     5
-
-
-ans =
-
-     6
-
-
-ans =
-
-     7
-
-
-ans =
-
-     8
-
-
-ans =
-
-     9
-
-
-ans =
-
-    10
-
-RK Joint; Iteration: 1/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 2/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 9/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 3/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 10/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 4/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 5/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 6/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 7/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 8/10
-Total number of iterations: 3376
-
+>> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> [Warning: The temporary variable tempTestKIN will be cleared at the beginning of
+each iteration of the parfor loop.
+Any value assigned to it before the loop will be lost.  If tempTestKIN is used
+before it is assigned in the parfor loop, a runtime error will occur.
+See Parallel for Loops in MATLAB, "Temporary Variables".] 
+[Warning: The temporary variable R1_vel will be cleared at the beginning of each
+iteration of the parfor loop.
+Any value assigned to it before the loop will be lost.  If R1_vel is used
+before it is assigned in the parfor loop, a runtime error will occur.
+See Parallel for Loops in MATLAB, "Temporary Variables".] 
+[Warning: The temporary variable R2_vel will be cleared at the beginning of each
+iteration of the parfor loop.
+Any value assigned to it before the loop will be lost.  If R2_vel is used
+before it is assigned in the parfor loop, a runtime error will occur.
+See Parallel for Loops in MATLAB, "Temporary Variables".] 
 
 ans =
 
@@ -140,36 +75,16 @@ ans =
 
     10
 
-RK Joint; Iteration: 1/10
-Total number of iterations: 3376
-
 RK Joint; Iteration: 2/10
-Total number of iterations: 3376
-
+RK Joint; Iteration: 1/10
 RK Joint; Iteration: 9/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 3/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 10/10
-Total number of iterations: 3376
-
 RK Joint; Iteration: 4/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 5/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 6/10
-Total number of iterations: 3376
-
 RK Joint; Iteration: 7/10
-Total number of iterations: 3376
-
+RK Joint; Iteration: 3/10
+RK Joint; Iteration: 10/10
+RK Joint; Iteration: 5/10
 RK Joint; Iteration: 8/10
-Total number of iterations: 3376
-
+RK Joint; Iteration: 6/10
 
 ans =
 
@@ -215,8 +130,65 @@ ans =
 
      9
 
+
+ans =
+
+    10
+
+RK Joint; Iteration: 2/10
 RK Joint; Iteration: 1/10
-Total number of iterations: 3376
+RK Joint; Iteration: 9/10
+RK Joint; Iteration: 4/10
+RK Joint; Iteration: 3/10
+RK Joint; Iteration: 5/10
+RK Joint; Iteration: 6/10
+RK Joint; Iteration: 7/10
+RK Joint; Iteration: 8/10
+RK Joint; Iteration: 10/10
+
+ans =
+
+     1
+
+
+ans =
+
+     2
+
+
+ans =
+
+     3
+
+
+ans =
+
+     4
+
+
+ans =
+
+     5
+
+
+ans =
+
+     6
+
+
+ans =
+
+     7
+
+
+ans =
+
+     8
+
+
+ans =
+
+     9
 
 
 ans =
@@ -224,30 +196,13 @@ ans =
     10
 
 RK Joint; Iteration: 2/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 3/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 9/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 10/10
-Total number of iterations: 3376
-
+RK Joint; Iteration: 1/10
 RK Joint; Iteration: 4/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 5/10
-Total number of iterations: 3376
-
-RK Joint; Iteration: 6/10
-Total number of iterations: 3376
-
+RK Joint; Iteration: 3/10
 RK Joint; Iteration: 7/10
-Total number of iterations: 3376
-
+RK Joint; Iteration: 5/10
+RK Joint; Iteration: 9/10
+RK Joint; Iteration: 6/10
 RK Joint; Iteration: 8/10
-Total number of iterations: 3376
-
->> >> 
+RK Joint; Iteration: 10/10
+>> 
