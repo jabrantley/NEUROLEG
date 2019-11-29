@@ -198,12 +198,12 @@ classdef KalmanFilter < handle
                         self.Pxz = self.Pxz + ( w(ii) * (sigmapoints(:,ii)-sigmapoints(:,1)) * (Z(:,ii)-Z(:,1))' );
                     end
                     % Update kalman gain
-                    self.KGain = self.Pxz*pinv(self.Pzz);
+                    self.KGain = self.Pxz/self.Pzz;
                     % Correct state estimate using error between predicted and
                     % actual observation
                     self.Xt = self.Xtp + self.KGain*(Yt - self.z);
                     % Update state covariance
-                    self.Pt = self.Ptp - self.Pxz*(pinv(self.Pzz))'*self.Pxz';
+                    self.Pt = self.Ptp - self.Pxz*(inv(self.Pzz))'*self.Pxz';
                 %end
             else % normal Kalman filter
                 % Augment state

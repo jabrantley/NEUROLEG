@@ -289,8 +289,8 @@ for aa = 1:length(subs)
         meanstd_sub_kin= cell(total,1);
         
         thismove = movements{aaa};
-        %         parfor bb = 1:total
-        for bb = 1:total
+        parfor bb = 1:total
+        %for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
