@@ -33,10 +33,10 @@ for aa = 1:3
     y(6:8) = [];
     for ii  = 1:size(x)
         axes(ax(axord(cnt)));
-        p1 = plot(x{ii}(2,:),'linewidth',1.5); 
+        p1 = plot(zscore(x{ii}(2,:)),'linewidth',1.5); 
         p1.Color = 0.5.*ones(3,1);
         hold on; 
-        p2 = plot(x{ii}(1,:),'linewidth',1.5);
+        p2 = plot(zscore(x{ii}(1,:)),'linewidth',1.5);
         p2.Color = clrs(aa,:);%bcs(6,:);%
 %         p3 = plot(x2{ii}(1,:),'linewidth',1.5);
 %         p3.Color = clrs(3,:);%bcs(6,:);%
@@ -89,10 +89,10 @@ for aa = 1:3
     y(6:8) = [];
     for ii  = 1:size(x)
         axes(ax(axord(cnt)));
-        p1 = plot(x{ii}(2,:),'linewidth',1.5); 
+        p1 = plot(zscore(x{ii}(2,:)),'linewidth',1.5); 
         p1.Color = 0.5.*ones(3,1);
         hold on; 
-        p2 = plot(x{ii}(1,:),'linewidth',1.5);
+        p2 = plot(zscore(x{ii}(1,:)),'linewidth',1.5);
         p2.Color = clrs(aa,:);%bcs(6,:);%
 %         p3 = plot(x2{ii}(1,:),'linewidth',1.5);
 %         p3.Color = clrs(3,:);%bcs(6,:);%

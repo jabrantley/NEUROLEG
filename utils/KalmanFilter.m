@@ -150,41 +150,59 @@ classdef KalmanFilter < handle
                 if ~isempty(warnID) && strcmpi(warnID,'MATLAB:sqrtm:SingularMatrix')
                     disp(warnID);
                     lastwarn('');
-                    sqrtP = real(sqrtm(self.Ptp+.01.*randn(size(self.Ptp))));
+                    %sqrtP = real(sqrtm(self.Ptp+.01.*randn(size(self.Ptp))));
+                    % ------------------------------- %
+                    %                                 %
+                    %     Regular Kalman Filter       %
+                    %                                 %
+                    % ------------------------------- %
+                    % Augment state
+                    self.Xtp = self.augment_state(self.Xtp);
+                    % Compute predicted obsevation (e.g., neural firing rates)
+                    self.z = self.B*self.Xtp;
+                    % Update covariance matrix for predicted observation
+                    self.St = self.B*self.Ptp*self.B' + self.R;
+                    % Update Kalman gain
+                    self.KGain = self.Ptp*self.B'/self.St;
+                    % Correct state estimate using error between predicted and
+                    % actual observation
+                    self.Xt = self.Xtp + self.KGain*(Yt - self.z);
+                    % Update state covariance
+                    self.Pt = (eye(d) - self.KGain*self.B)*self.Ptp;
+                else
+                    sigmapoints(:,         1) = self.Xtp;
+                    sigmapoints(:,   2:  d+1) = repmat(sigmapoints(:,1), 1, d) + sqrt(d+1)*sqrtP;
+                    sigmapoints(:, d+2:2*d+1) = repmat(sigmapoints(:,1), 1, d) - sqrt(d+1)*sqrtP;
+                    % Augment unscented data
+                    sigmapoints_aug = self.augment_state(sigmapoints);
+                    % Compute predicted observation after unscented transform
+                    % and augmentation
+                    Z = zeros(size(self.B,1),2*d+1);
+                    for ii = 1:2*d+1
+                        Z(:,ii) = self.B*sigmapoints_aug(:,ii);
+                    end
+                    % Compute mean of predicted observation (neural data)
+                    w = ones(1, 2*d+1)*1/(2*(d+1)); % w_i = 1/2(d+Kappa); Kappa = 1
+                    w(1) = 1/(d+1);                 % w_0 = Kappa/d+Kappa where Kappa = 1
+                    self.z = Z*w';                  % z_t = sum_0:2d(w_i*Z_i)
+                    % Compute covariance of predicted observation (neural data)
+                    self.Pzz = w(1) * (Z(:,1) - self.z) * (Z(:,1) - self.z)' + self.R;
+                    for ii = 2:2*d+1
+                        self.Pzz = self.Pzz + ( w(ii) * (Z(:,ii)-Z(:,1)) * (Z(:,ii)-Z(:,1))' );
+                    end
+                    % Compute state-observation cross-covariance
+                    self.Pxz = w(1) * (sigmapoints(:,1) - self.Xtp) * (Z(:,1) - self.z)';
+                    for ii = 2:2*d+1
+                        self.Pxz = self.Pxz + ( w(ii) * (sigmapoints(:,ii)-sigmapoints(:,1)) * (Z(:,ii)-Z(:,1))' );
+                    end
+                    % Update kalman gain
+                    self.KGain = self.Pxz/self.Pzz;
+                    % Correct state estimate using error between predicted and
+                    % actual observation
+                    self.Xt = self.Xtp + self.KGain*(Yt - self.z);
+                    % Update state covariance
+                    self.Pt = self.Ptp - self.Pxz*(inv(self.Pzz))'*self.Pxz';
                 end
-                sigmapoints(:,         1) = self.Xtp;
-                sigmapoints(:,   2:  d+1) = repmat(sigmapoints(:,1), 1, d) + sqrt(d+1)*sqrtP;
-                sigmapoints(:, d+2:2*d+1) = repmat(sigmapoints(:,1), 1, d) - sqrt(d+1)*sqrtP;
-                % Augment unscented data
-                sigmapoints_aug = self.augment_state(sigmapoints);
-                % Compute predicted observation after unscented transform
-                % and augmentation
-                Z = zeros(size(self.B,1),2*d+1);
-                for ii = 1:2*d+1
-                    Z(:,ii) = self.B*sigmapoints_aug(:,ii);
-                end
-                % Compute mean of predicted observation (neural data)
-                w = ones(1, 2*d+1)*1/(2*(d+1)); % w_i = 1/2(d+Kappa); Kappa = 1
-                w(1) = 1/(d+1);                 % w_0 = Kappa/d+Kappa where Kappa = 1
-                self.z = Z*w';                  % z_t = sum_0:2d(w_i*Z_i)
-                % Compute covariance of predicted observation (neural data)
-                self.Pzz = w(1) * (Z(:,1) - self.z) * (Z(:,1) - self.z)' + self.R;
-                for ii = 2:2*d+1
-                    self.Pzz = self.Pzz + ( w(ii) * (Z(:,ii)-Z(:,1)) * (Z(:,ii)-Z(:,1))' );
-                end
-                % Compute state-observation cross-covariance
-                self.Pxz = w(1) * (sigmapoints(:,1) - self.Xtp) * (Z(:,1) - self.z)';
-                for ii = 2:2*d+1
-                    self.Pxz = self.Pxz + ( w(ii) * (sigmapoints(:,ii)-sigmapoints(:,1)) * (Z(:,ii)-Z(:,1))' );
-                end
-                % Update kalman gain
-                self.KGain = self.Pxz/self.Pzz;
-                % Correct state estimate using error between predicted and
-                % actual observation
-                self.Xt = self.Xtp + self.KGain*(Yt - self.z);
-                % Update state covariance
-                self.Pt = self.Ptp - self.Pxz*(inv(self.Pzz))'*self.Pxz';
-                
             else % normal Kalman filter
                 % Augment state
                 self.Xtp = self.augment_state(self.Xtp);
@@ -371,8 +389,8 @@ classdef KalmanFilter < handle
                                     prediction(ff) = KF_Out(1);
                                 end
                                 % Compute R2 value
-                                R2(ee) = KalmanFilter.rsquared(prediction(params.testidx,ord+1:end),test_state(params.testidx,ord+1:end));
-                                R1(ee) = KalmanFilter.PearsonCorr(prediction(params.testidx,ord+1:end),test_state(params.testidx,ord+1:end));
+                                R2(ee) = KalmanFilter.rsquared(zscore(prediction(params.testidx,ord+1:end)),zscore(test_state(params.testidx,ord+1:end)));
+                                R1(ee) = KalmanFilter.PearsonCorr(zscore(prediction(params.testidx,ord+1:end)),zscore(test_state(params.testidx,ord+1:end)));
                                 % Update count
                                 cnt = cnt+1;
                                 waitbar(cnt/totalIterations,wb);
@@ -389,13 +407,13 @@ classdef KalmanFilter < handle
             waitbar(1,wb,'Finished!');
             pause(1); delete(wb); pause(1);
             % Plot distribution of R2
-%             try
-%                 figure; histfig = histogram(allR2(:));
-%                 histfig.FaceColor = 'k';
-%                 histfig.NumBins = 10;
-%             catch err
-%                 % do nothing
-%             end
+            %             try
+            %                 figure; histfig = histogram(allR2(:));
+            %                 histfig.FaceColor = 'k';
+            %                 histfig.NumBins = 10;
+            %             catch err
+            %                 % do nothing
+            %             end
             % Get index of max
             [idx1, idx2, idx3, idx4] = ind2sub(size(allR2), find(allR2==max(allR2(:))));
             % Add values to struct - idx*(1) is chosen in case multiple

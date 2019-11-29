@@ -68,6 +68,7 @@ BANDNAMES = {'delta','theta','alpha','beta','gamma','higamma'};
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if makesetdata
+	
     all_movetimes = cell(length(subs),1);
     all_movedata  = cell (length(subs),1);
     all_basedata  = cell (length(subs),1);

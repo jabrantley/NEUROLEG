@@ -61,7 +61,7 @@ useUKF       = 1;
 filter_order = 2; % bandpass filter
 use_velocity = 1;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
-KF_ORDER     = 1;% [1,3,6,10];
+KF_ORDER     = 1;%[1,3,6,10];
 KF_LAGS      = [1,2:2:10];%,3,6,10];
 KF_LAMBDA    = logspace(-2,2,5);
 
@@ -289,8 +289,8 @@ for aa = 1:length(subs)
         meanstd_sub_kin= cell(total,1);
         
         thismove = movements{aaa};
-        parfor bb = 1:total
-            %         for bb = 1:total
+        %         parfor bb = 1:total
+        for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
@@ -434,12 +434,12 @@ for aa = 1:length(subs)
                 trainkinfull = transpose(zscore(trainkinfull'));
                 testkinfull = transpose(zscore(testkinfull'));
                 
-                traineeg = rescale_data(traineeg,'all').*10;
-                testeeg = rescale_data(testeeg,'all').*10;
-                
+%                 traineeg = rescale_data(traineeg,'all',[-10 10]);
+%                 testeeg = rescale_data(testeeg,'all',[-10 10]);
+%                 
                 % This below results in sqrtm() instability in UKF
-                %                 traineeg = transpose(zscore(traineeg'));
-                %                 testeeg = transpose(zscore(testeeg'));
+%                                 traineeg = transpose(zscore(traineeg'));
+%                                 testeeg = transpose(zscore(testeeg'));
             end
             
             % Kalman Filter object
