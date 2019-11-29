@@ -432,8 +432,8 @@ for aa = 1:length(subs)
                 trainkinfull = transpose(zscore(trainkinfull'));
                 testkinfull = transpose(zscore(testkinfull'));
                 
-                traineeg = rescale_data(traineeg,'all');
-                testeeg = rescale_data(testeeg,'all');
+%                 traineeg = rescale_data(traineeg,'all');
+%                 testeeg = rescale_data(testeeg,'all');
 
             end
             

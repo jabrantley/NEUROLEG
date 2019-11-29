@@ -512,8 +512,8 @@ for aa = 1:length(subs)
             if zscore_data
                 trainkinfull = transpose(zscore(trainkinfull'));
                 testkinfull = transpose(zscore(testkinfull'));
-                traineeg = rescale_data(traineeg,'all');
-                testeeg = rescale_data(testeeg,'all');
+                %traineeg = rescale_data(traineeg,'all');
+                %testeeg = rescale_data(testeeg,'all');
             end
             
             % Convert back into cell array
