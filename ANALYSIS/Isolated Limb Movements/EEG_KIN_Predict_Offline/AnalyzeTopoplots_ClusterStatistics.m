@@ -39,7 +39,7 @@ allchanlocs([17,22,28,32]) = [];
 
 % Get files for each subject
 subs = {'TF01','TF02','TF03'};
-
+subs2 = {'TF01','TF02','TF03','ALLSUB'};
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %        WHICH PROCESSES?          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,7 +83,7 @@ if makesetdata
         load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-stim.mat'  ]));
         % Load movement data
         load(fullfile(rawdir, [subs{aa}, '-ALLTRIALS-gonio.mat' ]));
-        
+       
         % Get trial information
         trialbreaks = EEG.trialbreaks;
         stimpattern = cell(size(STIM,1),1);
@@ -182,6 +182,32 @@ if makesetdata
         
         all_movedata{aa} = movedata;
     end
+    % Make dataset for each movement across all subjects
+    for aa = 1:length(movements)
+        tempdata = [];
+        for bb = 1:length(subs)
+            tempdata = cat(2,tempdata,all_movedata{bb}{aa});
+        end
+        TEMP = EEGEMPTY;
+        TEMP.data = cat(3,tempdata{:});
+        TEMP.srate = EEG.srate;
+        TEMP.chanlocs = allchanlocs;
+        TEMP.filename = ['ALLSUB-' movements{aa} '-eeg.set'];
+        TEMP = eeg_checkset(TEMP);
+        pop_saveset(TEMP,'filename',TEMP.filename,'filepath',fullfile(datadir,'SET'));
+    end
+    % Make dataset for each movement across all subjects
+    tempdata = [];
+    for bb = 1:length(subs)
+        tempdata = cat(2,tempdata,all_basedata{bb});
+    end
+    TEMP = EEGEMPTY;
+    TEMP.data = cat(3,tempdata{:});
+    TEMP.srate = EEG.srate;
+    TEMP.chanlocs = allchanlocs;
+    TEMP.filename = ['ALLSUB-REST-eeg.set'];
+    TEMP = eeg_checkset(TEMP);
+    pop_saveset(TEMP,'filename',TEMP.filename,'filepath',fullfile(datadir,'SET'));
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,10 +222,10 @@ if computeclusterstats
     all_psd = cell(length(subs),length(movements));
     rest_psd = cell(length(subs),1);
     foi = .5:.25:128;
-    for aa = 1:length(subs)
+    for aa = 1:length(subs2)
         
         cfg = [];
-        cfg.dataset = fullfile(datadir,'SET', [subs{aa} '-REST-eeg.set']);
+        cfg.dataset = fullfile(datadir,'SET', [subs2{aa} '-REST-eeg.set']);
         data = ft_preprocessing(cfg);
         
         % Compute PSD
@@ -222,7 +248,7 @@ if computeclusterstats
             
             % Make fieltrip config file
             cfg = [];
-            cfg.dataset = fullfile(datadir,'SET',[subs{aa} '-' limb '-eeg.set']);
+            cfg.dataset = fullfile(datadir,'SET',[subs2{aa} '-' limb '-eeg.set']);
             data = ft_preprocessing(cfg);
             
             % Compute PSD
@@ -242,10 +268,10 @@ if computeclusterstats
         end
     end
     
-    sub_fix_minus_move  = cell(length(subs),1);
-    sub_rest_minus_move = cell(length(subs),1);
-    sub_hand_minus_move = cell(length(subs),1);
-    for aa = 1:length(subs)
+    sub_fix_minus_move  = cell(length(subs2),1);
+    sub_rest_minus_move = cell(length(subs2),1);
+    sub_hand_minus_move = cell(length(subs2),1);
+    for aa = 1:length(subs2)
         % Initialize variables
         move_fix = cell(length(movements)-1,length(BANDS));
         move_rest = cell(length(movements)-1,length(BANDS));
@@ -383,15 +409,16 @@ end % if computeclusterstats
 
 
 % Get subject specific data
-fix_or_rest = 'hand';
+fix_or_rest = 'rest';
 % allpsd = sub_fix_minus_move;
-%allpsd = sub_rest_minus_move;
-allpsd = sub_hand_minus_move;
+allpsd = sub_rest_minus_move;
+% allpsd = sub_hand_minus_move;
 movements = {'RK','RA','LK','LA','BH','FIX'};
 move_order = [5,1,2,3,4];
 thisdir = cd;
+cd('ALL_TOPOPLOTS_FIELDTRIPSTATS');
 % Loop through each subject
-for aa = 1:length(subs)
+for aa = length(subs2)%1:length(subs2)
     
     % GET MAX AND MIN VALS FOR COLORBAR
     % Loop through each movement
@@ -738,13 +765,13 @@ for aa = 1:length(subs)
     end
     
     %pause(1);
-    cd('ALL_TOPOPLOTS_FIELDTRIPSTATS');
-    flname = [subs{aa} '_' 'move-' fix_or_rest '.png'];
+    %cd('ALL_TOPOPLOTS_FIELDTRIPSTATS');
+    flname = [subs2{aa} '_' 'move-' fix_or_rest '.png'];
     eval(['export_fig ' flname  ' -r300 -png'])
-    cd(thisdir);
+    %cd(thisdir);
     close;
     
     
 end
-
+cd(thisdir);
 
