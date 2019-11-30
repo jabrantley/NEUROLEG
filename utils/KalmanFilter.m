@@ -213,7 +213,7 @@ classdef KalmanFilter < handle
                 % Update covariance matrix for predicted observation
                 self.St = self.B*self.Ptp*self.B' + self.R;
                 % Update Kalman gain
-                self.KGain = self.Ptp*self.B'/self.St;
+                self.KGain = self.Ptp*self.B'*pinv(self.St);
                 % Correct state estimate using error between predicted and
                 % actual observation
                 self.Xt = self.Xtp + self.KGain*(Yt - self.z);
