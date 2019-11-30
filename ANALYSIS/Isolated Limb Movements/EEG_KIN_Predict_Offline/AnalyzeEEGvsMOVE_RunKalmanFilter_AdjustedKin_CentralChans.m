@@ -57,9 +57,9 @@ envwindow    = 100;
 zscore_data  = 1;
 car_data     = 1;
 useAug       = 0;
-useUKF       = 1;
+useUKF       = 0;
 filter_order = 2; % bandpass filter
-use_velocity = 1;
+use_velocity = 0;
 predict_type = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
 KF_ORDER     = 1;%[1,3,6,10];
 KF_LAGS      = [1,2:2:10];%3,6,10];
@@ -374,7 +374,7 @@ for aa = 1:length(subs)
         
         thismove = movements{aaa};
         parfor bb = 1:total
-            %         for bb = 1:total
+        %for bb = 1:total
             bb
             disp([thismove ' Joint; Iteration: ' num2str(bb) '/' num2str(total)]);
             pause(1);
@@ -453,10 +453,10 @@ for aa = 1:length(subs)
                         tstart = tstart + window_shift;
                         tend   = tstart + window_size;
                     end
-%                     if zscore_data
-%                         alleeg_win = transpose(zscore(alleeg_win'));
-                        %allkin_win = transpose(zscore(allkin_win'));
-%                     end
+                    %                     if zscore_data
+                    %                         alleeg_win = transpose(zscore(alleeg_win'));
+                    %allkin_win = transpose(zscore(allkin_win'));
+                    %                     end
                     % Save to folds array
                     ALLFOLDS{1,count} = alleeg_win;
                     ALLFOLDS{2,count} = allkin_win;
@@ -557,9 +557,9 @@ for aa = 1:length(subs)
         % Store results for each movement
         %R2_ALL{aaa} = R2_sub_all;
         %R2_MEAN{aaa} = R2_sub_mean;
-        %PREDICT_ALL{aaa} = predicted_sub;
+        %PREDICT_ALL{aaa} = predSicted_sub;
         filename = [subs{aa} '_KF_RESULTS_MOTORCHAN_TARGET_' movements{aaa} '_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '_V' num2str(use_velocity) '.mat'];
-        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','kf_sub','meanstd_sub','kf_sub');
+        save(filename,'R2_sub_all','R2_sub_mean','R1_sub_all','R1_sub_mean','predicted_sub','predicted_subV','combos','meanstd_sub_kin','meanstd_sub_eeg','kf_sub');
         
     end % aaa = 1:length(movements)
     %filename = [subs{aa} '_KF_RESULTS_WIN' num2str(num2str(1/update_rate)) '_Z' num2str(zscore_data) '_CAR' num2str(car_data) '_AUG' num2str(useAug) '_UKF' num2str(useUKF) '.mat'];

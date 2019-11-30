@@ -145,34 +145,36 @@ classdef KalmanFilter < handle
                 % Initialize unscented data matrix
                 sigmapoints = zeros(d, 2*d+1);
                 % Perform unscented transform
-                sqrtP = real(sqrtm(self.Ptp));
+                sqrtP = real(sqrtm((d+1)*self.Ptp));
                 [~,warnID] = lastwarn;
                 if ~isempty(warnID) && strcmpi(warnID,'MATLAB:sqrtm:SingularMatrix')
-                    disp(warnID);
+                    %disp(warnID);
                     lastwarn('');
-                    %sqrtP = real(sqrtm(self.Ptp+.01.*randn(size(self.Ptp))));
+                    sqrtP = real(sqrtm(self.Ptp+.01.*randn(size(self.Ptp))));
+                end
                     % ------------------------------- %
                     %                                 %
                     %     Regular Kalman Filter       %
                     %                                 %
                     % ------------------------------- %
                     % Augment state
-                    self.Xtp = self.augment_state(self.Xtp);
-                    % Compute predicted obsevation (e.g., neural firing rates)
-                    self.z = self.B*self.Xtp;
-                    % Update covariance matrix for predicted observation
-                    self.St = self.B*self.Ptp*self.B' + self.R;
-                    % Update Kalman gain
-                    self.KGain = self.Ptp*self.B'/self.St;
-                    % Correct state estimate using error between predicted and
-                    % actual observation
-                    self.Xt = self.Xtp + self.KGain*(Yt - self.z);
-                    % Update state covariance
-                    self.Pt = (eye(d) - self.KGain*self.B)*self.Ptp;
-                else
+%                     self.Xtp = self.augment_state(self.Xtp);
+%                     % Compute predicted obsevation (e.g., neural firing rates)
+%                     self.z = self.B*self.Xtp;
+%                     % Update covariance matrix for predicted observation
+%                     self.St = self.B*self.Ptp*self.B' + self.R;
+%                     % Update Kalman gain
+%                     self.KGain = self.Ptp*self.B'/self.St;
+%                     % Correct state estimate using error between predicted and
+%                     % actual observation
+%                     self.Xt = self.Xtp + self.KGain*(Yt - self.z);
+%                     % Update state covariance
+%                     self.Pt = (eye(d) - self.KGain*self.B)*self.Ptp;
+                      % Luu's methodself.Pt = self.Q
+                %else
                     sigmapoints(:,         1) = self.Xtp;
-                    sigmapoints(:,   2:  d+1) = repmat(sigmapoints(:,1), 1, d) + sqrt(d+1)*sqrtP;
-                    sigmapoints(:, d+2:2*d+1) = repmat(sigmapoints(:,1), 1, d) - sqrt(d+1)*sqrtP;
+                    sigmapoints(:,   2:  d+1) = repmat(sigmapoints(:,1), 1, d) + sqrtP;
+                    sigmapoints(:, d+2:2*d+1) = repmat(sigmapoints(:,1), 1, d) - sqrtP;
                     % Augment unscented data
                     sigmapoints_aug = self.augment_state(sigmapoints);
                     % Compute predicted observation after unscented transform
@@ -196,13 +198,13 @@ classdef KalmanFilter < handle
                         self.Pxz = self.Pxz + ( w(ii) * (sigmapoints(:,ii)-sigmapoints(:,1)) * (Z(:,ii)-Z(:,1))' );
                     end
                     % Update kalman gain
-                    self.KGain = self.Pxz/self.Pzz;
+                    self.KGain = self.Pxz*pinv(self.Pzz);
                     % Correct state estimate using error between predicted and
                     % actual observation
                     self.Xt = self.Xtp + self.KGain*(Yt - self.z);
                     % Update state covariance
-                    self.Pt = self.Ptp - self.Pxz*(inv(self.Pzz))'*self.Pxz';
-                end
+                    self.Pt = self.Ptp - self.Pxz*(pinv(self.Pzz))'*self.Pxz';
+                %end
             else % normal Kalman filter
                 % Augment state
                 self.Xtp = self.augment_state(self.Xtp);
