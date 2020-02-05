@@ -33,7 +33,7 @@
 % ***********************************************************************
 
 % Main RDA Client function
-function out = neuroleg_realtime_freemove(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG)
+function out = neuroleg_realtime_freemove(params,b,teensyLeg,teensySynch,KF_EEG,KF_EMG,gain)
 
 repeat = 1;
 
@@ -60,9 +60,6 @@ while repeat
     trigger_interval = floor(params.sinewave.time(end)/6);
     cycle_time       = zeros(1,length(params.sinewave.time));
     predicted_value  = zeros(1,length(params.sinewave.time));
-    
-    % Get channel gain 
-    gain = params.setup.EEGgain;
    
     % Open serial if closed and ON = true
     if isempty(teensySynch)

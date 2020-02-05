@@ -1,7 +1,7 @@
 function [fullwave, dswave,newtimevec] = make_movement_pattern(numCycles,move_freq,delaybuffer,updaterate,joint_angles)
 Tau         = numCycles*(1/move_freq); % time constant
 oldtimevec     = 0:updaterate:Tau;        % time vector
-newtimevec  = 0:updaterate:(Tau+2*delaybuffer);
+newtimevec  = 0:updaterate:(Tau+delaybuffer+0.5*delaybuffer);
 % Variable velocity - smoother and more natural
 swave       = (joint_angles(2)/2) + (joint_angles(2)/2)*cos(move_freq*2*pi*oldtimevec+pi);
 fullwave    = swave(1).*ones(1,length(newtimevec));

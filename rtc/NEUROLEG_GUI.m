@@ -118,7 +118,12 @@ for aa = 1:handles.params.setup.trainiterations
                 handles.params.fig = build_movement_fig(handles.params.sinewave);
                 [EEG_ALL{1,aa},BIO_ALL{1,aa},ANGLES_ALL{1,aa}] = neuroleg_realtime_stream(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,0);
             end
-            close(handles.params.fig.f);
+            
+            try
+                close(handles.params.fig.f);
+            catch
+                %do nothing
+            end
             
             % Pause between iterations to continue
             if handles.radio_predict_both.Value
@@ -144,8 +149,11 @@ for aa = 1:handles.params.setup.trainiterations
                 handles.params.fig = build_movement_fig(handles.params.sinewave);
                 [EEG_ALL{2,aa},BIO_ALL{2,aa},ANGLES_ALL{2,aa}] = neuroleg_realtime_stream(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,1);
             end
-            close(handles.params.fig.f);
-            
+            try
+                close(handles.params.fig.f);
+            catch
+                %do nothing
+            end
             % Close all serial
             fclose(instrfind);
             
@@ -169,25 +177,46 @@ params = rmfield(handles.params,'fig');
 save(flname0,'params','EEG_ALL','BIO_ALL','ANGLES_ALL');
 
 % Initialize empty variables
-cleaneeg = cell(2,1);
-filteeg  = cell(2,1);
-filtemg  = cell(2,1);
-envemg   = cell(2,1);
+prehinfeeg = cell(2,1);
+cleaneeg   = cell(2,1);
+filteeg    = cell(2,1);
+filtemg    = cell(2,1);
+envemg     = cell(2,1);
 
 % Train model - intact
 if handles.radio_predict_intact.Value || handles.radio_predict_both.Value
-    EEG_TEMP = EEG_ALL(1,:); BIO_TEMP = BIO_ALL(1,:); ANGLES_TEMP = ANGLES_ALL(1,:);
-    [handles.params,intact.KF_EMG,intact.KF_EEG,cleaneeg{1},filteeg{1},filtemg{1},envemg{1}] = neuroleg_realtime_train(handles.params,cat(2,EEG_TEMP{:}),cat(2,BIO_TEMP{:}),cat(2,ANGLES_TEMP{:}));
+    EEG_TEMP    = EEG_ALL(1,:);
+    EEG_DATA    = cat(2,EEG_TEMP{:});
+    BIO_TEMP    = BIO_ALL(1,:);
+    BIO_DATA    = cat(2,BIO_TEMP{:});
+    EMG_DATA    = BIO_DATA(1,:); % Get data for intact channel
+    ANGLES_TEMP = ANGLES_ALL(1,:);
+    ANGLES_DATA = cat(2,ANGLES_TEMP{:});
+    [handles.params,intact.KF_EMG,intact.KF_EEG,cleaneeg{1},filteeg{1},filtemg{1},envemg{1},EEGgainIntact] = neuroleg_realtime_train(handles.params,EEG_DATA,EMG_DATA,ANGLES_DATA);
 else
     intact = [];
+    EEGgainIntact = [];
 end
 
 % Train model - phantom
 if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
-    EEG_TEMP = EEG_ALL(2,:); BIO_TEMP = BIO_ALL(2,:); ANGLES_TEMP = ANGLES_ALL(2,:);
-    [handles.params,phantom.KF_EMG,phantom.KF_EEG,cleaneeg{2},filteeg{2},filtemg{2},envemg{2}] = neuroleg_realtime_train(handles.params,cat(2,EEG_TEMP{:}),cat(2,BIO_TEMP{:}),cat(2,ANGLES_TEMP{:}));
+    EEG_TEMP    = EEG_ALL(2,:);
+    EEG_DATA    = cat(2,EEG_TEMP{:});
+    BIO_TEMP    = BIO_ALL(2,:);
+    BIO_DATA    = cat(2,BIO_TEMP{:});
+    EMG_DATA    = BIO_DATA(2,:); % Get data for phantom channel
+    ANGLES_TEMP = ANGLES_ALL(2,:);
+    ANGLES_DATA = cat(2,ANGLES_TEMP{:});
+    [handles.params,phantom.KF_EMG,phantom.KF_EEG,cleaneeg{2},filteeg{2},prehinfeeg{2},filtemg{2},envemg{2},EEGgainPhantom] = neuroleg_realtime_train(handles.params,EEG_DATA,EMG_DATA,ANGLES_DATA);
 else
     phantom = [];
+    EEGgainPhantom = [];
+end
+
+% If auto gain checked then find gain and bias
+if handles.eeg_gain_auto.Value
+    handles.params.setup.autogain.intact  = EEGgainIntact;
+    handles.params.setup.autogain.phantom = EEGgainPhantom;
 end
 
 % Store in handles
@@ -202,7 +231,7 @@ flname1 = [strjoin({subname,'train','model',date1,date2},'_') '.mat'];
 save(flname1,'params','intact','phantom');
 % Save training data after cleaning
 flname2 = [strjoin({subname,'train','processdata',date1,date2},'_') '.mat'];
-save(flname2,'cleaneeg','filteeg','filtemg','envemg');
+save(flname2,'cleaneeg','filteeg','prehinfeeg','filtemg','envemg');
 
 % Just in case not previously stopped
 handles.biometrics.stop;
@@ -238,8 +267,16 @@ if isfield(handles,'phantom') && isfield(handles,'intact')
             handles.biometrics.clearbuffer;
             % Run testing
             if (handles.radio_predict_intact.Value || handles.radio_predict_both.Value) && ~isempty(handles.intact)
+                % If auto gain checked then find gain and bias
+                if handles.eeg_gain_auto.Value
+                    gain = handles.params.setup.autogain.intact;
+                else
+                    gain = handles.params.setup.EEGgain;
+                end
+                % Make figure
                 handles.params.fig = build_movement_fig(handles.params.sinewave);
-                test_intact = neuroleg_realtime_control(handles.params,handles.biometrics,[],handles.teensySynch,handles.intact.KF_EEG,handles.intact.KF_EMG);
+                % Real time control
+                test_intact = neuroleg_realtime_control(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.intact.KF_EEG,handles.intact.KF_EMG,gain,0);
             else
                 test_intact = [];
             end
@@ -263,8 +300,16 @@ if isfield(handles,'phantom') && isfield(handles,'intact')
             end
             % Phantom leg
             if (handles.radio_predict_phantom.Value || handles.radio_predict_both.Value) && ~isempty(handles.phantom)
+                % If auto gain checked then find gain and bias
+                if handles.eeg_gain_auto.Value
+                    gain = handles.params.setup.autogain.phantom;
+                else
+                    gain = handles.params.setup.EEGgain;
+                end
+                % Make figure
                 handles.params.fig = build_movement_fig(handles.params.sinewave);
-                test_phantom = neuroleg_realtime_control(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG);
+                % Real time control
+                test_phantom = neuroleg_realtime_control(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG,gain,1);
             else
                 test_phantom = [];
             end
@@ -315,6 +360,15 @@ if isfield(handles,'phantom') && isfield(handles,'intact')
             
             % Phantom leg
             if (handles.radio_predict_phantom.Value || handles.radio_predict_both.Value) && ~isempty(handles.phantom)
+                % If auto gain checked then find gain and bias
+                if handles.eeg_gain_auto.Value
+                    gain = handles.params.setup.autogain.phantom;
+                else
+                    gain = handles.params.setup.EEGgain;
+                end
+                % Make figure
+                handles.params.fig = build_movement_fig(handles.params.sinewave);
+                % Real time control
                 test_phantom = neuroleg_realtime_freemove(handles.params,handles.biometrics,handles.teensyLeg,handles.teensySynch,handles.phantom.KF_EEG,handles.phantom.KF_EMG);
             else
                 test_phantom = [];
@@ -351,11 +405,18 @@ guidata(hObject, handles);
 
 % --- Executes on button press in button_loadtrain.
 function button_loadtrain_Callback(hObject, eventdata, handles)
+% Parse params struct into handles
+handles = neuroleg_realtime_parsehandles(handles);
+%handles = rmfield(handles,{'phantom','intact','params'});
 model = uigetfile('*model*.mat');
-load(model);
-handles.intact  = intact;
-handles.phantom = phantom;
-handles.params  = params;
+if model == 0
+    return
+else
+    in = load(model);
+    handles.intact  = in.intact;
+    handles.phantom = in.phantom;
+    handles.params  = in.params;
+end
 % Update handles structure
 guidata(hObject, handles);
 
@@ -566,9 +627,9 @@ try
     fopen(teensyLeg);
     % Add to handles
     handles.teensyLeg = teensyLeg;
-     fprintf(['\n-------------------------------',...
-            '\n\n   Neuroleg connected. \n\n',...
-            '-------------------------------\n'])
+    fprintf(['\n-------------------------------',...
+        '\n\n   Neuroleg connected. \n\n',...
+        '-------------------------------\n'])
 catch err
     disp(err.message);
     fprintf(['\n-------------------------------',...
@@ -589,7 +650,7 @@ end
 
 if hObject.Value
     try
-        teensySynch = serial('COM34','BaudRate',115200);
+        teensySynch = serial('COM3','BaudRate',115200);
         fopen(teensySynch);
         % Add to handles
         handles.teensySynch = teensySynch;

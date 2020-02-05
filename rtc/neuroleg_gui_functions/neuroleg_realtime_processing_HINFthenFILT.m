@@ -12,33 +12,11 @@
 % Written by: Justin Brantley - justin.a.brantley@gmail.com
 % 09/20/2019: Date created
 
-function [params,cleaneeg,filteeg,prehinfeeg,filtemg,envemg] = neuroleg_realtime_processing(params,eegdata,eogdata,emgdata)
+function [params,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_processing(params,eegdata,eogdata,emgdata)
 
 % Check for EMG data
 if nargin < 4
     emgdata = [];
-end
-
-if params.setup.filteog
-    % % Combine EEG and EOG data temporarily
-    numeeg = size(eegdata,2);
-    numeog = size(eogdata,2);
-    combodata = [eegdata, eogdata];
-    % Filter EEG data - filter each channel across time
-    xnn_temp0 = zeros(size(params.eeg_bp_filt0.xnn));
-    prehinfeeg  = zeros(size(combodata));
-    for  ii  = 1:size(combodata,2) % all time for a single channel
-        [prehinfeeg(:,ii),xnn_temp0(:,ii)] = ss_filter_local(combodata(:,ii),params.eeg_bp_filt0.xnn(:,ii),...
-            params.eeg_bp_filt0.A,params.eeg_bp_filt0.B,params.eeg_bp_filt0.C,params.eeg_bp_filt0.D);
-    end
-    params.eeg_bp_filt0.xnn = xnn_temp0;
-    clearvars ii xnn_temp0
-    
-    % Separate EEG and EOG data
-    eegdata = combodata(:,1:numeeg);
-    eogdata = combodata(:,numeeg+1:end);
-else
-    prehinfeeg = [];
 end
 
 if ~isempty(eogdata)
@@ -106,11 +84,10 @@ else
 end
 
 % Transpose data
-prehinfeeg = prehinfeeg';
-cleaneeg   = cleaneeg';
-filteeg    = filteeg';
-filtemg    = filtemg';
-envemg     = envemg';
+cleaneeg = cleaneeg';
+filteeg  = filteeg';
+filtemg  = filtemg';
+envemg   = envemg';
 
 end% end neuroleg_realtime_processing()
 

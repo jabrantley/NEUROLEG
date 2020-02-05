@@ -50,7 +50,7 @@ end
 % Open teensy connection
 if write2synchbox
     try
-        teensySynch = serial('COM34','BaudRate',115200);
+        teensySynch = serial('COM22','BaudRate',115200);
         fopen(teensySynch);
     catch err
         disp(err.message);

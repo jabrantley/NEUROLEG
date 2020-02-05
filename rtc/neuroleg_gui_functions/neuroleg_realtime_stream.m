@@ -41,26 +41,35 @@ SYNCHANGLE = [];
 
 repeat = 1;
 
+% Get which channel for plotting at end
+if moveleg
+    whichChan = 2;
+else
+    whichChan = 1;
+end
+
 while repeat
     % Preallocate for data
     RAWEEG           = zeros(params.setup.allEEGchans + params.setup.numEOGchans,...
         params.setup.numEEGpnts * length(params.sinewave.time));
     MRKREEG          = zeros(1,size(RAWEEG,2));
     numAnalog        = length(find(b.usech<8));
-    numDigital       = params.setup.numBIOchans - numAnalog;
+    numDigital       = length(find(b.usech>=8));%params.setup.numBIOchans - numAnalog;
     RAWBIO           = zeros(numAnalog, size(RAWEEG,2));
     MRKRBIO          = zeros(numDigital, size(RAWEEG,2));
     ANGLEVEC         = zeros(1,size(RAWEEG,2));
     startEEG         = 1;
     startBIO         = 1;
-    trigger_interval = floor(params.sinewave.time(end)/6);
+    trigger_interval = floor((params.sinewave.cycles*(1/params.sinewave.freq))/params.sinewave.cycles+2);%floor(params.sinewave.time(end)/params.sinewave.cycles+2);
     
     % Plot for EMG
-    axes(params.fig.f.Children(1));
-    p_emg = stem(nan(1,length(params.sinewave.wave)));
-    p_emg.Marker = 'none';
-    p_emg.LineWidth = 1.15;
-    p_emg.Color =  0.7.*ones(1,3);
+    axes(params.fig.f.Children(2));
+%     p_emg = params.fig.s1;
+%     p_emg.Visible = 'on';
+%     p_emg = stem(nan(1,length(params.sinewave.wave)));
+%     p_emg.Marker = 'none';
+%     p_emg.LineWidth = 1.15;
+%     p_emg.Color =  0.7.*ones(1,3);
     
     % Open serial if closed and ON = true
     if ~isempty(teensySynch) && strcmpi(teensySynch.Status,'closed')
@@ -98,7 +107,15 @@ while repeat
     while ~finish
         % check if stop button pressed
         if fs.Stop()
+            % Just in case not previously stopped
             b.stop;
+            figHandles = findall(groot, 'Type', 'figure');
+            thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+            closefigs = setdiff(1:length(figHandles),thisFig);
+            close(figHandles(closefigs));
+            % Close all serial
+            fprintf(teensySynch,'Y');
+            fclose(instrfind);
             return;
         end
         
@@ -123,10 +140,17 @@ while repeat
                 switch hdr.type
                     case 1       % Start, Setup information like EEG properties
                         disp('Start');
+                        % Write to trigger box
+                        if moveleg    
+                            fprintf(teensySynch,'E')
+                        else
+                            fprintf(teensySynch,'T')
+                        end
                         % Clear biometrics buffer
                         b.clearbuffer;
                         % Start biometrics
                         b.start;
+                       
                         % Read and display EEG properties
                         props = ReadStartMessage(con, hdr);
                         disp(props);
@@ -140,12 +164,12 @@ while repeat
                     case 4       % 32Bit Data block
                         
                         % Update line figure
-                        params.fig.s.XData = params.sinewave.wave(counter);
+                        %params.fig.s.XData = params.sinewave.wave(counter);
                         params.fig.s.YData = params.sinewave.wave(counter);
-                        
+                        params.fig.s.MarkerFaceAlpha = params.sinewave.facealpha(counter);
                         % Update wave figure
-                        params.fig.s1.XData = params.sinewave.time(counter);
-                        params.fig.s1.YData = params.sinewave.wave(counter)/max(params.sinewave.wave);
+                        %params.fig.s1.XData = params.sinewave.time(counter);
+                        %params.fig.s1.YData = params.sinewave.wave(counter)/max(params.sinewave.wave);
                         
                         % Write to neuroleg
                         if ~isempty(teensyLeg) && moveleg
@@ -170,11 +194,14 @@ while repeat
                         end
                         lastBlock = datahdr.block;
                         
+                            
                         % Get EEG data
                         eegdata = double(reshape(data, props.channelCount, length(data) / props.channelCount));
                         endEEG  = startEEG+size(eegdata,2) - 1;
                         RAWEEG(:,startEEG:endEEG) = eegdata;
-                        MRKREEG(1,startEEG+markers.position) = 1;
+                        if strcmpi(markers.description,'S  1')
+                            MRKREEG(1,startEEG+markers.position) = 1;
+                        end
                         ANGLEVEC(:,startEEG:endEEG) = params.sinewave.wave(counter)/max(params.sinewave.wave) .* ones(1,length(startEEG:endEEG));
                         startEEG = endEEG + 1;
                         
@@ -197,8 +224,8 @@ while repeat
                                 MRKRBIO(:,startBIO:endBIO) = biodigi;
                             end
                             startBIO = endBIO + 1;
-                            p_emg.XData(counter) = params.sinewave.time(counter);
-                            p_emg.YData(counter) = quantile((abs(biodata(1,:))./3),.85);
+                            %p_emg.XData(counter) = params.sinewave.time(counter);
+                            %p_emg.YData = quantile((abs(biodata(whichChan,:))./3),.85)*max(params.sinewave.wave);
                         end
                         
                     case 3       % Stop message
@@ -222,7 +249,12 @@ while repeat
     
     % Close all open socket connections
     pnet('closeall');
-    
+    % Write to trigger box
+    if moveleg
+        fprintf(teensySynch,'R')
+    else
+        fprintf(teensySynch,'X')
+    end
     % Close biometrics
     b.stop;
     fs.Clear();
@@ -251,13 +283,13 @@ while repeat
         uiwait(synch_warning)
         b.clearbuffer;
         % Delete old data
-        delete(p_emg);
+        %delete(p_emg);
         % Close all serial
         fclose(instrfind);
     else
         repeat = 0;
         % Delete old data
-        delete(p_emg);
+        % delete(p_emg);
     end
 end % end while repeat
 
@@ -267,8 +299,8 @@ SYNCHEEG = RAWEEG(:,abs(IDXshift):minPoints);
 SYNCHANGLE = ANGLEVEC(:,abs(IDXshift):minPoints);
 
 % Plot data for display purposes
-figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); ax = axes;
-plot(SYNCHBIO(1,:)./max(SYNCHBIO(1,:)));
+figure('color','w','units','inches','position',[2.5 2 15.5 7.5]); ax = axes;
+plot(SYNCHBIO(whichChan,:)./max(SYNCHBIO(whichChan,:)));
 hold on; plot(smooth(SYNCHANGLE,20),'color',0.5.*ones(1,3),'linewidth',2);
 ax.XTick = []; ax.YTick = [];
 ax.XColor = 'w'; ax.YColor = 'w';

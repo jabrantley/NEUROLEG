@@ -1,4 +1,4 @@
-function Neuroleg_RTControl
+function Neuroleg_RTControl_Demo
 
 % Clear the workspace
 clc
@@ -6,7 +6,7 @@ close all;
 clear all;
 
 %% Set Variables
-write2teensy = 0;
+write2teensy = 1;
 b = biometrics_datalog;
 GAIN_VAL = b.EMG_GAIN;
 JOINT_ANGLES = [1, 60];
@@ -17,8 +17,8 @@ USE_VEL = 1;
 PREDICT_TYPE = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order
 
 % Kalman filter parameters
-KF_ORDER  = 3;
-KF_LAGS   = 3;
+KF_ORDER  = 1;
+KF_LAGS   = 1;
 KF_LAMBDA = logspace(-2,2,5);
 
 % Generate sine wave for following pattern
@@ -74,6 +74,7 @@ dsinwave = diff([0 sinwave]);
 
 % Generate figure for following moving dot
 f = figure('color','w'); f.Position = [962, 42, 958, 954];
+% f = figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]);
 ax = gca; ax.Position = [.1 .55 .85 .4]; ax.Box = 'on';
 p = plot(sinwave,sinwave); hold on;
 s = scatter(0,0,75,'filled');
@@ -130,7 +131,7 @@ while true
             %p_env.YData = meanvals(:)';
             pause(0.0001); % pause to refresh
             % Store raw data
-            train_data_contract = [train_data_contract; train_data_contract_raw];
+            train_data_contract = [train_data_contract(:); train_data_contract_raw(:)];
             % Bandpass filter
             [train_data_contract_bp,xnn_bp] = use_ss_filter(bp_filt,train_data_contract_raw,xnn_bp);
             train_data_contract_filt = [train_data_contract_filt; train_data_contract_bp];
@@ -276,7 +277,7 @@ angdata = [];
 while ~fs.Stop()
     if ge(toc(startTrain) - lasttime,UPDATE_RATE)
         tempdata_raw = double(b.getdata).*GAIN_VAL;
-        alldata = [alldata; tempdata_raw];
+        alldata = [alldata(:); tempdata_raw(:)];
         if ~isempty(tempdata_raw)
             % Bandpass filter
             [tempdata_bp,xnn_bp] = use_ss_filter(bp_filt,tempdata_raw,xnn_bp);
@@ -294,7 +295,7 @@ while ~fs.Stop()
             % Add data to envelope vector
             envdata = [envdata; tempdata_lp];
             % Predict angle using kalman filter
-            predicted_value = KF.predict(KIN,EMG);
+            predicted_value = KF.predict(EMG);
             % Get position
             final_predicted_value = predicted_value(1);
             angdata = [angdata; final_predicted_value];

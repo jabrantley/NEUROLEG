@@ -10,7 +10,7 @@
 % Written by: Justin Brantley - justin.a.brantley@gmail.com
 % 09/24/2019: Date created
 
-function [params,KF_EMG,KF_EEG,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_train(params,EEG,EMG,ANGLES)
+function [params,KF_EMG,KF_EEG,cleaneeg,filteeg,prehinfeeg,filtemg,envemg,EEGgain,EMGgain] = neuroleg_realtime_train(params,EEG,EMG,ANGLES)
 
 % Get EOG data
 if ~isempty(params.setup.EOGchannels)
@@ -23,14 +23,19 @@ end
 EEG = EEG(params.setup.chans2keep,:);
 
 % Process data
-[params,cleaneeg,filteeg,filtemg,envemg] = neuroleg_realtime_processing(params,EEG',EOG',EMG');
+[params,cleaneeg,filteeg,prehinfeeg,filtemg,envemg] = neuroleg_realtime_processing(params,EEG',EOG',EMG');
 
 % Trim off first part during hinfinity convergence
-filteeg  = filteeg(:,params.setup.time2cut*params.setup.eegsrate:end);
-cleaneeg = cleaneeg(:,params.setup.time2cut*params.setup.eegsrate:end);
-filtemg  = filtemg(:,params.setup.time2cut*params.setup.eegsrate:end);
-envemg   = envemg(:,params.setup.time2cut*params.setup.eegsrate:end);
-ANGLES   = ANGLES(:,params.setup.time2cut*params.setup.eegsrate:end);
+if params.setup.filteog
+    prehinfeeg  = prehinfeeg(:,params.setup.time2cut*params.setup.eegsrate:end);
+else
+    prehinfeeg = [];
+end
+filteeg     = filteeg(:,params.setup.time2cut*params.setup.eegsrate:end);
+cleaneeg    = cleaneeg(:,params.setup.time2cut*params.setup.eegsrate:end);
+filtemg     = filtemg(:,params.setup.time2cut*params.setup.eegsrate:end);
+envemg      = envemg(:,params.setup.time2cut*params.setup.eegsrate:end);
+ANGLES      = ANGLES(:,params.setup.time2cut*params.setup.eegsrate:end);
 
 % Compute mean and std of each channel
 meaneeg = mean(filteeg,2);
@@ -77,7 +82,7 @@ testIDX  = foldsidx(idxNpercent):foldsidx(end);
 
 % Get test data
 start = foldsidx(1);
-stop  = start + (params.setup.updaterate.*params.setup.eegsrate) - 1;
+stop  = start + 1;%(params.setup.updaterate.*params.setup.eegsrate) - 1;
 % try reshape instead of while loop
 train_emg = []; train_eeg = []; train_ang = [];
 test_emg  = []; test_eeg  = []; test_ang  = [];
@@ -114,6 +119,9 @@ predictionEMG = KF_EMG.evaluate(test_emg_cut);
 % Compute R2 value
 R2_EMG = KF_EMG.rsquared(predictionEMG(1,:),test_ang_cut(1,:));
 
+% Compute gain between estimated and actual EEG
+EMGgain = [ones(size(test_ang_cut,2),1),predictionEMG(1,:)']\test_ang_cut(1,:)';
+
 %% Train Kalman Filter - EMG vs ANGLES
 KF_EEG = KalmanFilter('state',train_ang,'observation',train_eeg,'augmented',0,...
     'method','unscented','mean',meaneeg,'std',stdeeg);
@@ -132,9 +140,12 @@ predictionEEG = KF_EEG.evaluate(test_eeg_cut);
 % Compute R2 value
 R2_EEG = KF_EEG.rsquared(predictionEEG(1,:),test_ang_cut(1,:));
 
+% Compute gain between estimated and actual EEG
+EEGgain = [ones(size(test_ang_cut,2),1),predictionEEG(1,:)']\test_ang_cut(1,:)';
+
 %% Plot data  & print r2 values
 bc = blindcolors;
-figure('color','w','units','inches','position',[-16.5 1.5 15.5 7.5]); 
+figure('color','w','units','inches','position',[2.5 1.75,15.5,7.5]); 
 ax = axes; hold on;
 minpnts = min([size(predictionEMG,2),size(predictionEEG,2)]);
 plot(test_ang_cut(1,1:minpnts),'color',0.7.*ones(1,3),'linewidth',2);

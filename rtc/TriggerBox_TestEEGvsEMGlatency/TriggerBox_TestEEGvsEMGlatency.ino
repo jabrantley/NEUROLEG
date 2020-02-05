@@ -287,22 +287,77 @@ void serialEvent() {
     case 'e':
     case 'E':                          // If received 'e' or 'E':
       // Set pins to high
+      digitalWriteFast(eeg_outS2, HIGH);
+      // blink twice to indicate start{
+      digitalWriteFast(led_trigger, HIGH);
+      delay(500);
+      // Set pin to low
+      digitalWriteFast(eeg_outS2, LOW);
+      // Return "ok" for matlab to confirm rx
+      //Serial.write("ok");
+      delay(500);
+      break;
+    // Indicate end of experiment
+    // Indicate second thing
+    case 't':
+    case 'T':                          // If received 'e' or 'E':
+      digitalWriteFast(led_trigger, HIGH);
+      // Set pins to high
       digitalWriteFast(eeg_outS4, HIGH);
-      // blink thrice to indicate start
-      for (int ii = 0; ii <= 3; ii++) {
-        digitalWriteFast(eeg_in2LED, HIGH);
-        digitalWriteFast(led_trigger, HIGH);
-        delay(500);
-        digitalWriteFast(eeg_in2LED, LOW);
-        digitalWriteFast(led_trigger, LOW);
-      }
-      delay(10);
+      delay(500);
       // Set pin to low
       digitalWriteFast(eeg_outS4, LOW);
+      digitalWriteFast(led_trigger, LOW);
       // Return "ok" for matlab to confirm rx
-      Serial.write("ok");
+      //Serial.write("ok");
+      delay(500);
       break;
-      // Indicate unknown character
+       // Indicate second thing
+    case 'r':
+    case 'R':                          // If received 'e' or 'E':
+      digitalWriteFast(led_trigger, HIGH);
+      // Set pins to high
+      digitalWriteFast(eeg_outS1, HIGH);
+      digitalWriteFast(eeg_outS2, HIGH);
+      delay(500);
+      // Set pin to low
+      digitalWriteFast(eeg_outS1, LOW);
+      digitalWriteFast(eeg_outS2, LOW);
+      digitalWriteFast(led_trigger, LOW);
+      // Return "ok" for matlab to confirm rx
+      //Serial.write("ok");
+      delay(500);
+      break;
+    case 'x':
+    case 'X':                          // If received 'e' or 'E':
+      digitalWriteFast(led_trigger, HIGH);
+      // Set pins to high
+      digitalWriteFast(eeg_outS1, HIGH);
+      digitalWriteFast(eeg_outS4, HIGH);
+      delay(500);
+      // Set pin to low
+      digitalWriteFast(eeg_outS1, LOW);
+      digitalWriteFast(eeg_outS4, LOW);
+      digitalWriteFast(led_trigger, LOW);
+      // Return "ok" for matlab to confirm rx
+      //Serial.write("ok");
+      delay(500);
+      break;
+    case 'y':
+    case 'Y':                          // If received 'e' or 'E':
+      digitalWriteFast(led_trigger, HIGH);
+      // Set pins to high
+      digitalWriteFast(eeg_outS2, HIGH);
+      digitalWriteFast(eeg_outS4, HIGH);
+      delay(500);
+      // Set pin to low
+      digitalWriteFast(eeg_outS2, LOW);
+      digitalWriteFast(eeg_outS4, LOW);
+      digitalWriteFast(led_trigger, LOW);
+      // Return "ok" for matlab to confirm rx
+      //Serial.write("ok");
+      delay(500);
+      break;
   }
 }
 
