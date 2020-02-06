@@ -444,10 +444,15 @@ for ii = 1:length(datafiles)
     BIOALL = cat(2,BIOALL,BIO_ALL);
     ANGALL = cat(2,ANGALL,ANGLES_ALL);
 end
+
+% Randomly permute order to mix data from days
+randord = randperm(size(EEGALL,2));
+
+% Get data in shuffled order (for kfold)
 clear EEG_ALL BIO_ALL ANGLES_ALL
-EEG_ALL    = EEGALL;
-BIO_ALL    = BIOALL;
-ANGLES_ALL = ANGALL;
+EEG_ALL    = EEGALL(:,randord);
+BIO_ALL    = BIOALL(:,randord);
+ANGLES_ALL = ANGALL(:,randord);
 clear EEGALL BIOALL ANGALL
 
 if paramfile == 0
@@ -480,6 +485,9 @@ else
     intact = [];
     EEGgainIntact = [];
 end
+
+% params.kalman.lambda = 1;
+% params.kalman.lags = 10;
 
 % Train model - phantom
 if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
@@ -515,7 +523,7 @@ subname = params.setup.subname;
 flname0 = [strjoin({subname,'merge','rawdata',date1,date2},'_') '.mat'];
 flnameP = [strjoin({subname,'merge','params',date1,date2},'_') '.mat'];
 save(fullfile(parampath,flnameP),'params','paramfile');
-save(fullfile(datapath,flname0),'EEG_ALL','BIO_ALL','ANGLES_ALL','datafiles');
+save(fullfile(datapath,flname0),'EEG_ALL','BIO_ALL','ANGLES_ALL','datafiles','randord');
 
 % Save Kalman Filter model
 params = rmfield(handles.params,'fig');

@@ -644,7 +644,7 @@ for aa = length(subs2)%1:length(subs2)
                 cfgtopo.contournum = 6;
                 if any(stat.mask)
                     cfgtopo.highlight = {'on'};
-                    cfgtopo.highlightsymbol = {'*'};
+                    cfgtopo.highlightsymbol = {'o'};
                     cfgtopo.highlightsize = {1};
                     cfgtopo.highlightfontsize = {1};
                     cfgtopo.highlightcolor = {[0 0 0]};

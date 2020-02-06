@@ -37,18 +37,20 @@ for aa = 1:3
         p1.Color = 0.5.*ones(3,1);
         hold on; 
         p2 = plot(zscore(x{ii}(1,:)),'linewidth',1.5);
-        p2.Color = clrs(aa,:);%bcs(6,:);%
+        p2.Color = bcs(6,:);%clrs(aa,:);%bcs(6,:);%
 %         p3 = plot(x2{ii}(1,:),'linewidth',1.5);
 %         p3.Color = clrs(3,:);%bcs(6,:);%
         ax(axord(cnt)).XTickLabel = '';
+        ax(axord(cnt)).XTick = '';
         ax(axord(cnt)).YTickLabel = '';
+        ax(axord(cnt)).YTick = '';
         r1 = KalmanFilter.PearsonCorr(x{ii}(2,:),x{ii}(1,:));
         r2 = KalmanFilter.rsquared(x{ii}(2,:),x{ii}(1,:));
         ax(axord(cnt)).XLabel.String = ['R^2: ' num2str(round(r2,2)) ';  r-value: ' num2str(round(r1,2))];
         %xlabel(['R^2: ' num2str(round(r2,2)) ';  r-value: ' num2str(round(r1,2))])
         
-        minval = min([x{ii}(2,:),x{ii}(1,:)]);
-        maxval = max([x{ii}(2,:),x{ii}(1,:)]);
+        minval = min([zscore(x{ii}(2,:)),zscore(x{ii}(1,:))]);
+        maxval = max([zscore(x{ii}(2,:)),zscore(x{ii}(1,:))]);
         ax(axord(cnt)).YLim = [minval maxval];
         
         if any(axord(cnt)==(temp(1,:)))
@@ -64,11 +66,21 @@ for aa = 1:3
             ax(axord(cnt)).YLabel.HorizontalAlignment = 'right';
             ax(axord(cnt)).YLabel.VerticalAlignment = 'middle';
         end
+        
+        axtemp = axes;
+        axtemp.Position = ax(axord(cnt)).Position;
+        axtemp.XTick = [];
+        axtemp.YTick = [];
+        axtemp.XColor = 'w';
+        axtemp.YColor = 'w';
+        axtemp.Color = 'none';
+        ax(axord(cnt)).Box = 'off';
+            
         cnt = cnt+1;
     end
 end
 
-%  export_fig AllSub_UKF_Gonio.png -r300 -png
+export_fig AllSub_UKF_Gonio_allblue.png -r300 -png
 %%
 
 keepvars(vars);
@@ -119,5 +131,9 @@ for aa = 1:3
         cnt = cnt+1;
     end
 end
-
 %  export_fig AllSub_KF_Gonio.png -r300 -png
+
+
+
+
+

@@ -15,8 +15,8 @@ clear;
 clc;
 
 % Run parallel for
-onCluster   = 1;
-runParallel = 1;
+onCluster   = 0;
+runParallel = 0;
 
 % Define directory
 thisdir = pwd;
