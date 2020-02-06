@@ -106,7 +106,7 @@ KF_EMG = KalmanFilter('state',train_ang,'observation',train_emg,'augmented',0,..
 
 % Perform grid search
 KF_EMG.grid_search('order',params.kalman.order,'lags',params.kalman.emglags,'lambdaB',params.kalman.lambda,...
-                   'lambdaF',params.kalman.lambda,'testidx',1,'kfold',params.kalman.trainfolds);
+                   'lambdaF',params.kalman.lambda,'testidx',1,'kfold',params.setup.trainfolds);
 
 % Test using remaining validation data
 test_emg_lag = KalmanFilter.lag_data(test_emg,KF_EMG.lags);
@@ -129,7 +129,7 @@ KF_EEG = KalmanFilter('state',train_ang,'observation',train_eeg,'augmented',0,..
 
 % Perform grid search
 KF_EEG.grid_search('order',params.kalman.order,'lags',params.kalman.lags,'lambdaB',params.kalman.lambda,...
-    'lambdaF',params.kalman.lambda,'testidx',1,'kfold',params.kalman.trainfolds);
+    'lambdaF',params.kalman.lambda,'testidx',1,'kfold',params.setup.trainfolds);
 
 % EEG test data
 test_eeg_lag = KalmanFilter.lag_data(test_eeg,KF_EEG.lags);
