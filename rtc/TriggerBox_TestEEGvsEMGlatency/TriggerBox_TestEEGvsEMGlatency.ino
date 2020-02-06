@@ -267,6 +267,7 @@ void serialEvent() {
       // Set pins to high
       digitalWriteFast(eeg_outS1, HIGH);
       digitalWriteFast(synch_out1, HIGH);
+      digitalWriteFast(synch_out2, HIGH);
       // blink twice to indicate start
       //for (int ii = 0; ii <= 2; ii++) {
       digitalWriteFast(led_trigger, HIGH);
@@ -277,6 +278,7 @@ void serialEvent() {
       // Set pin to low
       digitalWriteFast(eeg_outS1, LOW);
       digitalWriteFast(synch_out1, LOW);
+      digitalWriteFast(synch_out2, LOW);
       digitalWriteFast(led_trigger, LOW);
       // Return "ok" for matlab to confirm rx
       //Serial.write("ok");

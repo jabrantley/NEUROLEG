@@ -520,7 +520,7 @@ save(fullfile(datapath,flname0),'EEG_ALL','BIO_ALL','ANGLES_ALL','datafiles');
 % Save Kalman Filter model
 params = rmfield(handles.params,'fig');
 flname1 = [strjoin({subname,'merge','model',date1,date2},'_') '.mat'];
-save(fullfile(datapath,flname1),'params','intact','phantom','filenames');
+save(fullfile(datapath,flname1),'params','intact','phantom','datafiles');
 % Save training data after cleaning
 flname2 = [strjoin({subname,'merge','processdata',date1,date2},'_') '.mat'];
 save(fullfile(datapath,flname2),'cleaneeg','filteeg','prehinfeeg','filtemg','envemg');
