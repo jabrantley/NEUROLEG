@@ -427,19 +427,19 @@ guidata(hObject, handles);
 % --- Executes on button press in button_trainmerge.
 function button_trainmerge_Callback(hObject, eventdata, handles)
 % Get files to merge
-filenames = uigetfile('*train_rawdata*.mat','Select data to merge.','MultiSelect','on');
-paramfile = uigetfile('*train_params*.mat','Select parameter file.');
-if ~iscell(filenames)
-    if filenames == 0
+[datafiles,datapath] = uigetfile('*train_rawdata*.mat','Select data to merge.','MultiSelect','on');
+[paramfile,parampath] = uigetfile('*train_params*.mat','Select parameter file.');
+if ~iscell(datafiles)
+    if datafiles == 0
         return;
-    elseif isstr(filenames)
-        filenames = {filenames};
+    elseif isstr(datafiles)
+        datafiles = {fullfile(datapath,datafiles)};
     end
 end
 EEGALL = []; BIOALL = []; ANGALL = [];
 % Load data and concatenate
-for ii = 1:length(filenames)
-    load(filenames{ii});
+for ii = 1:length(datafiles)
+    load(fullfile(datapath,datafiles{ii}));
     EEGALL = cat(2,EEGALL,EEG_ALL);
     BIOALL = cat(2,BIOALL,BIO_ALL);
     ANGALL = cat(2,ANGALL,ANGLES_ALL);
@@ -454,7 +454,7 @@ if paramfile == 0
     disp('No parameter file selected. Goodbye');
     return;
 else
-    load(paramfile);
+    load(fullfile(parampath,paramfile));
 end
  
 % Parse params struct into handles
@@ -514,16 +514,16 @@ date2 = datestr(now,'HHMMSS');
 subname = params.setup.subname;
 flname0 = [strjoin({subname,'merge','rawdata',date1,date2},'_') '.mat'];
 flnameP = [strjoin({subname,'merge','params',date1,date2},'_') '.mat'];
-save(flnameP,'params','paramfile');
-save(flname0,'EEG_ALL','BIO_ALL','ANGLES_ALL','filenames');
+save(fullfile(parampath,flnameP),'params','paramfile');
+save(fullfile(datapath,flname0),'EEG_ALL','BIO_ALL','ANGLES_ALL','datafiles');
 
 % Save Kalman Filter model
 params = rmfield(handles.params,'fig');
 flname1 = [strjoin({subname,'merge','model',date1,date2},'_') '.mat'];
-save(flname1,'params','intact','phantom','filenames');
+save(fullfile(datapath,flname1),'params','intact','phantom','filenames');
 % Save training data after cleaning
 flname2 = [strjoin({subname,'merge','processdata',date1,date2},'_') '.mat'];
-save(flname2,'cleaneeg','filteeg','prehinfeeg','filtemg','envemg');
+save(fullfile(datapath,flname2),'cleaneeg','filteeg','prehinfeeg','filtemg','envemg');
 
 % Update handles structure
 %guidata(hObject, handles);
