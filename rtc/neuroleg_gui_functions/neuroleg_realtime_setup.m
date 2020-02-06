@@ -28,6 +28,7 @@ numHinfRefs    = 3;                     % num reference channels for eog and bia
 time2cut       = 5;                     % Seconds to cut off after hinf
 joint_angles   = [1, 60];               % Limits of joint angle for leg
 train_iters    = 4;
+num_train_folds= floor(train_iter/2);
 standardizeEEG = 1;
 standardizeEMG = 1;
 control        = 'EMG';
@@ -38,7 +39,7 @@ filteog        = 0; % filter eog using first bandpass filter to rm noise
 setup         = struct('emgsrate',emgsrate,'eegsrate',eegsrate,'updaterate',updaterate,...
     'numEEGchans',numEEGchans,'EOGchannels',EOGchannels,'numEOGchans',numEOGchans,'numEEGpnts',numEEGpnts,...
     'chans2keep',chans2keep,'allEEGchans',allEEGchans,'numBIOchans',numBIOchans,'BIOchannels',BIOchannels,...
-    'joint_angles',joint_angles,'time2cut',time2cut,'trainiterations',train_iters,...
+    'joint_angles',joint_angles,'time2cut',time2cut,'trainiterations',train_iters,'trainfolds',num_train_folds,...
     'standardizeEEG',standardizeEEG,'standardizeEMG',standardizeEMG,'control',control,...
     'EEGgain',eeggain,'autogain',autogain,'filteog',filteog);
 
@@ -48,7 +49,7 @@ setup         = struct('emgsrate',emgsrate,'eegsrate',eegsrate,'updaterate',upda
 %                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 KF_ORDER  = 1;
-KF_LAGS   = 5;
+KF_LAGS   = [3,5,10];
 KF_LAG_EMG = 1;
 KF_LAMBDA = logspace(-2,2,5);
 KF = struct('order',KF_ORDER,'lags',KF_LAGS,'lambda',KF_LAMBDA,'emglags',KF_LAG_EMG);
