@@ -275,7 +275,7 @@ if isfield(handles,'phantom') && isfield(handles,'intact')
                 if handles.eeg_gain_auto.Value
                     gain = handles.params.setup.autogain.intact;
                 else
-                    gain = handles.params.setup.EEGgain;
+                    gain = str2num(handles.edit_eeg_predict_gain.String); %handles.params.setup.EEGgain;
                 end
                 % Make figure
                 handles.params.fig = build_movement_fig(handles.params.sinewave);
@@ -308,7 +308,7 @@ if isfield(handles,'phantom') && isfield(handles,'intact')
                 if handles.eeg_gain_auto.Value
                     gain = handles.params.setup.autogain.phantom;
                 else
-                    gain = handles.params.setup.EEGgain;
+                    gain = str2num(handles.edit_eeg_predict_gain.String);%handles.params.setup.EEGgain;
                 end
                 % Make figure
                 handles.params.fig = build_movement_fig(handles.params.sinewave);
