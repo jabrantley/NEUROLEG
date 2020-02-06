@@ -5,13 +5,17 @@ function params = neuroleg_realtime_setup
 %          Define parameters       %
 %                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+subname       = 'NAME';
 emgsrate      = 500;                   % EMG sampling frequency
 eegsrate      = 500;                   % EEG sampling frequency
 updaterate    = 1/50;                  % data arrive in 50 ms windows
 numEEGpnts    = eegsrate* updaterate;  % number of points in EEG
 allEEGchans   = 60;                    % Total number of EEG channels
-chans2keep    = [40,10,42,9,39,...     % EEG channels to keep
-                 13,44,14,45,15];
+chans2keep    = cat(2,[5,9,10,14],[6,7,14,16,17]+32);
+% chans2keep    = cat(1,[4,5,6,9,10,13,14,15],[6,7,11,14,12,16,17]+32);
+% chans2keep    = [40,10,42,9,39,...     % EEG channels to keep
+%                  13,44,14,45,15];
+%              [6,35,5,34,4,39,9,42,10,40,15,45,14,44,13,48,18,49,19,50]
 % chans2keep    = [9,10,13,14,15,18,19,24];%,...
 %23,27,29,30,31];
 numEEGchans    = length(chans2keep);    % number of eeg chans
@@ -21,7 +25,7 @@ numEOGchans    = length(EOGchannels);   % number of eeg chans
 BIOchannels    = [0,8];                 % 0-7 are analog channels, 8 and up start digital
 numBIOchans    = length(BIOchannels);   % number of emg chans
 numHinfRefs    = 3;                     % num reference channels for eog and bias/drift
-time2cut       = 1;                     % Seconds to cut off after hinf
+time2cut       = 5;                     % Seconds to cut off after hinf
 joint_angles   = [1, 60];               % Limits of joint angle for leg
 train_iters    = 4;
 standardizeEEG = 1;
@@ -43,10 +47,11 @@ setup         = struct('emgsrate',emgsrate,'eegsrate',eegsrate,'updaterate',upda
 %     Kalman filter parameters     %
 %                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-KF_ORDER  = [1,1];
-KF_LAGS   = [3,10];
+KF_ORDER  = 1;
+KF_LAGS   = 5;
+KF_LAG_EMG = 1;
 KF_LAMBDA = logspace(-2,2,5);
-KF = struct('order',KF_ORDER,'lags',KF_LAGS,'lambda',KF_LAMBDA);
+KF = struct('order',KF_ORDER,'lags',KF_LAGS,'lambda',KF_LAMBDA,'emglags',KF_LAG_EMG);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -506,27 +506,27 @@ end
 %handles.intact = intact;
 %handles.phantom = phantom;
 
-% Get time
-date1 = datestr(now,'yymmdd');
-date2 = datestr(now,'HHMMSS');
-
-% Save raw data
-subname = params.setup.subname;
-flname0 = [strjoin({subname,'merge','rawdata',date1,date2},'_') '.mat'];
-flnameP = [strjoin({subname,'merge','params',date1,date2},'_') '.mat'];
-save(flnameP,'params','paramfile');
-save(flname0,'EEG_ALL','BIO_ALL','ANGLES_ALL','filenames');
-
 % Save Kalman Filter model
 params = rmfield(handles.params,'fig');
-flname1 = [strjoin({subname,'merge','model',date1,date2},'_') '.mat'];
-save(flname1,'params','intact','phantom','filenames');
+date1 = datestr(now,'yymmdd');
+date2 = datestr(now,'HHMMSS');
+flname1 = [strjoin({subname,'train','model',date1,date2},'_') '.mat'];
+save(flname1,'params','intact','phantom');
 % Save training data after cleaning
-flname2 = [strjoin({subname,'merge','processdata',date1,date2},'_') '.mat'];
+flname2 = [strjoin({subname,'train','processdata',date1,date2},'_') '.mat'];
 save(flname2,'cleaneeg','filteeg','prehinfeeg','filtemg','envemg');
 
+% Just in case not previously stopped
+handles.biometrics.stop;
+figHandles = findall(groot, 'Type', 'figure');
+thisFig = find(strcmpi('NEUROLEG_GUI',{figHandles.Name}));
+closefigs = setdiff(1:length(figHandles),thisFig);
+close(figHandles(closefigs));
+% Close all serial
+fclose(instrfind);
+
 % Update handles structure
-%guidata(hObject, handles);
+guidata(hObject, handles);
 
 % --- Executes on button press in button_stop.
 function button_stop_Callback(hObject, eventdata, handles)

@@ -377,7 +377,7 @@ while repeat
                         %                         s_predict2.XData = final_predicted_value.*params.setup.joint_angles(2);
                         %                         s_predict2.YData = final_predicted_value.*params.setup.joint_angles(2);
                         
-                        predicted_value(counter) = final_predicted_value.*params.setup.joint_angles(2);
+                        predicted_value(counter) = final_predicted_value.*params.setup.joint_angles(2)
                         
                         % Write to neuroleg
                         if ~isempty(teensyLeg) && moveleg

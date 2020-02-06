@@ -105,7 +105,7 @@ KF_EMG = KalmanFilter('state',train_ang,'observation',train_emg,'augmented',0,..
     'method','normal','mean',meanemg,'std',stdemg);
 
 % Perform grid search
-KF_EMG.grid_search('order',params.kalman.order,'lags',params.kalman.lags,'lambdaB',params.kalman.lambda,'lambdaF',params.kalman.lambda,'testidx',1);
+KF_EMG.grid_search('order',params.kalman.order,'lags',params.kalman.emglags,'lambdaB',params.kalman.lambda,'lambdaF',params.kalman.lambda,'testidx',1);
 
 % Test using remaining validation data
 test_emg_lag = KalmanFilter.lag_data(test_emg,KF_EMG.lags);

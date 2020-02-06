@@ -8,6 +8,8 @@ function handles = neuroleg_realtime_parsehandles(handles)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Get params
 params = handles.params;
+% Get subject name
+params.setup.subname = handles.edit_subject_name.String;
 % Set # EEG Channels
 params.setup.allEEGchans = handles.eeg_nbchans.Value - params.setup.numEOGchans;
 % Set EEG sampling rate
