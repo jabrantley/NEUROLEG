@@ -112,12 +112,64 @@ close
 clear mdl
 ALLEEG = cell(1,length(DATA));
 ALLKIN = cell(1,length(DATA));
+[b,a] = butter(2,[.3 4]/(srate/2),'bandpass');
+r1 = zeros(length(DATA),2);
+r2 = zeros(length(DATA),2);
 for aa = 1:length(DATA)
     temp = load(fullfile(datadir,DATA{aa}));
     ALLEEG{aa} = transpose(zscore(temp.WINEEG(:,1+cut_time:end-cut_time)'));
     %ALLEEG{aa} = rescale_data(temp.WINEEG(:,1+cut_time:end-cut_time),'all');
     ALLKIN{aa} = sinewave(:,1+cut_time:end-cut_time);
+    
+    
+    r1(aa,1) = KalmanFilter.PearsonCorr(zscore(temp.predictedFromEMG(1,:)),zscore(sinewave));
+    r1(aa,2) = KalmanFilter.PearsonCorr(zscore(temp.predictedFromEEG(1,:)),zscore(sinewave));
+    r2(aa,1) = KalmanFilter.rsquared(zscore(temp.predictedFromEMG(1,:)),zscore(sinewave));
+    r2(aa,2) = KalmanFilter.rsquared(zscore(temp.predictedFromEEG(1,:)),zscore(sinewave));
+    
+    % Faster than SS approach but yields same results
+    
+%     filtdata = zeros(size(eegdata));
+%     for cc = 1:size(eegdata,1)
+%         % filter data - not using state space approach but same
+%         % results
+% %         if realtimefilt
+%             filtdata(cc,:) = filter(b,a,eegdata(cc,:));
+% %         else
+% %             filtdata(cc,:) = filtfilt(b,a,eegdata(cc,:));
+% %         end
+%     end
+    
+    
 end
+% bc = blindcolors;
+% figure('color','w','units','inches','position',[5,5,5,3]);
+% ax = tight_subplot(1,2,[.2 .1],[.1 .1],[.1 .05]);
+% axes(ax(1))
+% p1 = scatter(ones(1,size(r1,1)) + 0.05.*randn(1,size(r1,1)),r1(:,1),'filled');
+% p1.MarkerFaceColor = bc(6,:);
+% p1.SizeData = 10;
+% hold on;
+% p2 = scatter(2.*ones(1,size(r1,1)) + 0.05.*randn(1,size(r1,1)),r1(:,2),'filled');
+% p2.MarkerFaceColor = bc(8,:);
+% p2.SizeData = 10;
+% boxplot(r1,'color',0.5.*ones(1,3),'Labels',{'EMG','EEG'});
+% ylabel('r-value')
+% title('Pearson''s Correlation')
+% 
+% axes(ax(2))
+% p3 = scatter(ones(1,size(r2,1)) + 0.05.*randn(1,size(r2,1)),r2(:,1),'filled');
+% p3.MarkerFaceColor = bc(6,:);
+% p3.SizeData = 10;
+% hold on;
+% p4 = scatter(2.*ones(1,size(r2,1)) + 0.05.*randn(1,size(r2,1)),r2(:,2),'filled');
+% p4.MarkerFaceColor = bc(8,:);
+% p4.SizeData = 10;
+% boxplot(r2,'color',0.5.*ones(1,3),'Labels',{'EMG','EEG'});
+% ylabel('R^2')
+% title('Coefficient of Determination')
+% export_fig RealTimeDecodingResults_21Trials.png -png -r300
+
 
 % Initialize for storing R2
 R1_MEAN     = cell(length(N_trainTrial),1);
@@ -129,7 +181,7 @@ KF_ALL      = cell(length(N_trainTrial),1);
 
 % Loop through each number of training trials
 %parfor bb = 1:total
-for bb = length(N_trainTrial)
+for bb = 1:length(N_trainTrial)
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %                                    %
@@ -205,6 +257,6 @@ for bb = length(N_trainTrial)
     
 end % end N_trainTrials
 
-
-
+filename = ['RealTimeResults_CrossVal_UseWINEEG.mat'];
+save(filename,'R2_ALL','R2_MEAN','R1_ALL','R1_MEAN','PREDICT_ALL','KF_ALL');
 
