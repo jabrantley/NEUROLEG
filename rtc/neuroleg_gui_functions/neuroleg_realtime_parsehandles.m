@@ -38,6 +38,11 @@ params.setup.EEGgain = handles.edit_eeg_predict_gain.Value;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % # Train iterations
 params.setup.trainiterations = handles.edit_num_trainiter.Value;
+if handles.edit_num_trainiter.Value >= 4
+    params.setup.trainfolds = floor(handles.edit_num_trainiter.Value/2);
+else
+    params.setup.trainfolds = handles.edit_num_trainiter.Value;
+end
 % # cycle per trial
 params.sinewave.cycles = handles.edit_cycles_per_trial.Value;
 % move frequency

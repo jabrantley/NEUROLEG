@@ -41,7 +41,7 @@ setup         = struct('emgsrate',emgsrate,'eegsrate',eegsrate,'updaterate',upda
     'chans2keep',chans2keep,'allEEGchans',allEEGchans,'numBIOchans',numBIOchans,'BIOchannels',BIOchannels,...
     'joint_angles',joint_angles,'time2cut',time2cut,'trainiterations',train_iters,'trainfolds',num_train_folds,...
     'standardizeEEG',standardizeEEG,'standardizeEMG',standardizeEMG,'control',control,...
-    'EEGgain',eeggain,'autogain',autogain,'filteog',filteog);
+    'EEGgain',eeggain,'autogain',autogain,'filteog',filteog,'subname',subname);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                  %
@@ -49,11 +49,10 @@ setup         = struct('emgsrate',emgsrate,'eegsrate',eegsrate,'updaterate',upda
 %                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 KF_ORDER  = 1;
-KF_LAGS   = [5,10];
+KF_LAGS   = [5 10];
 KF_LAG_EMG = 1;
-KF_LAMBDA = logspace(-2,2,5);
+KF_LAMBDA = [.1 1 10];%logspace(-2,2,5);
 KF = struct('order',KF_ORDER,'lags',KF_LAGS,'lambda',KF_LAMBDA,'emglags',KF_LAG_EMG);
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                  %

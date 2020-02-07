@@ -189,92 +189,45 @@ filteeg    = cell(2,1);
 filtemg    = cell(2,1);
 envemg     = cell(2,1);
 
-starttime = tic;
-poo = gcp('nocreate');
-if isempty(poo)
-    try
-        parpool(2);
-    catch
-        numCores = feature('numcores');
-        parpool(numCores);
-    end
+% Train model - intact
+if handles.radio_predict_intact.Value || handles.radio_predict_both.Value
+    EEG_TEMP    = EEG_ALL(1,:);
+    EEG_DATA    = cat(2,EEG_TEMP{:});
+    BIO_TEMP    = BIO_ALL(1,:);
+    BIO_DATA    = cat(2,BIO_TEMP{:});
+    EMG_DATA    = BIO_DATA(1,:); % Get data for intact channel
+    ANGLES_TEMP = ANGLES_ALL(1,:);
+    ANGLES_DATA = cat(2,ANGLES_TEMP{:});
+    [handles.params,intact.KF_EMG,intact.KF_EEG,cleaneeg{1},filteeg{1},filtemg{1},envemg{1},EEGgainIntact] = neuroleg_realtime_train(handles.params,EEG_DATA,EMG_DATA,ANGLES_DATA);
+else
+    intact = [];
+    EEGgainIntact = [];
 end
 
-legs = [handles.radio_predict_intact.Value,handles.radio_predict_phantom.Value];
-val2 = handles.radio_predict_both.Value;
-params = handles.params;
-parfor nn = 1:2
-    % Train model - intact
-    val1 = legs(nn);
-    if val1 || val2
-        EEG_TEMP    = EEG_ALL(nn,:);
-        EEG_DATA    = cat(2,EEG_TEMP{:});
-        BIO_TEMP    = BIO_ALL(nn,:);
-        BIO_DATA    = cat(2,BIO_TEMP{:});
-        EMG_DATA    = BIO_DATA(nn,:); % Get data for intact channel
-        ANGLES_TEMP = ANGLES_ALL(nn,:);
-        ANGLES_DATA = cat(2,ANGLES_TEMP{:});
-        [~,modelsEMG{nn},modelsEEG{nn},cleaneeg{nn},filteeg{nn},prehinfeeg{nn},filtemg{nn},envemg{nn},EEGgain{nn}] = neuroleg_realtime_train(params,EEG_DATA,EMG_DATA,ANGLES_DATA);
-    else
-        modelsEMG{nn} = [];
-        modelsEEG{nn} = [];
-        EEGgain{nn} = [];
-    end
+% Train model - phantom
+if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
+    EEG_TEMP    = EEG_ALL(2,:);
+    EEG_DATA    = cat(2,EEG_TEMP{:});
+    BIO_TEMP    = BIO_ALL(2,:);
+    BIO_DATA    = cat(2,BIO_TEMP{:});
+    EMG_DATA    = BIO_DATA(2,:); % Get data for phantom channel
+    ANGLES_TEMP = ANGLES_ALL(2,:);
+    ANGLES_DATA = cat(2,ANGLES_TEMP{:});
+    [handles.params,phantom.KF_EMG,phantom.KF_EEG,cleaneeg{2},filteeg{2},prehinfeeg{2},filtemg{2},envemg{2},EEGgainPhantom] = neuroleg_realtime_train(handles.params,EEG_DATA,EMG_DATA,ANGLES_DATA);
+else
+    phantom = [];
+    EEGgainPhantom = [];
 end
-% params.kalman.lambda = 1;
-% params.kalman.lags = 10;
 
-% IF PARFOR WORKS SAVE MODELS TO INTACT
-intact.KF_EMG = modelsEMG{1};
-intact.KF_EEG = modelsEEG{1};
-phantom.KF_EMG = modelsEMG{2};
-phantom.KF_EEG = modelsEEG{2};
-
-toc(starttime)
-
-% Find gain and bias
-params.setup.autogain.intact  = EEGgain{1};
-params.setup.autogain.phantom = EEGgain{2};
+% If auto gain checked then find gain and bias
+if handles.eeg_gain_auto.Value
+    handles.params.setup.autogain.intact  = EEGgainIntact;
+    handles.params.setup.autogain.phantom = EEGgainPhantom;
+end
 
 % Store in handles
 handles.intact = intact;
 handles.phantom = phantom;
-
-% % Train model - intact
-% if handles.radio_predict_intact.Value || handles.radio_predict_both.Value
-%     EEG_TEMP    = EEG_ALL(1,:);
-%     EEG_DATA    = cat(2,EEG_TEMP{:});
-%     BIO_TEMP    = BIO_ALL(1,:);
-%     BIO_DATA    = cat(2,BIO_TEMP{:});
-%     EMG_DATA    = BIO_DATA(1,:); % Get data for intact channel
-%     ANGLES_TEMP = ANGLES_ALL(1,:);
-%     ANGLES_DATA = cat(2,ANGLES_TEMP{:});
-%     [handles.params,intact.KF_EMG,intact.KF_EEG,cleaneeg{1},filteeg{1},filtemg{1},envemg{1},EEGgainIntact] = neuroleg_realtime_train(handles.params,EEG_DATA,EMG_DATA,ANGLES_DATA);
-% else
-%     intact = [];
-%     EEGgainIntact = [];
-% end
-% 
-% % Train model - phantom
-% if handles.radio_predict_phantom.Value || handles.radio_predict_both.Value
-%     EEG_TEMP    = EEG_ALL(2,:);
-%     EEG_DATA    = cat(2,EEG_TEMP{:});
-%     BIO_TEMP    = BIO_ALL(2,:);
-%     BIO_DATA    = cat(2,BIO_TEMP{:});
-%     EMG_DATA    = BIO_DATA(2,:); % Get data for phantom channel
-%     ANGLES_TEMP = ANGLES_ALL(2,:);
-%     ANGLES_DATA = cat(2,ANGLES_TEMP{:});
-%     [handles.params,phantom.KF_EMG,phantom.KF_EEG,cleaneeg{2},filteeg{2},prehinfeeg{2},filtemg{2},envemg{2},EEGgainPhantom] = neuroleg_realtime_train(handles.params,EEG_DATA,EMG_DATA,ANGLES_DATA);
-% else
-%     phantom = [];
-%     EEGgainPhantom = [];
-% end
-% 
-% % If auto gain checked then find gain and bias
-% if handles.eeg_gain_auto.Value
-%     handles.params.setup.autogain.intact  = EEGgainIntact;
-%     handles.params.setup.autogain.phantom = EEGgainPhantom;
-% end
 
 % Save Kalman Filter model
 params = rmfield(handles.params,'fig');
@@ -484,7 +437,7 @@ if ~iscell(datafiles)
     end
 end
 EEGALL = []; BIOALL = []; ANGALL = [];
-numtrials = 5; % this needs to be changed if files have fewer than five cycles. Should be dynamic
+numtrials = 5;
 randtrial_ord = zeros(length(datafiles),numtrials);
 % Load data and concatenate
 for ii = 1:length(datafiles)
@@ -575,7 +528,6 @@ end
 
 legs = [handles.radio_predict_intact.Value,handles.radio_predict_phantom.Value];
 val2 = handles.radio_predict_both.Value;
-
 parfor nn = 1:2
     % Train model - intact
     val1 = legs(nn);
@@ -587,7 +539,7 @@ parfor nn = 1:2
         EMG_DATA    = BIO_DATA(nn,:); % Get data for intact channel
         ANGLES_TEMP = ANGLES_ALL(nn,:);
         ANGLES_DATA = cat(2,ANGLES_TEMP{:});
-        [~,modelsEMG{nn},modelsEEG{nn},cleaneeg{nn},filteeg{nn},prehinfeeg{nn},filtemg{nn},envemg{nn},EEGgain{nn}] = neuroleg_realtime_train(params,EEG_DATA,EMG_DATA,ANGLES_DATA);
+        [~,modelsEMG{nn},modelsEEG{nn},cleaneeg{nn},filteeg{nn},filtemg{nn},envemg{nn},EEGgain{nn}] = neuroleg_realtime_train(params,EEG_DATA,EMG_DATA,ANGLES_DATA);
     else
         modelsEMG{nn} = [];
         modelsEEG{nn} = [];
@@ -606,8 +558,11 @@ phantom.modelsEEG = modelsEEG{2};
 toc(starttime)
 
 % If auto gain checked then find gain and bias
-params.setup.autogain.intact  = EEGgain{1};
-params.setup.autogain.phantom = EEGgain{2};
+if handles.eeg_gain_auto.Value
+    params.setup.autogain.intact  = EEGgain{1};
+    params.setup.autogain.phantom = EEGgain{2};
+end
+
 
 % Store in handles
 %handles.intact = intact;
