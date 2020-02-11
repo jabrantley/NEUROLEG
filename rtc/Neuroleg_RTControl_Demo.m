@@ -1,5 +1,7 @@
 function Neuroleg_RTControl_Demo
 
+%addpath(genpath('C:\Users\LabAdmin\Desktop\Neuroleg\NEUROLEG\'));
+
 % Clear the workspace
 clc
 close all;
@@ -11,7 +13,7 @@ b = biometrics_datalog;
 GAIN_VAL = b.EMG_GAIN;
 JOINT_ANGLES = [1, 60];
 UPDATE_RATE = 1/50;
-FILTER_FREQZ = [35 245 4];
+FILTER_FREQZ = [35 245 6];
 FILTER_ORDER = 2;
 USE_VEL = 1;
 PREDICT_TYPE = 1; % Changes way state vector is updated. 1: use all last predicted vals. 2: use new at time t and old at t-1...t-Order

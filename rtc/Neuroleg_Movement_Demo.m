@@ -7,7 +7,7 @@ close all;
 
 
 %% Set Variables
-useKneeData  = 0;
+useKneeData  = 1; % 1 = use knee angles, 0 = sinewave
 write2teensy = 1;
 UPDATE_RATE = 1/20;
 JOINT_ANGLES = [1 60];
@@ -107,7 +107,10 @@ while ~fs.Stop()
     end % end time check
 end % end while ~fs.Stop()
 
+
 if write2teensy
+    fprintf(teensy,'%.2f',0)
+    fprintf(teensy,'%s','\n')
     fclose(teensy);
 end
 close all;
