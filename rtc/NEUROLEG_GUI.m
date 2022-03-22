@@ -576,7 +576,7 @@ end
 legs = [handles.radio_predict_intact.Value,handles.radio_predict_phantom.Value];
 val2 = handles.radio_predict_both.Value;
 
-parfor nn = 1:2
+for nn = 1:2
     % Train model - intact
     val1 = legs(nn);
     if val1 || val2

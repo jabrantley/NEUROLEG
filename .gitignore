@@ -1,6 +1,11 @@
 *.mat
 *.png
-\NEUROLEG\ANALYSIS\Isolated Limb Movements\clusterjobs
+\NEUROLEG\ANALYSIS
 *.eeg
 *.vhdr
 *.vmrk
+
+NEUROLEG\rtc\ArtifactRemoval
+NEUROLEG\rtc\RDA
+NEUROLEG\rtc\EXP_DATA
+NEUROLEG\rtc\TriggerBox_TestEEGvsEMGlatency

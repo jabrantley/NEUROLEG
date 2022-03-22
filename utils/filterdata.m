@@ -11,6 +11,7 @@
 %                            'visualize','off');
 % end
 %
+% Written by: Justin Brantley
 
 function outdata = filterdata(varargin)
 

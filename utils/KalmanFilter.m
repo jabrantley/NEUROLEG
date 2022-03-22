@@ -1,3 +1,78 @@
+% ************************************************************************
+% Author:     Justin A Brantley
+% Date:       11/01/2019
+% Comments:   This implements a linear or unscented Kalman filter from
+%             scratch. The model can be trained and used for prediction.
+% ToDo:       Improve paramters search from grid search. Add extended KF 
+%             functionality
+% ************************************************************************
+% 
+% % Usage: I used it in my research to predict movement from EEG recordings. 
+% % The code should be adaptable to any other data types (assuming correct 
+% % input matrices), but this functionality not been tested. 
+% % 
+% % Data: Note that the matrices are number of channels (e.g., number of EEG
+% % channels for observation and number of motion sensors x time for state) by 
+% % time. They will eventually be transposed so that each channel is a column 
+% % and each row is a time point (more MATLAB efficient). This was just done 
+% % due to some ways in which the data are streamed in real time and offline. 
+% state_train       = [number of channels x time]
+% state_test        = [number of channels x time]
+% observation_train = [number of channels x time] 
+% observation_test  = [number of channels x time] 
+% 
+% 
+% % Kalman filter parameters: These params can either be a vector of values
+% % or single scalar values. They are used in the nested for loop in the grid
+% % search. See KalmanFilter.grid_search() for the nested loops.
+% ORDER    = 1;         % vector/scalar of state order. order > 1 is future vals
+% LAGS     = [5 10];    % vector/scalar of observation lags
+% LAMBDA_F = [.1 1 10]; % vector/scalar ridge param for F matrix
+% LAMBDA_B = [.1 1 10]; % vector/scalar ridge param for B matrix
+% 
+% % Kalman Filter object
+% KF = KalmanFilter('state',state_train,'observation',observation_train)%,...
+%                    %'method','unscented',... <--- Defaults is normal KF
+%                    %'augmented',1,;          <--- Y/N augment state
+% 
+% % Number of folds:  scalar or you can also pass in a set of indices 
+% % marking the boundary for each fold if you dont want it symmetric 
+% % e.g., [1, 300, 600, ....]
+% NUM_FOLDS = 10; % <-- Fold boundaries are calculated for equal size bins
+% 
+% % Perform grid search
+% KF.grid_search('order',ORDER,'lags',LAGS,...
+%                'lambdaB',LAMBDA_B,'lambdaF',LAMBDA_F,...
+%                'kfold',NUM_FOLDS,...
+%                'testidx',1); % <-- Index of state to test and compute R2 & 
+%                              %     correlation. I did not implement an
+%                              %     average R2 or correlation across all 
+%                              %     predicted state values since for control
+%                              %     I only cared about a single value. E.g.,
+%                              %     I use EEG to predict the  per joint, i.e.,  
+%                              %     [angle, velocity, acceleration, angle...]
+%                              %     You can then do position or velocity
+%                              %     control using the predicted value. 
+%                              
+% % Lag test data based on "best" set of params chosen after grid search
+% observation_test_lag = KalmanFilter.lag_data(observation_test,KF.lags);
+% observation_test_cut = observation_test_lag(:,KF.lags+1:end); % trim data
+% 
+% % Lag state data based on the filter order but trim to same size as the
+% % lagged observation data
+% state_test_lag = KalmanFilter.lag_data(state_test,KF.order);
+% state_test_cut = state_test_lag(:,KF.lags+1:end); % trim data
+% 
+% % Evaluate trained filter. Note that only observation data is used. We do
+% % not use past state data for prediction, only current. For our project,
+% % this is using EEG data to predict the position of the missing limb in
+% % amputees. 
+% prediction = KF.evaluate(observation_test_cut);
+% 
+% % Compute R2 value and pearson correlation
+% R2   = KF.rsquared(prediction,state_test_cut);
+% rval = KF.PearsonCorr(prediction, state_test_cut);
+
 classdef KalmanFilter < handle
     properties (SetAccess = private, GetAccess = public)
         %%% UNIVERSAL PROPERTIES %%%
@@ -33,7 +108,7 @@ classdef KalmanFilter < handle
     end
     properties (SetAccess = public, GetAccess = public)
         state       = [];        % e.g., kin - channels x time
-        lags        = [];        % lagged observation datas
+        lags        = [];        % lagged observation data
         observation = [];        % e.g., eeg, emg - channels x time
         order       = 1;         % Kalman filter order - num state lags
         lambdaF     = 1;         % For deriving state transition matrix
