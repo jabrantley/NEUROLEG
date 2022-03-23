@@ -41,34 +41,22 @@ For clarity, I want to break down a few of the folders in more detail. After run
 │       └── ... description below ...
 ```
 
-| Function      | Purpose | Notes     |
-| :---        |    :----   |          ---: |
-| `neuroleg_realtime_setup`      | Set defaults     |     |
-| `neuroleg_realtime_params2handles`      | Set defaults     |     |
-| `neuroleg_realtime_parsehandles`      | Set defaults     |     |
-| `build_movement_fig`      | Set defaults     |     |
-| `neuroleg_realtime_stream`      | Set defaults     | Run for each leg - used to get training data  |
-| `neuroleg_realtime_train`      | Set defaults     |     |
+|No.| Function      | Purpose | Notes     |
+|:-| :---        |    :----   |         :--- |
+|1| `neuroleg_realtime_setup`      | Defines defaults     | Used to fill defaults when opening GUI; sets all filter params    |
+|2| `neuroleg_realtime_params2handles`      | Set defaults     | Puts defaults into handles to pass around GUI |
+|3|`neuroleg_realtime_parsehandles`      | Unpacks defaults     |  Parses handles; called in training and testing   |
+|4| `build_movement_fig`      | Builds movement figure | Calls `WindowAPI` for positioning window    |
+|5| `neuroleg_realtime_stream`      | Streams data   | Initalizes streaming from all devices; run for each leg - used to get training data  |
+|6| `neuroleg_realtime_train`      | Trains prediction model | Uses streamed data to build Kalman filter for EEG and EMG prediction of movement |(`./utils/KalmanFilter/`)
+|7| `neuroleg_realtime_control`      | Real time control, baby!   | Calls 3-5 then uses trained model from 6 to control leg. Shows stimulus movement pattern  |
+|8| `neuroleg_realtime_freemove`      | Free movement RTC | Calls 3-5 then uses trained model from 6 to control leg. Does not provided stimulus. Allows for continuous unconstrained control. 
 
 
+In addition to the real time control functions used by the GUI, there are a number of scripts in the `./utils` folder that are used in real time and can be used for offline.
 
-│       ├── OnLineInterface64.h                        # For streaming Biometrics data to MATLAB
-│       ├── WindowAPI.c                                # 
-│       ├── WindowAPI.m                                # For controlling window
-│       ├── build_movement_fig.m                       # Used to build figure window to show stimulus
-│       ├── make_movement_pattern.m                    # Defines sinusoidal movement pattern for stimulus
-│       ├── neuroleg_realtime_control.m                # Used to control 
-│       ├── neuroleg_realtime_freemove.m
-│       ├── neuroleg_realtime_main.m
-│       ├── neuroleg_realtime_params2handles.m
-│       ├── neuroleg_realtime_parsehandles.m
-│       ├── neuroleg_realtime_processing.m
-│       ├── neuroleg_realtime_processing_HINFthenFILT.m
-│       ├── neuroleg_realtime_setup.m
-│       ├── neuroleg_realtime_stream.m
-│       ├── neuroleg_realtime_train.m
-│       ├── pnet.mexw64
-│       └── uTest_WindowAPI.m
+```bash
+.
 └── utils
     ├── KalmanFilter.m
     ├── KernelRidgeRegression.m
@@ -88,13 +76,10 @@ For clarity, I want to break down a few of the folders in more detail. After run
     ├── rescale_data.m
     ├── savefile.m
     └── use_ss_filter.m
+```
 
-| Function      | Purpose | Test Text     |
-| :---        |    :----:   |          ---: |
-| Header      | Title       | Here's this   |
-| Paragraph   | Text        | And more      |
-
-
+|No.| Function      | Purpose | Notes     |
+|:-| :---        |    :----   |         :--- |
 
 Here is an example of the offline experiments where the subject is moving the intact limb:
 
