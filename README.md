@@ -2,6 +2,7 @@
 
 For part of my PhD dissertation project, I developed a real-time EEG-based brain-machine interface that was used by lower limb amputees to control a custom powered-knee prosthesis. We recruited several below-the-knee amputees to participate in a two part study: an offline study that used EEG, EMG, IMU-based motion capture, and fMRI to study the representation of the phantom limb, and a second study that focused on EEG-based closed-loop control. This was an exciting project and we hope to publish the detailed protocol and results soon! This repo provides the source code for the real-time EEG-based BMI. Some of the main features are:
 
+## Main Features
 - Real time streaming into MATLAB:
     * EEG from BrainAmp DC (Brain Products GmbH)
     * Goniometers and EMG from Biometrics DataLOG (The data don't actually matter. The streaming is the same for any inputs to the device.)
@@ -10,6 +11,7 @@ For part of my PhD dissertation project, I developed a real-time EEG-based brain
 - A simple but useful PID controller in Arduino/Teensy
 - An example for using Arduino/Teensy to sync multiple systems
 
+## Overview
 Here is a basic overview of the experiment/program:
 
 - The subject was instrumented with EEG, EMG, IMUs, and goniometers. 
@@ -19,6 +21,12 @@ Here is a basic overview of the experiment/program:
 - The subjects were given a few trials to perform EMG-control of the device. 
 - After several trials, the control was shifted from EMG to EEG control.
 
+### Screenshot of GUI
+<p align="center">
+   <img src="./images/NEUROLEG_GUI_screenshot.png" width=350 />
+<p> 
+
+## Directory structure
 The real-time interface was developed using MATLAB since several of the key components were already written there. The main GUI is `/rtc/NEUROLEG_GUI.m`, which was used to set up the experiment parameters and call all of the required functions. 
 
 ```bash   
@@ -40,6 +48,8 @@ The real-time interface was developed using MATLAB since several of the key comp
 ├── ...
 └── utils                                              # CONTAINS KALMAN FILTER, BW FILTER, CLEANING FUNCTIONS, ETC..
 ```
+   
+## Real time functions called by GUI
 For clarity, I want to break down a few of the folders in more detail. After running `/rtc/NEUROLEG_GUI.m`, the following scripts are called in order:
 
 ```bash   
@@ -62,7 +72,8 @@ For clarity, I want to break down a few of the folders in more detail. After run
 |7| `neuroleg_realtime_control`      | Real time control, baby!   | Calls 3-5 then uses trained model from 6 to control leg. Shows stimulus movement pattern  |
 |8| `neuroleg_realtime_freemove`      | Free movement RTC | Calls 3-5 then uses trained model from 6 to control leg. Does not provided stimulus. Allows for continuous unconstrained control. 
 
-
+## Additional useful/necessary functions for real-time control and offline analysis
+   
 In addition to the real time control functions used by the GUI, there are a number of scripts in the `./utils` folder that are used in real time and can be used for offline:
 
 |No.| Function      | Purpose | Notes     |
@@ -84,15 +95,15 @@ In addition to the real time control functions used by the GUI, there are a numb
 |14| `rescale_data` | Rescale data | Rescale data between two values | 
 
 
-Here is an example of the offline experiments where the subject is moving the intact limb:
+### Example of the offline experiments where the subject is moving the intact limb:
 
 <video width="50%" loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159746338-ea9febbc-a2d1-4504-a2ab-f951ec210ce0.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 
-And here is an example of the subject moving the phantom limb. Notice the small movements of the stump. 
+### Example of the subject moving the phantom limb. Notice the small movements of the stump. 
 
-<video width="50%" loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159745693-2a565167-ee54-4d81-925e-2f6627f1f075.mp4" type="video/mp4">
+<video width=500 loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159745693-2a565167-ee54-4d81-925e-2f6627f1f075.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 
