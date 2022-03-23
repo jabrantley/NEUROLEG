@@ -1,4 +1,4 @@
-# NEUROLEG - A EEG-based BMI for closed-loop control (Kalman filter) of an external prosthesis/end effector
+# NEUROLEG - An EEG-based BMI for closed-loop control (Kalman filter) of an external prosthesis/end effector
 
 For part of my PhD dissertation project, I developed a real-time EEG-based brain-machine interface that was used by lower limb amputees to control a custom powered-knee prosthesis. We recruited several below-the-knee amputees to participate in a two part study: an offline study that used EEG, EMG, IMU-based motion capture, and fMRI to study the representation of the phantom limb, and a second study that focused on EEG-based closed-loop control. This was an exciting project and we hope to publish the detailed protocol and results soon! This repo provides the source code for the real-time EEG-based BMI. Some of the main features are:
 
