@@ -13,11 +13,23 @@ For part of my PhD dissertation project, I developed a real-time EEG-based brain
 - A simple but useful PID controller in Arduino/Teensy
 - An example for using Arduino/Teensy to sync multiple systems
 
+### An example of EMG-based continuous control using a simple linear Kalman filter
+<p align="center">
+   <img src="./images/emg_control_linearregression.gif" width=650 />
+<p>
+   
+For this I would do a few leg movements and train a filter. Not a perfect mapping but it was pretty fun for how quickly I could go from no model to real-time control.
+
 ## Overview
 Here is a basic overview of the experiment/program:
 
 - The subject was instrumented with EEG, EMG, IMUs, and goniometers. 
-- They were seated in front of a monitor where they performed a series of movement tasks according to the cues and timing presented on the screen. These included movements of the intact and phantom knee and bilateral hand movements as a control. 
+- They were seated in front of a monitor where they performed a series of movement tasks according to the cues and timing presented on the screen. These included movements of the intact and phantom knee and bilateral hand movements as a control. I like this example showing the EMG activations from the stump (not visible) matching the stimulus movement pattern.
+   
+<p align="center">
+   <img src="./images/emg_amputee_frombehind.gif" width=650 />
+<p>
+   
 - For realtime experiments, the subject performed a series of training trials where they followed the path of the moving dot. 
 - A Kalman filter was trained to predict the position of their limb from the EEG and EMG signals.
 - The subjects were given a few trials to perform EMG-control of the device. 
@@ -97,16 +109,27 @@ In addition to the real time control functions used by the GUI, there are a numb
 |14| `rescale_data` | Rescale data | Rescale data between two values | 
 
 
-### Example of the offline experiments where the subject is moving the intact limb:
+### Example of the offline experiments where the subject is moving the intact limb ([HD video](https://user-images.githubusercontent.com/22403383/159746338-ea9febbc-a2d1-4504-a2ab-f951ec210ce0.mp4)):
 
-<video width="50%" loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159746338-ea9febbc-a2d1-4504-a2ab-f951ec210ce0.mp4" type="video/mp4">
+### An example of EMG-based continuous control using a simple linear Kalman filter
+<p align="center">
+   <img src="./images/amputee_withDotMove_Intact_WithBlur_Short_gif.gif" width=650 />
+<p>
+   
+<!--<video width="50%" loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159746338-ea9febbc-a2d1-4504-a2ab-f951ec210ce0.mp4" type="video/mp4">
     Your browser does not support the video tag.
-</video>
+</video>-->
 
-### Example of the subject moving the phantom limb. Notice the small movements of the stump. 
+### Example of the subject moving the phantom limb. Notice the small movements of the stump ([HD video](https://user-images.githubusercontent.com/22403383/159745693-2a565167-ee54-4d81-925e-2f6627f1f075.mp4)):
 
-<video width=500 loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159745693-2a565167-ee54-4d81-925e-2f6627f1f075.mp4" type="video/mp4">
+<p align="center">
+   <img src="./images/amputee_withDotMove_Phantom_WithBlur_Short_gif.gif" width=650 />
+<p>
+   
+<!---<video width=500 loop autoplay controls src="https://user-images.githubusercontent.com/22403383/159745693-2a565167-ee54-4d81-925e-2f6627f1f075.mp4" type="video/mp4">
     Your browser does not support the video tag.
-</video>
+</video>--->
+  
+
 
 
